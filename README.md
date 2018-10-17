@@ -5,6 +5,16 @@ Welcome to Overledger Software Development Kit (SDK) for Java project. The SDK h
 
 The SDK acts as library for embedding itself in user's application, and helping for execute and access DLT through Overledger BPI.
 
+Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more Details.
+
+
+| Stable Release Version | JDK Version compatibility | JDK Version compatibility | Release Date |
+| ------------- | ------------- | ------------- | ------------|
+| 1.0.0  | 1.8+ | 1.0.0-alpha | *30/10/2018 |
+
+## License
+Overledger SDK for Java is licensed under **Apache Software License, Version 2.0**.
+
 ## IMPORTANT: Usage of SDK
 Application using Overledger SDK for Java is required to have Overledger BPI key and Overledger Mapp ID.
 
