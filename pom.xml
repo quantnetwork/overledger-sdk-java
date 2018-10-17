@@ -81,14 +81,12 @@
         <web3j.version>3.5.0</web3j.version>
         <json.version>20180813</json.version>
         <crypton.version>0.3.0</crypton.version>
-        <junit.version>4.12</junit.version>
-        <overledger.sdk.api.version>0.0.1-SNAPSHOT</overledger.sdk.api.version>
-        <overledger.sdk.bitcoin.version>0.0.1-SNAPSHOT</overledger.sdk.bitcoin.version>
-        <overledger.sdk.ethereum.version>0.0.1-SNAPSHOT</overledger.sdk.ethereum.version>
-        <overledger.sdk.ripple.version>0.0.1-SNAPSHOT</overledger.sdk.ripple.version>
+        <junit.version>5.1.0</junit.version>
+        <mockito.version>2.21.0</mockito.version>
         <maven.compiler.version>3.8.0</maven.compiler.version>
         <maven.source.version>3.0.1</maven.source.version>
         <maven.javadoc.version>3.0.1</maven.javadoc.version>
+        <maven.surefire.version>2.22.1</maven.surefire.version>
         <maven.jar.version>3.1.0</maven.jar.version>
         <maven.deploy.version>3.0.0-M1</maven.deploy.version>
         <maven.release.version>2.5.3</maven.release.version>
@@ -142,40 +140,58 @@
                 <version>${crypton.version}</version>
             </dependency>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-sdk-api</artifactId>
-                <version>${overledger.sdk.api.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-sdk-essential</artifactId>
-                <version>${overledger.sdk.api.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-sdk-bitcoin</artifactId>
-                <version>${overledger.sdk.bitcoin.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-sdk-ethereum</artifactId>
-                <version>${overledger.sdk.ethereum.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-ripple-lite</artifactId>
-                <version>${overledger.sdk.ripple.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.overledger</groupId>
                 <artifactId>overledger-sdk-ripple-java</artifactId>
-                <version>${overledger.sdk.ripple.version}</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -229,6 +245,23 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.version}</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-surefire-provider</artifactId>
+                            <version>1.0.1</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
