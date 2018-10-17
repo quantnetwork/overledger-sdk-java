@@ -63,6 +63,10 @@
 
     <modules>
         <module>overledger-sdk-api</module>
+        <module>overledger-sdk-essential</module>
+        <module>overledger-sdk-bitcoin</module>
+        <module>overledger-sdk-ethereum</module>
+        <module>overledger-sdk-ripple</module>
     </modules>
 
     <properties>

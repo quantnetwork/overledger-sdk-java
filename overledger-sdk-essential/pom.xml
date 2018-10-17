@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>overledger-sdk-api</artifactId>
+    <artifactId>overledger-sdk-essential</artifactId>
 
     <name>overledger-sdk-api</name>
-    <description>OverLedger SDK For Java API</description>
-    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-api</url>
+    <description>OverLedger SDK For Java API Essential</description>
+    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-essential</url>
 
     <organization>
         <url>https://quant.network</url>
@@ -52,5 +52,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

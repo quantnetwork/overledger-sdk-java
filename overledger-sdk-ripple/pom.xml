@@ -9,11 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>overledger-sdk-api</artifactId>
+    <artifactId>overledger-sdk-ripple</artifactId>
+    <packaging>pom</packaging>
 
-    <name>overledger-sdk-api</name>
+    <name>overledger-sdk-ripple</name>
     <description>OverLedger SDK For Java API</description>
-    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-api</url>
+    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-ripple</url>
 
     <organization>
         <url>https://quant.network</url>
@@ -31,26 +32,4 @@
             <timezone>UTC+00:00</timezone>
         </developer>
     </developers>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
