@@ -267,7 +267,12 @@ public class OverledgerSDKHelper {
                 );
 
         try {
-            this.applicationDataHandler.onPurchaseSuccess(this.overledgerSDK.writeTransaction(transaction));
+            ObjectMapper objectMapper = new ObjectMapper();
+            OverledgerTransaction overledgerTransaction = this.overledgerSDK.writeTransaction(transaction);
+            this.applicationDataHandler.onPurchaseSuccess(overledgerTransaction);
+            System.out.println(objectMapper.writeValueAsString(transaction));
+            System.out.println("##########");
+            System.out.println(objectMapper.writeValueAsString(overledgerTransaction));
         } catch (Exception e) {
             if (e instanceof ClientResponseException) {
                 ClientResponseException clientResponseException = (ClientResponseException) e;
