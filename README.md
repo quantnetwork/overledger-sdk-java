@@ -108,7 +108,7 @@ Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more 
 | ---------------------- | ------------------------- | ------------------------- | ------------ |
 | 1.0.0-alpha            | 11+                       | 1.0.0-alpha               | \*30/10/2018 |
 | 1.0.0-alpha.1          | 11+                       | 1.0.0-alpha.1             | \*17/12/2018 |
-| 1.0.0-alpha.2          | 11+                       | 1.0.0-alpha.1             | \*17/02/2019 |
+| 1.0.0-alpha.2          | 11+                       | 1.0.0-alpha.1             | \*26/02/2019 |
 
 ## Release notes
 
