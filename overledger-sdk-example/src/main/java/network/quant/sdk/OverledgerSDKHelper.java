@@ -267,7 +267,8 @@ public class OverledgerSDKHelper {
                 );
 
         try {
-            this.applicationDataHandler.onPurchaseSuccess(this.overledgerSDK.writeTransaction(transaction));
+            OverledgerTransaction overledgerTransaction = this.overledgerSDK.writeTransaction(transaction);
+            this.applicationDataHandler.onPurchaseSuccess(overledgerTransaction);
         } catch (Exception e) {
             if (e instanceof ClientResponseException) {
                 ClientResponseException clientResponseException = (ClientResponseException) e;

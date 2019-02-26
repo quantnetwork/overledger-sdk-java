@@ -6,7 +6,7 @@
 
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-java</artifactId>
-    <version>1.0.0-alpha.1</version>
+    <version>1.0.0-alpha.2</version>
 
     <packaging>pom</packaging>
 
