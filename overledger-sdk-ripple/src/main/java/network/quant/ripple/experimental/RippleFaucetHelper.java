@@ -60,10 +60,10 @@ public class RippleFaucetHelper {
     }
 
     /**
-     * Fund Ripple address with given amount in XRP
+     * Fund Ripple address with given amount in DROPs
      * @param rippleAccount RippleAccount containing ripple account
-     * @param amount BigDecimal containing amount in XRP
-     * @param  nonce BitInteger containing current nonce of account
+     * @param amount BigDecimal containing amount in DROPS
+     * @param nonce BitInteger containing current nonce of account
      */
     public void fundAccount(RippleAccount rippleAccount, BigDecimal amount, BigInteger nonce) {
         if (null != rippleAccount && null != amount && NETWORK.TEST.equals(rippleAccount.getNetwork())) {
