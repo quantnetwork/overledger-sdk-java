@@ -7,7 +7,7 @@
     <parent>
         <artifactId>overledger-sdk-java</artifactId>
         <groupId>network.quant</groupId>
-        <version>1.0.0-alpha.1</version>
+        <version>1.0.0-alpha.2</version>
     </parent>
 
     <artifactId>overledger-sdk-essential</artifactId>
