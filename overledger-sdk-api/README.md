@@ -8,7 +8,7 @@ API module contains interfaces which are used as guideline for helping SDK imple
 <dependency>
     <groupId>io.overledger</groupId>
     <artifactId>overledger-sdk-api</artifactId>
-    <version>1.0.0-alpha</version>
+    <version>1.0.0-alpha.2</version>
 </dependency>
 ```
 

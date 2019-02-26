@@ -48,6 +48,18 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                 Optional.ofNullable(this.accountManager.getAccount(dltTransaction.getDlt())).isPresent());
     }
 
+    private void verifyOverledgerTransaction(OverledgerTransaction ovlTransaction) throws EmptyDltException, DltNotSupportedException {
+        if (null == ovlTransaction) {
+            throw new NullPointerException();
+        }
+        if (null == ovlTransaction.getDltData()) {
+            throw new EmptyDltException();
+        }
+        if (!this.verifySupportAllDLTs(ovlTransaction)) {
+            throw new DltNotSupportedException();
+        }
+    }
+
     public NETWORK getNetwork() {
         return this.network;
     }
@@ -68,15 +80,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     @Override
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction) throws Exception {
-        if (null == ovlTransaction) {
-            throw new NullPointerException();
-        }
-        if (null == ovlTransaction.getDltData()) {
-            throw new EmptyDltException();
-        }
-        if (!this.verifySupportAllDLTs(ovlTransaction)) {
-            throw new DltNotSupportedException();
-        }
+        this.verifyOverledgerTransaction(ovlTransaction);
         OverledgerTransaction overledgerTransaction = null;
         try {
             ovlTransaction.getDltData().stream()
@@ -173,6 +177,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.searchBlock(dlt, blockhash, responseClass);
     }
 
+    @Override
+    public List<BalanceResponse> searchBalance(List<BalanceRequest> balanceRequests) {
+        return this.client.postBalances(balanceRequests);
+    }
+
     /**
      * Write transaction to BPI layer from byte array
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request
@@ -181,15 +190,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
      * @throws Exception throw if connection between client and manager is broken
      */
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, byte[] data) throws Exception {
-        if (null == ovlTransaction) {
-            throw new NullPointerException();
-        }
-        if (null == ovlTransaction.getDltData()) {
-            throw new EmptyDltException();
-        }
-        if (!this.verifySupportAllDLTs(ovlTransaction)) {
-            throw new DltNotSupportedException();
-        }
+        this.verifyOverledgerTransaction(ovlTransaction);
         OverledgerTransaction overledgerTransaction = null;
         try {
             ovlTransaction.getDltData().stream()

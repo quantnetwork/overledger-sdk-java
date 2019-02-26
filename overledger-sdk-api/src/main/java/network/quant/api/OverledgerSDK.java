@@ -97,4 +97,11 @@ public interface OverledgerSDK {
      */
     Block searchBlock(String dlt, String blockhash, Class<Block> responseClass);
 
+    /**
+     * Search given address balances
+     * @param balanceRequests List containing list of DLT addresses
+     * @return List containing set of DLT balance information
+     */
+    List<BalanceResponse> searchBalance(List<BalanceRequest> balanceRequests);
+
 }
