@@ -6,7 +6,7 @@
 
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-java</artifactId>
-    <version>1.0.0-alpha.1</version>
+    <version>1.0.0-alpha.2</version>
 
     <packaging>pom</packaging>
 
@@ -76,7 +76,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <java.version>11</java.version>
         <spring.boot.version>2.0.6.RELEASE</spring.boot.version>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <lombok.version>1.18.2</lombok.version>
         <bitcoinj.version>0.14.7</bitcoinj.version>
         <web3j.version>3.5.0</web3j.version>

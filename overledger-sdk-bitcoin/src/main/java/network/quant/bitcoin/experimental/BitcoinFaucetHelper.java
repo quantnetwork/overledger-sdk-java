@@ -3,6 +3,7 @@ package network.quant.bitcoin.experimental;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.OverledgerContext;
 import network.quant.bitcoin.BitcoinAccount;
+import network.quant.bitcoin.experimental.Dto.FaucetResponse;
 import network.quant.bitcoin.experimental.Dto.FaucetResponseDto;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
@@ -37,13 +38,15 @@ public class BitcoinFaucetHelper {
     }
 
     private void addUtxo(BitcoinAccount bitcoinAccount, String result) {
+
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            FaucetResponseDto faucetResponseDto = objectMapper.readValue(result, FaucetResponseDto.class);
+            FaucetResponse faucetResponse = objectMapper.readValue(result, FaucetResponse.class);
+            FaucetResponseDto faucetResponseDto = objectMapper.readValue(faucetResponse.getMessage(), FaucetResponseDto.class);
             bitcoinAccount.addUtxo(
                     faucetResponseDto.getTxnHash(),
                     faucetResponseDto.getVout(),
-                    faucetResponseDto.amount.abs().longValue(),
+                    BTC_IN_SATOSHI.multiply(faucetResponseDto.amount).abs().longValue(),
                     1,
                     faucetResponseDto.getAddress());
         } catch (Exception e) {

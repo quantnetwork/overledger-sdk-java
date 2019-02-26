@@ -37,7 +37,9 @@ public class OverledgerSDKHelper {
     private static final BigDecimal BTC = new BigDecimal("100000000");
     private static final BigDecimal ETH = new BigDecimal("1000000000000000000");
     private static final BigDecimal XRP = new BigDecimal("1000000");
-
+    private static final String ETH_KEY = "ethereum";
+    private static final String XBT_KEY = "bitcoin";
+    private static final String XRP_KEY = "ripple";
 
     private static OverledgerSDKHelper I;
     ApplicationDataHandler applicationDataHandler;
@@ -187,7 +189,7 @@ public class OverledgerSDKHelper {
 
     public void generate(String type) throws Exception {
         switch (type) {
-            case "eth":
+            case ETH_KEY:
                 EthereumAccount ethereumAccount = (EthereumAccount)EthereumAccount.getInstance(this.network);
                 this.ethereumAccount = ethereumAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -196,7 +198,7 @@ public class OverledgerSDKHelper {
                         Credentials.create(ethereumAccount.getEcKeyPair()).getAddress()
                 );
                 break;
-            case "btc":
+            case XBT_KEY:
                 BitcoinAccount bitcoinAccount = (BitcoinAccount)BitcoinAccount.getInstance(this.network);
                 this.bitcoinAccount = bitcoinAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -205,7 +207,7 @@ public class OverledgerSDKHelper {
                         bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58()
                 );
                 break;
-            case "xrp":
+            case XRP_KEY:
                 RippleAccount rippleAccount = (RippleAccount)RippleAccount.getInstance(this.network);
                 this.rippleAccount = rippleAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -219,7 +221,7 @@ public class OverledgerSDKHelper {
 
     public void receive(String type) {
         switch (type) {
-            case "eth":
+            case ETH_KEY:
                 if (null != this.ethereumAccount) {
                     EthereumFaucetHelper
                             .getInstance(this.properties.getProperty("ethereum.faucet.url"))
@@ -227,7 +229,7 @@ public class OverledgerSDKHelper {
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
                 break;
-            case "btc":
+            case XBT_KEY:
                 if (null != this.bitcoinAccount) {
                     BitcoinFaucetHelper
                             .getInstance(this.properties.getProperty("bitcoin.faucet.url"))
@@ -235,7 +237,7 @@ public class OverledgerSDKHelper {
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
                 break;
-            case "xrp":
+            case XRP_KEY:
                 if (null != this.rippleAccount) {
                     RippleFaucetHelper
                             .getInstance(this.properties.getProperty("ripple.faucet.url"))
@@ -265,7 +267,8 @@ public class OverledgerSDKHelper {
                 );
 
         try {
-            this.applicationDataHandler.onPurchaseSuccess(this.overledgerSDK.writeTransaction(transaction));
+            OverledgerTransaction overledgerTransaction = this.overledgerSDK.writeTransaction(transaction);
+            this.applicationDataHandler.onPurchaseSuccess(overledgerTransaction);
         } catch (Exception e) {
             if (e instanceof ClientResponseException) {
                 ClientResponseException clientResponseException = (ClientResponseException) e;
