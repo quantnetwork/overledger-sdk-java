@@ -8,7 +8,7 @@ Essential module implements most of interfaces from Overledger SDK API, except A
 <dependency>
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-essential</artifactId>
-    <version>1.0.0-alpha.2</version>
+    <version>1.0.0-alpha.3</version>
 </dependency>
 ```
 

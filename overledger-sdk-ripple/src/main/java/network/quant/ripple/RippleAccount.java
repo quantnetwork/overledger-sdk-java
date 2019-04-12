@@ -40,6 +40,7 @@ public class RippleAccount implements Account {
     NETWORK network;
 
     private RippleAccount(NETWORK network, String secretKey, BigInteger nonce) {
+        this.nonce = nonce;
         this.network = network;
         this.seed = Seed.fromBase58(secretKey);
     }
@@ -72,6 +73,18 @@ public class RippleAccount implements Account {
         SignedTransaction signedTransaction = payment.sign(this.seed.toString());
         dltTransaction.setSignedTransaction(signedTransaction.tx_blob);
         this.nonce = this.nonce.add(BigInteger.ONE);
+    }
+
+    private void sign(byte data[], String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
+        if (null != this.encryptor) {
+            data = this.encryptor.encrypt(data);
+            message = DatatypeConverter.printHexBinary(data);
+        }
+        if (null != this.compressor) {
+            data = this.compressor.compress(data);
+            message = DatatypeConverter.printHexBinary(data);
+        }
+        this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
     }
 
     public NETWORK getNetwork() {
@@ -112,31 +125,14 @@ public class RippleAccount implements Account {
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             byte data[] = message.getBytes();
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, fromAddress, toAddress, message, dltTransaction);
         }
     }
 
     @Override
     public void sign(String fromAddress, String toAddress, byte[] data, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
-            String message = DatatypeConverter.printHexBinary(data);
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, fromAddress, toAddress, DatatypeConverter.printHexBinary(data), dltTransaction);
         }
     }
 
@@ -151,22 +147,12 @@ public class RippleAccount implements Account {
                 return;
             }
             String message = DatatypeConverter.printHexBinary(data);
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, fromAddress, toAddress, message, dltTransaction);
         }
     }
 
     public static Account getInstance(NETWORK network, String secretKey, BigInteger nonce, Encryptor encryptor, Compressor compressor) {
-        if (null == I) {
-            I = new RippleAccount(network, secretKey, nonce);
-        }
+        I = new RippleAccount(network, secretKey, nonce);
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
@@ -177,18 +163,14 @@ public class RippleAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, Encryptor encryptor, Compressor compressor) {
-        if (null == I) {
-            I = new RippleAccount(network);
-        }
+        I = new RippleAccount(network);
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
     }
 
     public static Account getInstance(NETWORK network) {
-        if (null == I) {
-            I = new RippleAccount(network);
-        }
+        I = new RippleAccount(network);
         return I;
     }
 

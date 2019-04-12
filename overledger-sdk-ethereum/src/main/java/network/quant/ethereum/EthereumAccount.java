@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.CommonUtil;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Function;
 import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 import javax.xml.bind.DatatypeConverter;
@@ -65,6 +67,31 @@ public class EthereumAccount implements Account {
         this.nonce = this.nonce.add(BigInteger.ONE);
     }
 
+    private void deployContract(String contractBinary, String message, DltTransactionRequest dltTransaction) {
+        RawTransaction rawTransaction = RawTransaction.createContractTransaction(
+                this.nonce = null != dltTransaction.getSequence() ? BigInteger.valueOf(dltTransaction.getSequence()) : this.nonce,
+                Optional.ofNullable(dltTransaction.getFee()).orElse(EthGasStation.getInstance().calculate(FEE_POLICY.NORMAL)),
+                Optional.ofNullable(dltTransaction.getFeeLimit()).orElse(this.gasLimit),
+                dltTransaction.getAmount(),
+                String.format("0x %s%s", contractBinary, null == message?"":message)
+        );
+        byte transactionSignedBytes[] = TransactionEncoder.signMessage(rawTransaction, Credentials.create(this.ecKeyPair));
+        dltTransaction.setSignedTransaction(Numeric.toHexString(transactionSignedBytes));
+        this.nonce = this.nonce.add(BigInteger.ONE);
+    }
+
+    private void sign(byte data[], String toAddress, String message, DltTransaction dltTransaction) {
+        if (null != this.encryptor) {
+            data = this.encryptor.encrypt(data);
+            message = DatatypeConverter.printHexBinary(data);
+        }
+        if (null != this.compressor) {
+            data = this.compressor.compress(data);
+            message = DatatypeConverter.printHexBinary(data);
+        }
+        this.sign(toAddress, message, (DltTransactionRequest)dltTransaction);
+    }
+
     public NETWORK getNetwork() {
         return this.network;
     }
@@ -89,15 +116,7 @@ public class EthereumAccount implements Account {
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             byte data[] = message.getBytes();
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, toAddress, message, dltTransaction);
         }
     }
 
@@ -105,15 +124,7 @@ public class EthereumAccount implements Account {
     public void sign(String fromAddress, String toAddress, byte[] data, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             String message = DatatypeConverter.printHexBinary(data);
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, toAddress, message, dltTransaction);
         }
     }
 
@@ -128,16 +139,37 @@ public class EthereumAccount implements Account {
                 return;
             }
             String message = DatatypeConverter.printHexBinary(data);
-            if (null != this.encryptor) {
-                data = this.encryptor.encrypt(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            if (null != this.compressor) {
-                data = this.compressor.compress(data);
-                message = DatatypeConverter.printHexBinary(data);
-            }
-            this.sign(toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(data, toAddress, message, dltTransaction);
         }
+    }
+
+    /**
+     * Invoke contract transaction
+     * @param contractAddress String containing contract address
+     * @param function Function containing the Web3J function
+     * @param dltTransaction DltTransaction containing the overledger DLT transaction
+     */
+    public void invokeContract(String contractAddress, Function function, DltTransaction dltTransaction) {
+        if (dltTransaction instanceof DltTransactionRequest) {
+            String encodedFunction = FunctionEncoder.encode(function);
+            this.sign(contractAddress, encodedFunction, (DltTransactionRequest)dltTransaction);
+        }
+    }
+
+    /**
+     * Deploy contract
+     * @param contractBinary String containing contract binary
+     * @param encodedConstructor String containing contract constructor
+     * @param dltTransaction DltTransaction containing the overledger DLT transaction
+     */
+    public void deployContract(String contractBinary, String encodedConstructor, DltTransaction dltTransaction) {
+        if (dltTransaction instanceof DltTransactionRequest) {
+            this.deployContract(contractBinary, encodedConstructor, (DltTransactionRequest)dltTransaction);
+        }
+    }
+
+    public void queryContract(String contractAddress, Function function) {
+
     }
 
     /**
