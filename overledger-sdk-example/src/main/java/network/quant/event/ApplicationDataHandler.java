@@ -1,8 +1,11 @@
 package network.quant.event;
 
 import network.quant.api.OverledgerTransaction;
+import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.util.Page;
+import network.quant.util.PageParams;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +37,7 @@ public interface ApplicationDataHandler {
 
     void onPurchaseSuccess(UUID overledgerTransactionId);
 
-    void onLoadOrders(List<OverledgerTransaction> readTransactions, Page page);
+    void onLoadOrders(OverledgerTransactions overledgerTransactionsResponse, PageParams page);
 
     void onLoadOrders(OverledgerTransactionResponse[] writeOverledgerTransactionResponses);
 

@@ -7,9 +7,6 @@ import network.quant.util.Transaction;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GenericDltTransaction implements Transaction {
-
-    String dlt;
-    Object data;
+public class GenericDltTransaction extends Transaction {
 
 }

@@ -1,5 +1,6 @@
 package network.quant.essential;
 
+import network.quant.OverledgerContext;
 import network.quant.api.*;
 import network.quant.essential.dto.DltTransactionRequest;
 import network.quant.essential.dto.DltTransactionResponse;
@@ -153,10 +154,10 @@ public class DefaultOverledgerSDKTest {
 
         Mockito.when(this.client.getTransactions(Mockito.anyString(), eq(OverledgerTransactionResponse.class))).thenReturn(Collections.singletonList(this.overledgerTransactionResponse));
 
-        List<OverledgerTransaction> overledgerTransactionList = this.overledgerSDK.readTransactions("network.quant.essential");
+        OverledgerTransactions overledgerTransactionList = this.overledgerSDK.readTransactions("network.quant.essential");
         Assert.assertNotNull(overledgerTransactionList);
-        Assert.assertEquals(1, overledgerTransactionList.size());
-        Assert.assertEquals(this.overledgerTransactionResponse, overledgerTransactionList.get(0));
+        Assert.assertEquals(1, overledgerTransactionList.getTotalTransactions());
+        Assert.assertEquals(this.overledgerTransactionResponse, overledgerTransactionList.getTransactions().get(0));
 
         Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionResponse.class));
     }
