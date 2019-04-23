@@ -10,7 +10,7 @@ import java.util.Properties;
  * Overledger Context contains the BPI key and Mapp ID
  * All Overledger operations required OverledgerContext to be setup first
  */
-public final class OverledgerContext {
+public class OverledgerContext {
 
     private static final String TEST_URL_KEY                                = "overledger.testurl";
     private static final String MAIN_URL_KEY                                = "overledger.mainurl";
