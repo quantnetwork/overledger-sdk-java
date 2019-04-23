@@ -18,6 +18,7 @@ public class DltTransactionResponse implements network.quant.api.DltTransactionR
     String transactionHash;
     Integer blockHeight;
     DLTStatus status;
-    String links[];
+    String dltVersion;
+    String customReference;
 
 }

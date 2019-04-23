@@ -37,7 +37,7 @@ public interface Client<T, S> {
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
-    S getTransactions(String mappId, Class<S> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, Class<S> responseClass);
 
     /**
      * Read transactions from BPI layer
@@ -47,7 +47,7 @@ public interface Client<T, S> {
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
-    S getTransactions(String mappId, PageParams page, Class<S> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, PageParams page, Class<S> responseClass);
 
     /**
      * Read transaction from BPI layer
