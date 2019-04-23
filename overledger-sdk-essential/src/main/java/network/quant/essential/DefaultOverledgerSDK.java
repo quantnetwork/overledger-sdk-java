@@ -29,7 +29,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private Client client;
 
     private DefaultOverledgerSDK(NETWORK network) {
-        this(network, AccountManager.newInstance(),OverledgerClient.getInstance());
+        this(network, AccountManager.newInstance(), null);
     }
 
     private DefaultOverledgerSDK(NETWORK network, AccountManager accountManager, Client client) {
@@ -40,7 +40,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         }
         this.initial(network);
         this.accountManager = accountManager;
-        this.client = client;
+        this.client = null == client?OverledgerClient.getInstance():client;
     }
 
     private void throwCauseException(Exception e) throws Exception {
