@@ -2,10 +2,12 @@ package network.quant.compoent;
 
 import network.quant.api.DLT;
 import network.quant.api.OverledgerTransaction;
+import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.DltTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.mvp.presenter.ContentPresenter;
 import network.quant.util.Page;
+import network.quant.util.PageParams;
 import network.quant.utils.UITools;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -75,7 +77,7 @@ public class OrderPanel extends BaseComponent {
     JList<OverledgerTransactionResponse> transactionList = new JList<>();
     JScrollPane transactionPane;
     DefaultListModel<OverledgerTransactionResponse> transactionListModel = new DefaultListModel<>();
-    Page page;
+    PageParams page;
     JLabel pageLabel = new JLabel();
     network.quant.compoent.Button nextButton = new network.quant.compoent.Button(">", network.quant.compoent.Button.TYPE.OK);
     network.quant.compoent.Button previousButton = new network.quant.compoent.Button("<", Button.TYPE.OK);
@@ -120,7 +122,7 @@ public class OrderPanel extends BaseComponent {
         this.nextButton.setSize(48, 48);
         this.nextButton.setLocation(dimension.width - 60, 10);
         this.nextButton.addActionListener((event) -> {
-            this.page.setPageNumber(this.page.getPageNumber() + 1);
+            this.page.setOffset(this.page.getOffset() + 1);
             this.contentPresenter.onLoadOrders(this.page);
         });
         this.add(this.nextButton, componentIndex++);
@@ -128,7 +130,7 @@ public class OrderPanel extends BaseComponent {
         this.previousButton.setSize(48, 48);
         this.previousButton.setLocation(dimension.width - 320, 10);
         this.previousButton.addActionListener((event) -> {
-            this.page.setPageNumber(this.page.getPageNumber() - 1);
+            this.page.setOffset(this.page.getOffset() - 1);
             this.contentPresenter.onLoadOrders(this.page);
         });
         this.add(this.previousButton, componentIndex++);
@@ -162,13 +164,13 @@ public class OrderPanel extends BaseComponent {
         );
     }
 
-    public void loadList(List<OverledgerTransaction> writeOverledgerTransactionResponses, Page page) {
+    public void loadList(OverledgerTransactions overledgerTransactionsResponse, PageParams page) {
         this.page = page;
-        this.pageLabel.setText(String.format("Page: %d of %d", page.getPageNumber() + 1, page.getTotalPages()));
-        this.nextButton.setVisible(!page.isLast());
-        this.previousButton.setVisible(!page.isFirst());
+        this.pageLabel.setText(String.format("Page: %d of %d", page.getOffset()/page.getLength() + 1, page.getOffset()%page.getLength()));
+        // this.nextButton.setVisible(!page.isLast());
+        // this.previousButton.setVisible(!page.isFirst());
         this.transactionListModel.clear();
-        writeOverledgerTransactionResponses.stream().forEach(overledgerTransactionResponse ->
+        overledgerTransactionsResponse.getTransactions().stream().forEach(overledgerTransactionResponse ->
                 this.transactionListModel.addElement((OverledgerTransactionResponse)overledgerTransactionResponse)
         );
     }

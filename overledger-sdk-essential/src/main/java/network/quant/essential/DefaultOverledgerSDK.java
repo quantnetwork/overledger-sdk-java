@@ -1,5 +1,6 @@
 package network.quant.essential;
 
+import network.quant.OverledgerContext;
 import network.quant.api.*;
 import network.quant.api.DltTransactionRequest;
 import network.quant.essential.dto.*;
@@ -9,7 +10,9 @@ import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
+import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,13 +29,18 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private Client client;
 
     private DefaultOverledgerSDK(NETWORK network) {
-        this(network, AccountManager.newInstance(),OverledgerClient.getInstance());
+        this(network, AccountManager.newInstance(), null);
     }
 
     private DefaultOverledgerSDK(NETWORK network, AccountManager accountManager, Client client) {
+        try {
+            OverledgerContext.loadContext(network, Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.initial(network);
         this.accountManager = accountManager;
-        this.client = client;
+        this.client = null == client?OverledgerClient.getInstance():client;
     }
 
     private void throwCauseException(Exception e) throws Exception {
@@ -129,29 +137,30 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
-    public List<OverledgerTransaction> readTransactions(String mappId) throws Exception {
-        List<OverledgerTransaction> overledgerTransactionList = null;
+    public OverledgerTransactions readTransactions(String mappId) throws Exception {
+        OverledgerTransactionsResponse overledgerTransactionsResponse = null;
         try {
-            overledgerTransactionList = this.client.getTransactions(mappId, OverledgerTransactionResponse.class);
+            overledgerTransactionsResponse = (OverledgerTransactionsResponse) this.client.getTransactions(mappId, OverledgerTransactionsResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
-        return overledgerTransactionList;
+        return overledgerTransactionsResponse;
     }
 
     @Override
-    public PagedResult<OverledgerTransaction> readTransactions(String mappId, Page page) throws Exception {
-        PagedResult<OverledgerTransaction> pageResult = null;
+    public OverledgerTransactions readTransactions(String mappId, PageParams pageParams) throws Exception {
+        OverledgerTransactionsResponse overledgerTransactionsResponse = null;
         try {
-            pageResult = this.client.getTransactions(mappId, page, OverledgerTransactionPageResult.class);
+            overledgerTransactionsResponse = (OverledgerTransactionsResponse) this.client.getTransactions(mappId, pageParams, OverledgerTransactionsResponse.class);
         } catch (Exception e) {
             e.printStackTrace();
             this.throwCauseException(e);
         }
-        return pageResult;
+        return overledgerTransactionsResponse;
     }
 
     @Override
+    @Deprecated
     public OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
@@ -168,13 +177,29 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
+    @Deprecated
     public Address searchAddress(String address, Class<Address> responseClass) {
         return this.client.searchAddress(address, responseClass);
     }
 
     @Override
+    public Address searchAddress(String address) {
+        return this.client.searchAddress(address, Address.class);
+    }
+
+    @Deprecated
     public Block searchBlock(String dlt, String blockhash, Class<Block> responseClass) {
         return this.client.searchBlock(dlt, blockhash, responseClass);
+    }
+
+    @Override
+    public Block searchBlock(String dlt, String blockhash) {
+        return this.client.searchBlock(dlt, blockhash, Block.class);
+    }
+
+    @Override
+    public Block searchBlock(String dlt, BigDecimal blocknumber) {
+        return this.client.searchBlock(dlt, blocknumber.toString(), Block.class);
     }
 
     @Override
@@ -228,6 +253,14 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     public static DefaultOverledgerSDK newInstance(NETWORK network, AccountManager accountManager, Client client) {
         return new DefaultOverledgerSDK(network, accountManager, client);
+    }
+
+    public static DefaultOverledgerSDK newInstance() {
+        return new DefaultOverledgerSDK(NETWORK.TEST);
+    }
+
+    public static DefaultOverledgerSDK newInstance(AccountManager accountManager, Client client) {
+        return new DefaultOverledgerSDK(NETWORK.TEST, accountManager, client);
     }
 
 }

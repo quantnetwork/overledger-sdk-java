@@ -7,9 +7,8 @@ import network.quant.util.Transaction;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EthereumTransaction implements Transaction {
+public class EthereumTransaction extends Transaction {
 
-    String dlt;
-    EthereumData data;
+    EthereumData ethereumData;
 
 }

@@ -7,9 +7,8 @@ import network.quant.util.Transaction;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RippleTransaction implements Transaction {
+public class RippleTransaction extends Transaction {
 
-    String dlt;
-    RippleData data;
+    RippleData rippleData;
 
 }

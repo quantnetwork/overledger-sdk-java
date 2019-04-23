@@ -41,12 +41,11 @@ public class BitcoinFaucetHelper {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            FaucetResponse faucetResponse = objectMapper.readValue(result, FaucetResponse.class);
-            FaucetResponseDto faucetResponseDto = objectMapper.readValue(faucetResponse.getMessage(), FaucetResponseDto.class);
+            FaucetResponseDto faucetResponseDto = objectMapper.readValue(result, FaucetResponseDto.class);
             bitcoinAccount.addUtxo(
                     faucetResponseDto.getTxnHash(),
                     faucetResponseDto.getVout(),
-                    BTC_IN_SATOSHI.multiply(faucetResponseDto.amount).abs().longValue(),
+                    faucetResponseDto.amount.abs().longValue(),
                     1,
                     faucetResponseDto.getAddress());
         } catch (Exception e) {
@@ -112,6 +111,8 @@ public class BitcoinFaucetHelper {
                         .block();
             } catch (RedirectException e) {
                 this.redirectPost(bitcoinAccount, e.getUrl());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
