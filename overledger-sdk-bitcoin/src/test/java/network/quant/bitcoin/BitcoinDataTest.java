@@ -2,6 +2,7 @@ package network.quant.bitcoin;
 
 import network.quant.api.DATA_TYPE;
 import network.quant.api.NETWORK;
+
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
 import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import network.quant.exception.*;

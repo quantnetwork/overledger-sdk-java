@@ -34,6 +34,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     private WebClient webClient;
 
     private OverledgerClient() {
+        System.out.println(" -------\n" + OverledgerContext.MAPP_ID + String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY));
         this.webClient = WebClient.builder()
                 .defaultHeader(
                         HttpHeaders.AUTHORIZATION,

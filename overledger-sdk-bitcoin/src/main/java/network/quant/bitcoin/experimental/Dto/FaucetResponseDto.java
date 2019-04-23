@@ -12,5 +12,5 @@ public class FaucetResponseDto {
     public String status;
     public String txnHash;
     public Long vout;
-
+    public String statusMessage;
 }

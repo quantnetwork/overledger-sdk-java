@@ -1,6 +1,7 @@
 package network.quant.bitcoin;
 
 import network.quant.api.NETWORK;
+
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
 import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import org.junit.Assert;
