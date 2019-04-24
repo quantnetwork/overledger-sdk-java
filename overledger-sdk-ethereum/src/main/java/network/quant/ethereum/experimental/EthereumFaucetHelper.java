@@ -70,6 +70,7 @@ public class EthereumFaucetHelper {
                 this.webClient
                         .post()
                         .uri(this.url, address, new BigDecimal("1000000000000000000"))
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .retrieve()
                         .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
                                 .bodyToMono(ByteArrayResource.class)

@@ -1,9 +1,11 @@
 package network.quant.mvp.presenter;
 
 import network.quant.api.OverledgerTransaction;
+import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.event.ApplicationHistoryChangeHandler;
 import network.quant.util.Page;
+import network.quant.util.PageParams;
 
 import java.io.File;
 import java.util.List;
@@ -49,9 +51,9 @@ public interface ContentPresenter extends Presenter, ApplicationHistoryChangeHan
 
     void purchaseSuccess(UUID overledgerTransactionId);
 
-    void loadOrders(List<OverledgerTransaction> readTransactions, Page page);
+    void loadOrders(OverledgerTransactions overledgerTransactionsResponse, PageParams pageParams);
 
     void loadOrders(OverledgerTransactionResponse[] writeOverledgerTransactionResponses);
 
-    void onLoadOrders(Page page);
+    void onLoadOrders(PageParams page);
 }

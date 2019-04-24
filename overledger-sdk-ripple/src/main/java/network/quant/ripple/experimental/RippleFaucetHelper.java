@@ -70,7 +70,7 @@ public class RippleFaucetHelper {
             try {
                 this.webClient
                         .post()
-                        .uri(this.url, rippleAccount.getPublicKey(), amount)
+                        .uri(this.url, rippleAccount.getPublicKey(), amount.multiply(XRP))
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .retrieve()
                         .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse

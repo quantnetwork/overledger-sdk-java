@@ -5,6 +5,7 @@ import network.quant.util.PagedResult;
 
 import java.util.List;
 
+@Deprecated
 @Data
 public class OverledgerTransactionPageResult implements PagedResult<OverledgerTransactionResponse> {
 

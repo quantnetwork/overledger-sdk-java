@@ -35,19 +35,19 @@ public interface Client<T, S> {
      * HTTP GET method to BPI layer
      * @param mappId String containing Overledger Mapp ID
      * @param responseClass Class containing response body class type
-     * @return List of S containing actual response body list
+     * @return S containing actual response body
      */
-    List<S> getTransactions(String mappId, Class<S> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, Class<S> responseClass);
 
     /**
      * Read transactions from BPI layer
      * HTTP GET method to BPI layer
      * @param mappId String containing Overledger Mapp ID
-     * @param  page Page containing paging information
+     * @param  page PageParams containing paging information
      * @param responseClass Class containing response body class type
-     * @return PagedResult containing actual response body
+     * @return S containing actual response body
      */
-    PagedResult<S> getTransactions(String mappId, Page page, Class<PagedResult<S>> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, PageParams page, Class<S> responseClass);
 
     /**
      * Read transaction from BPI layer
@@ -57,6 +57,7 @@ public interface Client<T, S> {
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
+    @Deprecated
     S getTransaction(String dlt, String transactionHash, Class<S> responseClass);
 
     /**

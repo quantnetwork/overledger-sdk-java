@@ -2,6 +2,7 @@ package network.quant.api;
 
 import network.quant.util.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,19 +48,19 @@ public interface OverledgerSDK {
     /**
      * Read transactions from BPI layer base on Mapp ID
      * @param mappId String containing Mapp ID
-     * @return OverledgerTransaction containing response body from the call
+     * @return OverledgerTransactions containing response body from the call
      * @throws Exception throw if connection between client and manager is broken
      */
-    List<OverledgerTransaction> readTransactions(String mappId) throws Exception;
+    OverledgerTransactions readTransactions(String mappId) throws Exception;
 
     /**
      * Read transactions from BPI layer base on Mapp ID
      * @param mappId String containing Mapp ID
-     * @param  page Page containing page
-     * @return OverledgerTransaction containing response body from the call
+     * @param  pageParams PageParams containing page params
+     * @return OverledgerTransactions containing response body from the call
      * @throws Exception throw if connection between client and manager is broken
      */
-    PagedResult<OverledgerTransaction> readTransactions(String mappId, Page page) throws Exception;
+    OverledgerTransactions readTransactions(String mappId, PageParams pageParams) throws Exception;
 
     /**
      * Read transaction from BPI layer base on txHash and DLT
@@ -68,6 +69,7 @@ public interface OverledgerSDK {
      * @return OverledgerTransaction containing response body from the call
      * @throws Exception throw if connection between client and manager is broken
      */
+    @Deprecated
     OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception;
 
     /**
@@ -86,7 +88,16 @@ public interface OverledgerSDK {
      * @return Address containing address implementation
      * @throws Exception throw if connection between client and manager is broken
      */
+    @Deprecated
     Address searchAddress(String address, Class<Address> responseClass);
+
+    /**
+     * Search address from BPI layer base on txHash and DLT
+     * @param address String containing address
+     * @return Address containing address implementation
+     * @throws Exception throw if connection between client and manager is broken
+     */
+    Address searchAddress(String address);
 
     /**
      * Search address base on address string
@@ -95,7 +106,24 @@ public interface OverledgerSDK {
      * @param responseClass Class containing response class
      * @return Block containing the block implementation
      */
+    @Deprecated
     Block searchBlock(String dlt, String blockhash, Class<Block> responseClass);
+
+    /**
+     * Search address base on address string
+     * @param dlt String containing DLT type
+     * @param blockhash String containing block hash
+     * @return Block containing the block implementation
+     */
+    Block searchBlock(String dlt, String blockhash);
+
+    /**
+     * Search address base on address string
+     * @param dlt String containing DLT type
+     * @param blocknumber BigDecimal containing block hash
+     * @return Block containing the block implementation
+     */
+    Block searchBlock(String dlt, BigDecimal blocknumber);
 
     /**
      * Search given address balances
