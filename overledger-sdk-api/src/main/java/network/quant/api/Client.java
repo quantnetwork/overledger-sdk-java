@@ -92,4 +92,11 @@ public interface Client<T, S> {
      */
     List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests);
 
+    /**
+     * Get sequence of given addresses
+     * @param sequenceRequest SequenceRequest containing sequence request object
+     * @return SequenceResponse containing sequence response object
+     */
+    SequenceResponse postSequence(SequenceRequest sequenceRequest);
+
 }
