@@ -205,6 +205,34 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
+    public SequenceResponse postSequence(SequenceRequest sequenceRequest) {
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.SEQUENCE_CHECK)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(sequenceRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(SequenceResponse.class)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(sequenceRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(SequenceResponse.class)
+                    .block();
+        }
+    }
+
+    @Override
     public Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) {
         try {
             return this.webClient

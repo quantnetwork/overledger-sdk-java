@@ -207,6 +207,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postBalances(balanceRequests);
     }
 
+    @Override
+    public SequenceResponse searchSequence(SequenceRequest sequenceRequest) {
+        return this.client.postSequence(sequenceRequest);
+    }
+
     /**
      * Write transaction to BPI layer from byte array
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request
