@@ -10,7 +10,6 @@ import network.quant.bitcoin.experimental.BitcoinFaucetHelper;
 import network.quant.essential.dto.DltTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.exception.ClientResponseException;
-import org.bitcoinj.core.UTXO;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class BuyCarScript {
 
         util.setupLogger();
         util.checkOverledgerSDK();
-        util.loadContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+        util.loadDemoPropertiesFromContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
 
 
         //Script 3
@@ -40,17 +39,12 @@ public class BuyCarScript {
 
         BitcoinFaucetHelper.getInstance(OverledgerContext.FAUCET_XBT).fundAccount(buyerbBitcoinAccount);
 
-        /*for (UTXO utxo : buyerbBitcoinAccount.getUtxoList()) {
-            System.out.println(utxo.getAddress());
-            System.out.println(utxo.getValue());
-        }*/
-
 
         util.overledgerSDK.addAccount(DLT.bitcoin.name(), buyerbBitcoinAccount);
 
 
         // Replace Bitcoin Shop Address
-        String shopAddress = "mqc5k9QaxPvcmB1tgroivdUa6bTKoKvfwt";
+        String shopAddress = DemoOverledgerContext.SHOP_BTC_ACCOUNT_ADDRESS;
 
         OverledgerTransactionRequest writeOverledgerTransactionRequest = new OverledgerTransactionRequest();
         writeOverledgerTransactionRequest.setMappId(OverledgerContext.MAPP_ID);

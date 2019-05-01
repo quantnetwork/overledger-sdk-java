@@ -28,15 +28,13 @@ public class PayInsuranceDvlaScript {
 
         util.setupLogger();
         util.checkOverledgerSDK();
-        // util.loadContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+        util.loadDemoPropertiesFromContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
 
-        EthereumAccount insuranceEthereumAccount = (EthereumAccount) EthereumAccount.getInstance(NETWORK.TEST, new BigInteger("88462467353422894037388749663072770027090763518400085939107740349309162205081"), new BigInteger("0"));
-        RippleAccount dvlaRippleAccount = (RippleAccount) RippleAccount.getInstance(NETWORK.TEST, "snT4PvFS5YZ4G1CJA6v85pAcrzFSh", new BigInteger("1"));
+        EthereumAccount insuranceEthereumAccount = (EthereumAccount) EthereumAccount.getInstance(NETWORK.TEST, new BigInteger(DemoOverledgerContext.INSURER_ETH_PRIVATE_KEY), new BigInteger("0"));
+        RippleAccount dvlaRippleAccount = (RippleAccount) RippleAccount.getInstance(NETWORK.TEST, DemoOverledgerContext.DVLA_XRP_SECURE_KEY, new BigInteger("1"));
 
-        EthereumAccount shopEthereumAccount = (EthereumAccount) EthereumAccount.getInstance(NETWORK.TEST, new BigInteger("105858731101090287566057501672735658358282159285543995503009954031739733762457"), new BigInteger("0"));
-        RippleAccount shopRippleAccount = (RippleAccount) RippleAccount.getInstance(NETWORK.TEST, "ssNMLMBAhiXyVwnP4gkKE1AzmMP8K", new BigInteger("1"));
-        shopRippleAccount.setNonce(BigInteger.ONE);
-
+        EthereumAccount shopEthereumAccount = (EthereumAccount) EthereumAccount.getInstance(NETWORK.TEST, new BigInteger(DemoOverledgerContext.SHOP_ETH_PRIVATE_KEY), new BigInteger("0"));
+        RippleAccount shopRippleAccount = (RippleAccount) RippleAccount.getInstance(NETWORK.TEST, DemoOverledgerContext.SHOP_XRP_SECURE_KEY, new BigInteger("1"));
 
         //Script 4
         //4-oneOone-shop-process.js

@@ -2,7 +2,6 @@ package network.quant.test;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
-import network.quant.OverledgerContext;
 import network.quant.api.NETWORK;
 import network.quant.api.OverledgerSDK;
 import network.quant.essential.DefaultOverledgerSDK;
@@ -27,11 +26,11 @@ public class Util {
         }
     }
 
-    public  void loadContext(InputStream stream) {
+    public  void loadDemoPropertiesFromContext(InputStream stream) {
         if (null != stream) {
             try {
                 properties.load(stream);
-                OverledgerContext.loadContext(properties);
+                DemoOverledgerContext.loadDemoProperties(properties);
                 stream.close();
             } catch (IOException e) {
                 e.printStackTrace();

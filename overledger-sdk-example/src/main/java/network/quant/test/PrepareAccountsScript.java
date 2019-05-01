@@ -25,7 +25,7 @@ public class PrepareAccountsScript {
 
         util.setupLogger();
         util.checkOverledgerSDK();
-        util.loadContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+        //util.loadDemoPropertiesFromContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
 
         //Script 1
         //1-oneOone-quant
@@ -47,12 +47,10 @@ public class PrepareAccountsScript {
 
         util.logger.info("--> Insurer ETH Account Address: " + Credentials.create(((EthereumAccount) insuranceEthereumAccount).getEcKeyPair()).getAddress());
         util.logger.info("--> Insurance Ethereum: Private Key " + insuranceEthereumAccount.getPrivateKey());
-        util.logger.info("--> Insurance Ethereum: Nonce " + insuranceEthereumAccount.getNonce());
 
 
         util.logger.info("--> DVLA Ripple Account Address: " + ((RippleAccount) dvlaRippleAccount).getPublicKey());
         util.logger.info("--> DVLA Ripple Account: Private Key as String " + ((RippleAccount) dvlaRippleAccount).getPrivateKeyAsString());
-        util.logger.info("--> DVLA Ripple Account: Nonce as String " + ((RippleAccount) dvlaRippleAccount).getNonce());
 
 
         // ========== SHOP ACCOUNTS
@@ -75,16 +73,13 @@ public class PrepareAccountsScript {
 
         util.logger.info("Accounts funded....");
 
-        util.logger.info("--> SHOP Bitcoin Account: Private Key " + shopBitcoinAccount.getPrivateKey().toString());
         util.logger.info("--> SHOP Bitcoin Account: ADDRESS " + shopBitcoinAccount.getKey().toAddress(shopBitcoinAccount.getNetworkParameters()).toBase58());
 
         util.logger.info("--> SHOP ETH Account: " + Credentials.create(((EthereumAccount) shopEthereumAccount).getEcKeyPair()).getAddress());
         util.logger.info("--> SHOP Ethereum: Private Key " + shopEthereumAccount.getPrivateKey());
-        util.logger.info("--> SHOP Ethereum: Nonce " + shopEthereumAccount.getNonce());
 
         util.logger.info("--> SHOP Ripple Account: " + ((RippleAccount) shopRippleAccount).getPublicKey());
         util.logger.info("--> SHOP Ripple Account: Private Key as String " + ((RippleAccount) shopRippleAccount).getPrivateKeyAsString());
-        util.logger.info("--> SHOP Ripple Account: Nonce as String " + ((RippleAccount) shopRippleAccount).getNonce());
 
     }
 
