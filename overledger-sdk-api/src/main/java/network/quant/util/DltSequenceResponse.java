@@ -7,6 +7,10 @@ public class DltSequenceResponse {
     private Number sequence;
     private DLT dlt;
 
+    public DltSequenceResponse() {
+
+    }
+
     public DltSequenceResponse(Number sequence, DLT dlt) {
         this.sequence = sequence;
         this.dlt = dlt;

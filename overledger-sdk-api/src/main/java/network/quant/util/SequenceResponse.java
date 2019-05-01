@@ -6,6 +6,10 @@ public class SequenceResponse {
 
     List<DltSequenceResponse> dltData;
 
+    public SequenceResponse() {
+
+    }
+
     public SequenceResponse(List<DltSequenceResponse> dltData) {
         this.dltData = dltData;
     }
