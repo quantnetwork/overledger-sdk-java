@@ -138,25 +138,25 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     @Override
     public OverledgerTransactions readTransactions(String mappId) throws Exception {
-        OverledgerTransactionsResponse overledgerTransactionsResponse = null;
+        OverledgerTransactions overledgerTransactions = null;
         try {
-            overledgerTransactionsResponse = (OverledgerTransactionsResponse) this.client.getTransactions(mappId, OverledgerTransactionsResponse.class);
+            overledgerTransactions = this.client.getTransactions(mappId, OverledgerTransactionsResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
-        return overledgerTransactionsResponse;
+        return overledgerTransactions;
     }
 
     @Override
     public OverledgerTransactions readTransactions(String mappId, PageParams pageParams) throws Exception {
-        OverledgerTransactionsResponse overledgerTransactionsResponse = null;
+        OverledgerTransactions overledgerTransactions = null;
         try {
-            overledgerTransactionsResponse = (OverledgerTransactionsResponse) this.client.getTransactions(mappId, pageParams, OverledgerTransactionsResponse.class);
+            overledgerTransactions = this.client.getTransactions(mappId, pageParams, OverledgerTransactionsResponse.class);
         } catch (Exception e) {
             e.printStackTrace();
             this.throwCauseException(e);
         }
-        return overledgerTransactionsResponse;
+        return overledgerTransactions;
     }
 
     @Override
@@ -205,6 +205,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     @Override
     public List<BalanceResponse> searchBalance(List<BalanceRequest> balanceRequests) {
         return this.client.postBalances(balanceRequests);
+    }
+
+    @Override
+    public SequenceResponse searchSequence(SequenceRequest sequenceRequest) {
+        return this.client.postSequence(sequenceRequest);
     }
 
     /**

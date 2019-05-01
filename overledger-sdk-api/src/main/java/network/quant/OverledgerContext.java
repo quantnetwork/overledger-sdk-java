@@ -1,7 +1,6 @@
 package network.quant;
 
 import network.quant.api.NETWORK;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -22,6 +21,7 @@ public class OverledgerContext {
     private static final String SEARCH_ADDRESSES_KEY                        = "overledger.search.addresses";
     private static final String SEARCH_CHAIN_BLOCKS_KEY                     = "overledger.search.chain.blocks";
     private static final String BALANCES_CHECK_KEY                          = "overledger.balances";
+    private static final String SEQUENCE_CHECK_KEY                          = "overledger.sequence";
     private static final String BPI_KEY_KEY                                 = "overledger.bpikey";
     private static final String MAPP_KEY                                    = "overledger.mappid";
     private static final String FAUCET_XBT_KEY                              = "bitcoin.faucet.url";
@@ -36,6 +36,7 @@ public class OverledgerContext {
     public static String SEARCH_ADDRESSES;
     public static String SEARCH_CHAIN_BLOCKS;
     public static String BALANCES_CHECK;
+    public static String SEQUENCE_CHECK;
     public static String FAUCET_XBT;
     public static String FAUCET_ETH;
     public static String FAUCET_XRP;
@@ -62,6 +63,7 @@ public class OverledgerContext {
         SEARCH_ADDRESSES = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_ADDRESSES_KEY));
         SEARCH_CHAIN_BLOCKS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_CHAIN_BLOCKS_KEY));
         BALANCES_CHECK = String.format("%s%s", baseUrl, properties.getProperty(BALANCES_CHECK_KEY));
+        SEQUENCE_CHECK = String.format("%s%s", baseUrl, properties.getProperty(SEQUENCE_CHECK_KEY));
         FAUCET_XBT = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XBT_KEY));
         FAUCET_ETH = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_ETH_KEY));
         FAUCET_XRP = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XRP_KEY));

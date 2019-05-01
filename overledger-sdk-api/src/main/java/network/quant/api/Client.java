@@ -37,7 +37,7 @@ public interface Client<T, S> {
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
-    S getTransactions(String mappId, Class<S> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, Class<S> responseClass);
 
     /**
      * Read transactions from BPI layer
@@ -47,7 +47,7 @@ public interface Client<T, S> {
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
-    S getTransactions(String mappId, PageParams page, Class<S> responseClass);
+    <S extends OverledgerTransactions> S getTransactions(String mappId, PageParams page, Class<S> responseClass);
 
     /**
      * Read transaction from BPI layer
@@ -91,5 +91,12 @@ public interface Client<T, S> {
      * @return List of balances
      */
     List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests);
+
+    /**
+     * Get sequence of given addresses
+     * @param sequenceRequest SequenceRequest containing sequence request object
+     * @return SequenceResponse containing sequence response object
+     */
+    SequenceResponse postSequence(SequenceRequest sequenceRequest);
 
 }

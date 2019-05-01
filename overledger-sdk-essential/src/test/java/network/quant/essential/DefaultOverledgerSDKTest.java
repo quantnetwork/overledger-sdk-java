@@ -6,6 +6,7 @@ import network.quant.essential.dto.DltTransactionRequest;
 import network.quant.essential.dto.DltTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
 import org.assertj.core.api.Assertions;
@@ -16,11 +17,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -35,6 +34,7 @@ public class DefaultOverledgerSDKTest {
     private OverledgerSDK overledgerSDK;
     private OverledgerTransactionRequest overledgerTransactionRequest;
     private OverledgerTransactionResponse overledgerTransactionResponse;
+    private OverledgerTransactionsResponse overledgerTransactionsResponse;
     private Account bitcoinAccount;
     private UUID transactionId;
     private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -65,6 +65,9 @@ public class DefaultOverledgerSDKTest {
             @Override
             public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
         };
+        this.overledgerTransactionsResponse = new OverledgerTransactionsResponse();
+        this.overledgerTransactionsResponse.setTransactions(Collections.singletonList(this.overledgerTransactionResponse));
+        this.overledgerTransactionsResponse.setTotalTransactions(1);
     }
 
     @After
@@ -152,14 +155,14 @@ public class DefaultOverledgerSDKTest {
         this.overledgerTransactionResponse.setOverledgerTransactionId(this.transactionId);
         this.overledgerTransactionResponse.setDltData(Collections.singletonList(dltTransactionResponse));
 
-        Mockito.when(this.client.getTransactions(Mockito.anyString(), eq(OverledgerTransactionResponse.class))).thenReturn(Collections.singletonList(this.overledgerTransactionResponse));
+        Mockito.when(this.client.getTransactions(Mockito.anyString(), eq(OverledgerTransactionsResponse.class))).thenReturn(this.overledgerTransactionsResponse);
 
         OverledgerTransactions overledgerTransactionList = this.overledgerSDK.readTransactions("network.quant.essential");
         Assert.assertNotNull(overledgerTransactionList);
         Assert.assertEquals(1, overledgerTransactionList.getTotalTransactions());
         Assert.assertEquals(this.overledgerTransactionResponse, overledgerTransactionList.getTransactions().get(0));
 
-        Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionResponse.class));
+        Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionsResponse.class));
     }
 
 }
