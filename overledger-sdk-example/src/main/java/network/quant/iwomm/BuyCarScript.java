@@ -66,10 +66,6 @@ public class BuyCarScript {
 
             OverledgerTransaction tx = util.overledgerSDK.writeTransaction(writeOverledgerTransactionRequest);
 
-            System.out.println("*************");
-            System.out.println(util.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID));
-
-
             tx.getDltData().forEach(item -> {
                 util.logger.info(" ---> Bitcoin Transaction hash : " + ((DltTransactionResponse) item).getTransactionHash());
                 util.logger.info(" ---> Bitcoin Transaction current status, it takes approx 10 minutes to confirm : " + ((DltTransactionResponse) item).getStatus().getStatus().toString());

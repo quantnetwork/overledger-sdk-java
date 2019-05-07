@@ -63,7 +63,7 @@ public class PayInsuranceDvlaScript {
         writeDltTransactionRequestRipple.setAmount(XRP.multiply(new BigDecimal(1)).toBigInteger());
         writeDltTransactionRequestRipple.setMessage("Bought car from transaction: ");
         writeDltTransactionRequestRipple.setSequence(1L);
-        writeDltTransactionRequestRipple.setFee(new BigDecimal(1).toBigInteger());
+        writeDltTransactionRequestRipple.setFee(new BigDecimal(50).toBigInteger());
         othersOverledgerTransactionRequest.getDltData().add(writeDltTransactionRequestRipple);
 
        try {
