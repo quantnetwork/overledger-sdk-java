@@ -74,23 +74,10 @@ public class UsingJavaSdk {
             checkBalanceOfSendersAccounts();
             System.out.println("-------- Check balance of Receiver accounts after payments:");
             checkBalanceOfReceiverAccounts();
+            System.out.println("-------- Display transactions for a MappId");
+            showTransactionsByMappId();
 
-          /*  System.out.println(util.overledgerSDK.readTransactions("network.quant.softwarelicensechecke").getTransactions().size());
-
-
-            //Read Transactions using mappId
-            util.overledgerSDK.readTransactions("network.quant.softwarelicensechecke").getTransactions().forEach(transaction -> {
-                System.out.println(transaction.getMappId());
-                transaction.getDltData().forEach(dltData -> {
-                    System.out.println(dltData.getDlt());
-                });
-            });
-*/
-
-
-
-
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -165,7 +152,7 @@ public class UsingJavaSdk {
         balanceRequest.add(rippleSenderBalance);
 
         util.overledgerSDK.searchBalance(balanceRequest).forEach(response -> {
-            System.out.println(response.getDlt() + " | " +  response.getValue());
+            System.out.println(response.getDlt() + " | " + response.getValue());
         });
     }
 
@@ -190,7 +177,7 @@ public class UsingJavaSdk {
         receiverBalanceRequest.add(rippleReceiverBalance);
 
         util.overledgerSDK.searchBalance(receiverBalanceRequest).forEach(response -> {
-            System.out.println(response.getDlt() + " | " +  response.getValue());
+            System.out.println(response.getDlt() + " | " + response.getValue());
         });
     }
 
@@ -221,10 +208,9 @@ public class UsingJavaSdk {
                 System.out.println("Bitcoin Transaction current status, it takes approx 10 minutes to confirm : " + ((DltTransactionResponse) item).getStatus().getStatus().toString());
             });
 
-
             System.out.println("Overledger Transaction hash : " + tx.getOverledgerTransactionId());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -258,7 +244,7 @@ public class UsingJavaSdk {
                 System.out.println("Transaction current status : " + ((DltTransactionResponse) item).getStatus().getStatus().toString());
             });
 
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -272,8 +258,8 @@ public class UsingJavaSdk {
 
         DltTransactionRequest writeDltTransactionRequestRipple = new DltTransactionRequest();
         writeDltTransactionRequestRipple.setDlt(DLT.ripple.name());
-        writeDltTransactionRequestRipple.setFromAddress(((RippleAccount)senderRippleAccount).getPublicKey());
-        writeDltTransactionRequestRipple.setToAddress(((RippleAccount)receiverRippleAccount).getPublicKey());
+        writeDltTransactionRequestRipple.setFromAddress(((RippleAccount) senderRippleAccount).getPublicKey());
+        writeDltTransactionRequestRipple.setToAddress(((RippleAccount) receiverRippleAccount).getPublicKey());
         writeDltTransactionRequestRipple.setAmount(XRP.multiply(new BigDecimal(1)).toBigInteger());
         writeDltTransactionRequestRipple.setMessage("Ripple sender to receiver transaction.");
         writeDltTransactionRequestRipple.setSequence(1L);
@@ -282,7 +268,7 @@ public class UsingJavaSdk {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println(objectMapper.writeValueAsString(othersOverledgerTransactionRequest) );
+            System.out.println(objectMapper.writeValueAsString(othersOverledgerTransactionRequest));
             OverledgerTransaction otherTx = util.overledgerSDK.writeTransaction(othersOverledgerTransactionRequest);
 
             System.out.println("Ripple transactions");
@@ -294,9 +280,19 @@ public class UsingJavaSdk {
 
             System.out.println("Ripple sender to receiver transaction : " + otherTx);
 
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private static void showTransactionsByMappId() throws Exception {
+        //Read Transactions using mappId
+        util.overledgerSDK.readTransactions("network.quant.softwarelicensechecke").getTransactions().forEach(transaction -> {
+            System.out.println(transaction.getMappId());
+            transaction.getDltData().forEach(dltData -> {
+                System.out.println(dltData.getDlt());
+            });
+        });
     }
 
 }
