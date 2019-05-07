@@ -59,7 +59,7 @@ public class UsingJavaSdk {
             TimeUnit.MINUTES.sleep(1);
 
             System.out.println("-------- Check balance of account if they have sufficient fund");
-            checkBalanceOfAccounts();
+            checkBalanceOfSendersAccounts();
 
 
             System.out.println("-------- Make some payments now");
@@ -69,6 +69,11 @@ public class UsingJavaSdk {
             makeEthereumPayment();
             System.out.println("-- Ripple sender account payment to Ripple receiver");
             makeRipplePayment();
+
+            System.out.println("-------- Check balance of Sender accounts after payments:");
+            checkBalanceOfSendersAccounts();
+            System.out.println("-------- Check balance of Receiver accounts after payments:");
+            checkBalanceOfReceiverAccounts();
 
           /*  System.out.println(util.overledgerSDK.readTransactions("network.quant.softwarelicensechecke").getTransactions().size());
 
@@ -137,7 +142,7 @@ public class UsingJavaSdk {
 
     }
 
-    private static void checkBalanceOfAccounts() {
+    private static void checkBalanceOfSendersAccounts() {
         List<BalanceRequest> balanceRequest = new ArrayList<BalanceRequest>();
 
         BalanceRequest bitcoinSenderBalance = new BalanceRequest();
@@ -160,6 +165,31 @@ public class UsingJavaSdk {
         balanceRequest.add(rippleSenderBalance);
 
         util.overledgerSDK.searchBalance(balanceRequest).forEach(response -> {
+            System.out.println(response.getDlt() + " | " +  response.getValue());
+        });
+    }
+
+    private static void checkBalanceOfReceiverAccounts() {
+        List<BalanceRequest> receiverBalanceRequest = new ArrayList<BalanceRequest>();
+
+        BalanceRequest bitcoinReceiverBalance = new BalanceRequest();
+        BalanceRequest ethereumReceiverBalance = new BalanceRequest();
+        BalanceRequest rippleReceiverBalance = new BalanceRequest();
+
+        bitcoinReceiverBalance.setAddress(receiverBitcoinAccount.getKey().toAddress(receiverBitcoinAccount.getNetworkParameters()).toBase58());
+        bitcoinReceiverBalance.setDlt(DLT.bitcoin.name());
+
+        ethereumReceiverBalance.setAddress(Credentials.create(receiverEthereumAccount.getEcKeyPair()).getAddress());
+        ethereumReceiverBalance.setDlt(DLT.ethereum.name());
+
+        rippleReceiverBalance.setAddress(receiverRippleAccount.getPublicKey());
+        rippleReceiverBalance.setDlt(DLT.ripple.name());
+
+        receiverBalanceRequest.add(bitcoinReceiverBalance);
+        receiverBalanceRequest.add(ethereumReceiverBalance);
+        receiverBalanceRequest.add(rippleReceiverBalance);
+
+        util.overledgerSDK.searchBalance(receiverBalanceRequest).forEach(response -> {
             System.out.println(response.getDlt() + " | " +  response.getValue());
         });
     }
