@@ -46,7 +46,7 @@ public class UsingJavaSdk {
 
 
             System.out.println("**** Waiting for 3 minutes. Making sure funding transactions are confirmed on chain.");
-            TimeUnit.MINUTES.sleep(3);
+            TimeUnit.MINUTES.sleep(1);
 
             System.out.println("-------- Check balance of account if they have sufficient fund");
             checkBalanceOfAccounts();
@@ -120,7 +120,7 @@ public class UsingJavaSdk {
         System.out.println("Bitcoin account funded, please allow at least 10 minutes before you check the balance.");
         EthereumFaucetHelper.getInstance(OverledgerContext.FAUCET_ETH).fundAccount(senderEthereumAccount);
         System.out.println("Ethereum account funded, please allow at least 5 minutes before you check the balance.");
-        RippleFaucetHelper.getInstance(OverledgerContext.FAUCET_XRP).fundAccount(senderRippleAccount, BigDecimal.valueOf(2000L));
+        RippleFaucetHelper.getInstance(OverledgerContext.FAUCET_XRP).fundAccount(senderRippleAccount, BigDecimal.valueOf(20L));
         System.out.println("Ripple account funded, please allow at least 5 minutes before you check the balance.");
 
     }
@@ -138,8 +138,8 @@ public class UsingJavaSdk {
         ethereumSenderBalance.setAddress(Credentials.create(senderEthereumAccount.getEcKeyPair()).getAddress());
         ethereumSenderBalance.setDlt(DLT.ethereum.name());
 
-        rippleSenderBalance.setAddress(receiverRippleAccount.getPublicKey());
-        rippleSenderBalance.setAddress(DLT.ripple.name());
+        rippleSenderBalance.setAddress(senderRippleAccount.getPublicKey());
+        rippleSenderBalance.setDlt(DLT.ripple.name());
 
         balanceRequest.add(bitcoinSenderBalance);
 
