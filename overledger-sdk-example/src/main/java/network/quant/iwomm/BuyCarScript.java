@@ -1,4 +1,4 @@
-package network.quant.test;
+package network.quant.iwomm;
 
 import network.quant.OverledgerContext;
 import network.quant.api.DLT;
@@ -65,6 +65,10 @@ public class BuyCarScript {
         try {
 
             OverledgerTransaction tx = util.overledgerSDK.writeTransaction(writeOverledgerTransactionRequest);
+
+            System.out.println("*************");
+            System.out.println(util.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID));
+
 
             tx.getDltData().forEach(item -> {
                 util.logger.info(" ---> Bitcoin Transaction hash : " + ((DltTransactionResponse) item).getTransactionHash());

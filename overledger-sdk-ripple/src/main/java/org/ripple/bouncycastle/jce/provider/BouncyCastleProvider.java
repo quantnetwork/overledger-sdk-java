@@ -39,7 +39,7 @@ import org.ripple.bouncycastle.jcajce.provider.util.AsymmetricKeyInfoConverter;
  * Where &lt;n&gt; is the preference you want the provider at (1 being the
  * most preferred).
  * <p>Note: JCE algorithm names should be upper-case only so the case insensitive
- * test for getInstance works.
+ * iwomm for getInstance works.
  */
 public final class BouncyCastleProvider extends Provider
     implements ConfigurableProvider

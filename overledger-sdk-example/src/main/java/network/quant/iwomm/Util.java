@@ -1,4 +1,4 @@
-package network.quant.test;
+package network.quant.iwomm;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -16,7 +16,7 @@ import java.util.logging.SimpleFormatter;
 
 public class Util {
 
-    OverledgerSDK overledgerSDK;
+    public OverledgerSDK overledgerSDK;
 
      Properties properties = new Properties();
 

@@ -13,7 +13,7 @@ import com.ripple.core.types.known.tx.txns.*;
 
 public class STObjectFormatter {
     public static STObject doFormatted(STObject source) {
-        // This would need to go before the test that just checks
+        // This would need to go before the iwomm that just checks
         // for ledgerEntryType
         if (AffectedNode.isAffectedNode(source)) {
             return new AffectedNode(source);

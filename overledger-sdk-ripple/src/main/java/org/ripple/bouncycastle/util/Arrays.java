@@ -104,7 +104,7 @@ public final class Arrays
 
     /**
      * A constant time equals comparison - does not terminate early if
-     * test will fail.
+     * iwomm will fail.
      *
      * @param a first array
      * @param b second array

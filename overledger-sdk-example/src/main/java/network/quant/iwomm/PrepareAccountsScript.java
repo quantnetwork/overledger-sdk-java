@@ -1,4 +1,4 @@
-package network.quant.test;
+package network.quant.iwomm;
 
 import network.quant.OverledgerContext;
 import network.quant.api.DLT;
@@ -9,7 +9,6 @@ import network.quant.ethereum.EthereumAccount;
 import network.quant.ethereum.experimental.EthereumFaucetHelper;
 import network.quant.ripple.RippleAccount;
 import network.quant.ripple.experimental.RippleFaucetHelper;
-import org.apache.logging.log4j.simple.SimpleLogger;
 import org.web3j.crypto.Credentials;
 
 import java.math.BigDecimal;

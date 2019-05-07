@@ -18,7 +18,7 @@ public class BitcoinDataTest {
 
     @Before
     public void setup() {
-        this.testData = "This is test data for Bitcoin data test";
+        this.testData = "This is iwomm data for Bitcoin data iwomm";
     }
 
     @Test

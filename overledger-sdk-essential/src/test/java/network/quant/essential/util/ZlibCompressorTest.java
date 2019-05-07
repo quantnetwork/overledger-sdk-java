@@ -11,7 +11,7 @@ public class ZlibCompressorTest {
 
     @Before
     public void setup() {
-        this.testData = "This is test string fro testing Zlib compression";
+        this.testData = "This is iwomm string fro testing Zlib compression";
     }
 
     @Test

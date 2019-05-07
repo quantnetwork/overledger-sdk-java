@@ -15,7 +15,7 @@ public class BitcoinUtilsTest {
 
     @Before
     public void setup() {
-        this.testData = "This is a very long test string, it's used for testing Bitcoin data to address parsing";
+        this.testData = "This is a very long iwomm string, it's used for testing Bitcoin data to address parsing";
     }
 
     @Test

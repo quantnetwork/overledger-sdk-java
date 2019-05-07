@@ -1,4 +1,4 @@
-package network.quant.test;
+package network.quant.iwomm;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.OverledgerContext;
@@ -21,8 +21,8 @@ public class PayInsuranceDvlaScript {
 
     static Util util = new Util();
 
-    private static final BigDecimal ETH = new BigDecimal("1000000000000000000");
-    private static final BigDecimal XRP = new BigDecimal("1000000");
+    private static final BigDecimal ETH = new BigDecimal("1");
+    private static final BigDecimal XRP = new BigDecimal("100");
 
     public static void main(String args[]) {
 
@@ -51,6 +51,8 @@ public class PayInsuranceDvlaScript {
         writeDltTransactionRequestEthereum.setToAddress(Credentials.create(((EthereumAccount)insuranceEthereumAccount).getEcKeyPair()).getAddress());
         writeDltTransactionRequestEthereum.setAmount(ETH.multiply(new BigDecimal(1)).toBigInteger());
         writeDltTransactionRequestEthereum.setMessage("Bought car from transaction: ");
+        writeDltTransactionRequestEthereum.setFee(new BigDecimal(21000).toBigInteger());
+        writeDltTransactionRequestEthereum.setFeeLimit(new BigDecimal(2100000).toBigInteger());
         writeDltTransactionRequestEthereum.setSequence(0L);
         othersOverledgerTransactionRequest.getDltData().add(writeDltTransactionRequestEthereum);
 
@@ -61,6 +63,7 @@ public class PayInsuranceDvlaScript {
         writeDltTransactionRequestRipple.setAmount(XRP.multiply(new BigDecimal(1)).toBigInteger());
         writeDltTransactionRequestRipple.setMessage("Bought car from transaction: ");
         writeDltTransactionRequestRipple.setSequence(1L);
+        writeDltTransactionRequestRipple.setFee(new BigDecimal(1).toBigInteger());
         othersOverledgerTransactionRequest.getDltData().add(writeDltTransactionRequestRipple);
 
        try {
