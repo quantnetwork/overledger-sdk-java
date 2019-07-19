@@ -2,10 +2,7 @@ package network.quant.mvp.impl;
 
 import network.quant.api.OverledgerTransaction;
 import network.quant.api.OverledgerTransactions;
-import network.quant.compoent.OrderPanel;
-import network.quant.compoent.SettingsPanel;
-import network.quant.compoent.WalletComponent;
-import network.quant.compoent.WalletPanel;
+import network.quant.compoent.*;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.mvp.presenter.ContentPresenter;
 import network.quant.mvp.view.ContentView;
@@ -144,6 +141,10 @@ public class ContentPresenterImpl implements ContentPresenter {
 
     @Override
     public void purchaseSuccess(OverledgerTransaction transaction) {
+        DetailPanel detailPanel = this.contentView.getCurrentViewAsDetailPanel();
+        if (null != detailPanel) {
+            detailPanel.showTransaction((OverledgerTransactionResponse) transaction);
+        }
         JOptionPane.showMessageDialog(this.contentView.asComponent(), "Transaction accepted: " + transaction.getOverledgerTransactionId());
     }
 

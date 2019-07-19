@@ -87,6 +87,15 @@ public class ContentPanel extends BaseComponent implements ContentView {
     }
 
     @Override
+    public DetailPanel getCurrentViewAsDetailPanel() {
+        if (ANCHOR.DETAILS.equals(this.currentAnchor)) {
+            return (DetailPanel) this.currentView;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public void showDetails(int index) {
         if (ANCHOR.DETAILS.equals(this.currentAnchor)) {
             ((DetailPanel) this.currentView).display(index);

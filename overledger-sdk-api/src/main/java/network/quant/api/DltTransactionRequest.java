@@ -70,14 +70,14 @@ public interface DltTransactionRequest extends DltTransaction {
      * Get pre-siged HEX encoded transaction dump
      * @return String containing signed transaction
      */
-    String getSignedTransaction();
+    SignedTransaction getSignedTransaction();
 
     /**
      * Set pre-signed transaction
      * Accepting DLT level raw transaction in HEX encoded format
      * @param signedTransaction String containing signed transaction
      */
-    void setSignedTransaction(String signedTransaction);
+    void setSignedTransaction(SignedTransaction signedTransaction);
 
     /**
      * Get sequence of from address

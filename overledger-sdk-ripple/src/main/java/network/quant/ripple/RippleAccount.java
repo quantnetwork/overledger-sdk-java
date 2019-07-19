@@ -17,6 +17,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -71,7 +72,9 @@ public class RippleAccount implements Account {
         payment.as(UInt32.LastLedgerSequence, LAST_INDEX);
         this.setMemo(payment, message);
         SignedTransaction signedTransaction = payment.sign(this.seed.toString());
-        dltTransaction.setSignedTransaction(signedTransaction.tx_blob);
+        network.quant.api.SignedTransaction signedTxn = new network.quant.api.SignedTransaction();
+        signedTxn.setTransactions(Collections.singletonList(signedTransaction.tx_blob));
+        dltTransaction.setSignedTransaction(signedTxn);
         this.nonce = this.nonce.add(BigInteger.ONE);
     }
 

@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
+import network.quant.api.OverledgerTransaction;
 import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
 import network.quant.util.*;
@@ -147,7 +149,20 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .bodyToMono(responseClass)
+                    .bodyToMono(String.class)
+                    .map(s -> {
+                        List<OverledgerTransactionResponse> responses = null;
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            responses = objectMapper.readValue(s, new TypeReference<List<OverledgerTransactionResponse>>() {});
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
+                        return (S)OverledgerTransactionsResponse.builder()
+                                .transactions(responses)
+                                .totalTransactions(null == responses?0:responses.size())
+                                .build();
+                    })
                     .block();
         }
     }

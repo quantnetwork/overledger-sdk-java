@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -112,7 +113,9 @@ public class BitcoinAccount implements Account {
         transaction.addSignedInput(transactionOutPoint, inputUtxo.getScript(), this.key, Transaction.SigHash.ALL, true);
         transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
-        dltTransaction.setSignedTransaction(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize()));
+        SignedTransaction signedTransaction = new SignedTransaction();
+        signedTransaction.setTransactions(Collections.singletonList(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize())));
+        dltTransaction.setSignedTransaction(signedTransaction);
     }
 
     @Override

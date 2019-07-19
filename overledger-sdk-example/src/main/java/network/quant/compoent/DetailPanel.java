@@ -1,11 +1,11 @@
 package network.quant.compoent;
 
+import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.mvp.presenter.ContentPresenter;
 import network.quant.utils.UITools;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,6 +20,7 @@ public class DetailPanel extends BaseComponent {
     PaymentComponent paymentComponent;
     InsuranceComponent insuranceComponent;
     RoadTaxComponent roadTaxComponent;
+    ResultComponent resultComponent;
     Button okButton = new Button("PURCHASE", Button.TYPE.OK);
     Button cancelButton = new Button("CANCEL", Button.TYPE.CANCEL);
 
@@ -35,6 +36,11 @@ public class DetailPanel extends BaseComponent {
         this.title.setFont(UITools.getFont(Font.PLAIN, 48));
         this.title.setForeground(TEXT);
         this.add(this.title, componentIndex++);
+
+        this.resultComponent = new ResultComponent(new Dimension(dimension.width - 40, dimension.height - 200));
+        this.resultComponent.setLocation(20, 100);
+        this.resultComponent.setVisible(false);
+        this.add(this.resultComponent, componentIndex++);
 
         this.paymentComponent = new PaymentComponent(new Dimension(dimension.width - 40 - 300 - 10, 250));
         this.paymentComponent.setLocation(330, 100);
@@ -71,6 +77,8 @@ public class DetailPanel extends BaseComponent {
     }
 
     public void display(int index) {
+        this.okButton.setVisible(true);
+        this.resultComponent.setVisible(false);
         int componentIndex = 3;
         if (index == 0) {
             this.title.setText("XSR900");
@@ -106,6 +114,24 @@ public class DetailPanel extends BaseComponent {
             this.card.setLocation(20, 100);
             this.add(this.card, componentIndex++);
         }
+    }
+
+    public void showTransaction(OverledgerTransactionResponse transaction) {
+        this.okButton.setVisible(false);
+        this.resultComponent.setVisible(true);
+        this.resultComponent.txnId.setText(transaction.getOverledgerTransactionId().toString());
+        transaction.getDltData().stream().forEach(dltTransaction -> {
+            if ("bitcoin".equals(dltTransaction.getDlt())) {
+                this.resultComponent.payment.setText(dltTransaction.getTransactionHash());
+                this.resultComponent.paymentResult.setText(dltTransaction.getStatus().getStatus().name());
+            } else if ("ethereum".equals(dltTransaction.getDlt())) {
+                this.resultComponent.reg.setText(dltTransaction.getTransactionHash());
+                this.resultComponent.regResult.setText(dltTransaction.getStatus().getStatus().name());
+            } else if ("ripple".equals(dltTransaction.getDlt())) {
+                this.resultComponent.tax.setText(dltTransaction.getTransactionHash());
+                this.resultComponent.taxResult.setText(dltTransaction.getStatus().getStatus().name());
+            }
+        });
     }
 
 }

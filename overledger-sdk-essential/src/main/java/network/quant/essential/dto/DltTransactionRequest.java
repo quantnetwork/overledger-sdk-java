@@ -3,6 +3,8 @@ package network.quant.essential.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import network.quant.api.SignedTransaction;
+
 import java.math.BigInteger;
 
 /**
@@ -24,7 +26,7 @@ public class DltTransactionRequest implements network.quant.api.DltTransactionRe
     BigInteger fee;
     BigInteger feeLimit;
     String callbackUrl;
-    String signedTransaction;
+    SignedTransaction signedTransaction;
     @JsonIgnore
     Long sequence;
 

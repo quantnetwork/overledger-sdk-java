@@ -14,6 +14,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -63,7 +64,9 @@ public class EthereumAccount implements Account {
                 message
         );
         byte transactionSignedBytes[] = TransactionEncoder.signMessage(rawTransaction, Credentials.create(this.ecKeyPair));
-        dltTransaction.setSignedTransaction(Numeric.toHexString(transactionSignedBytes));
+        SignedTransaction signedTransaction = new SignedTransaction();
+        signedTransaction.setTransactions(Collections.singletonList(Numeric.toHexString(transactionSignedBytes)));
+        dltTransaction.setSignedTransaction(signedTransaction);
         this.nonce = this.nonce.add(BigInteger.ONE);
     }
 
@@ -76,7 +79,9 @@ public class EthereumAccount implements Account {
                 String.format("0x %s%s", contractBinary, null == message?"":message)
         );
         byte transactionSignedBytes[] = TransactionEncoder.signMessage(rawTransaction, Credentials.create(this.ecKeyPair));
-        dltTransaction.setSignedTransaction(Numeric.toHexString(transactionSignedBytes));
+        SignedTransaction signedTransaction = new SignedTransaction();
+        signedTransaction.setTransactions(Collections.singletonList(Numeric.toHexString(transactionSignedBytes)));
+        dltTransaction.setSignedTransaction(signedTransaction);
         this.nonce = this.nonce.add(BigInteger.ONE);
     }
 

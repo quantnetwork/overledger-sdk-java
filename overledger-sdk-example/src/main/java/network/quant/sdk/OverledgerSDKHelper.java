@@ -171,8 +171,6 @@ public class OverledgerSDKHelper {
                         ClientResponseException clientResponseException = (ClientResponseException) e;
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
-                            System.out.println("##########");
-                            System.out.println(clientResponseException.getResponseBody());
                             OverledgerTransactionResponse writeOverledgerTransactionResponses[] = objectMapper.readValue(clientResponseException.getResponseBody(), OverledgerTransactionResponse[].class);
                             this.applicationDataHandler.onLoadOrders(writeOverledgerTransactionResponses);
                         } catch (IOException e1) {

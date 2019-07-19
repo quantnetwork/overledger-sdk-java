@@ -48,7 +48,6 @@ public class OverleddgerSDKTest {
         ));
         SequenceResponse sequenceResponse = this.overledgerSDK.searchSequence(sequenceRequest);
         ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(objectMapper.writeValueAsString(sequenceResponse));
     }
 
 }
