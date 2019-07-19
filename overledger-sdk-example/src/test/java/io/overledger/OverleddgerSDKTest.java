@@ -14,6 +14,7 @@ import network.quant.util.DltSequenceRequest;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.xml.bind.DatatypeConverter;
@@ -40,6 +41,7 @@ public class OverleddgerSDKTest {
         this.overledgerSDK.addAccount(DLT.ripple.name(), this.rippleAccount);
     }
 
+    @Ignore
     @Test
     public void testSequence() throws JsonProcessingException {
         SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
@@ -47,7 +49,7 @@ public class OverleddgerSDKTest {
                 new DltSequenceRequest(DLT.ripple, "rcehwoJiasZgVmAGHeprbbQQ3FADtuEBS")
         ));
         SequenceResponse sequenceResponse = this.overledgerSDK.searchSequence(sequenceRequest);
-        ObjectMapper objectMapper = new ObjectMapper();
+
     }
 
 }
