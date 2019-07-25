@@ -1,6 +1,7 @@
 package network.quant.mvp.impl;
 
 import network.quant.api.OverledgerTransaction;
+import network.quant.api.OverledgerTransactions;
 import network.quant.compoent.ApplicationFrame;
 import network.quant.compoent.ContentPanel;
 import network.quant.compoent.HeaderPanel;
@@ -17,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.Page;
+import network.quant.util.PageParams;
 
 import javax.swing.*;
 import java.util.List;
@@ -113,8 +115,8 @@ public class ApplicationFactory implements Factory, ApplicationExitHandler, Appl
     }
 
     @Override
-    public void onLoadOrders(List<OverledgerTransaction> readTransactions, Page page) {
-        this.contentPresenter.loadOrders(readTransactions, page);
+    public void onLoadOrders(OverledgerTransactions overledgerTransactionsResponse, PageParams pageParams) {
+        this.contentPresenter.loadOrders(overledgerTransactionsResponse, pageParams);
     }
 
     @Override

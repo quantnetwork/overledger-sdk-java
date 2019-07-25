@@ -18,8 +18,8 @@ import network.quant.ripple.experimental.RippleFaucetHelper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import network.quant.util.Page;
-import network.quant.util.PagedResult;
+import network.quant.util.Address;
+import network.quant.util.PageParams;
 import org.web3j.crypto.Credentials;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
@@ -123,7 +123,7 @@ public class OverledgerSDKHelper {
                     OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID,
                     OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE,
                     OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID,
-                    OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH,
+                    null,
                     OverledgerContext.SEARCH_TRANSACTIONS,
                     OverledgerContext.SEARCH_ADDRESSES,
                     OverledgerContext.SEARCH_CHAIN_BLOCKS,
@@ -140,7 +140,6 @@ public class OverledgerSDKHelper {
         OverledgerContext.WRITE_TRANSACTIONS = writeTransactions;
         OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID = readTransactionsByMappId;
         OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID = readTransactionsByTransactionId;
-        OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH = readTransactionsByTransactionHash;
     }
 
     public void reaload(ANCHOR anchor) {
@@ -152,7 +151,7 @@ public class OverledgerSDKHelper {
                         OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID,
                         OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE,
                         OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID,
-                        OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH,
+                        null,
                         OverledgerContext.SEARCH_TRANSACTIONS,
                         OverledgerContext.SEARCH_ADDRESSES,
                         OverledgerContext.SEARCH_CHAIN_BLOCKS,
@@ -164,11 +163,9 @@ public class OverledgerSDKHelper {
                     if (null == this.overledgerSDK) {
                         this.overledgerSDK = DefaultOverledgerSDK.newInstance(this.network);
                     }
-                    Page page = new Page();
-                    page.setPageNumber(0);
-                    page.setPageSize(10);
-                    PagedResult<OverledgerTransaction> result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
-                    this.applicationDataHandler.onLoadOrders(result.getContent(), Page.newInstance(result));
+                    PageParams page = new PageParams(0, 10);
+                    OverledgerTransactions result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
+                    this.applicationDataHandler.onLoadOrders(result, page);
                 } catch (Exception e) {
                     if (e instanceof ClientResponseException) {
                         ClientResponseException clientResponseException = (ClientResponseException) e;
@@ -224,7 +221,7 @@ public class OverledgerSDKHelper {
             case ETH_KEY:
                 if (null != this.ethereumAccount) {
                     EthereumFaucetHelper
-                            .getInstance(this.properties.getProperty("ethereum.faucet.url"))
+                            .getInstance(OverledgerContext.FAUCET_ETH)
                             .fundAccount((EthereumAccount) this.ethereumAccount);
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
@@ -232,7 +229,7 @@ public class OverledgerSDKHelper {
             case XBT_KEY:
                 if (null != this.bitcoinAccount) {
                     BitcoinFaucetHelper
-                            .getInstance(this.properties.getProperty("bitcoin.faucet.url"))
+                            .getInstance(OverledgerContext.FAUCET_XBT)
                             .fundAccount((BitcoinAccount) this.bitcoinAccount);
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
@@ -240,7 +237,7 @@ public class OverledgerSDKHelper {
             case XRP_KEY:
                 if (null != this.rippleAccount) {
                     RippleFaucetHelper
-                            .getInstance(this.properties.getProperty("ripple.faucet.url"))
+                            .getInstance(OverledgerContext.FAUCET_XRP)
                             .fundAccount((RippleAccount) this.rippleAccount, BigDecimal.valueOf(500L));
                     this.applicationDataHandler.onAccountReceived(type, 500);
                 }
@@ -293,13 +290,13 @@ public class OverledgerSDKHelper {
         return I;
     }
 
-    public void loadOrder(Page page) {
+    public void loadOrder(PageParams page) {
         try {
             if (null == this.overledgerSDK) {
                 this.overledgerSDK = DefaultOverledgerSDK.newInstance(this.network);
             }
-            PagedResult<OverledgerTransaction> result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
-            this.applicationDataHandler.onLoadOrders(result.getContent(), Page.newInstance(result));
+            OverledgerTransactions result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
+            this.applicationDataHandler.onLoadOrders(result, page);
         } catch (Exception e) {
             log.error("Unable to load page", e);
         }

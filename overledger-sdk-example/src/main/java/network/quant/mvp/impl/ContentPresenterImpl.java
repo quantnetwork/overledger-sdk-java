@@ -1,10 +1,8 @@
 package network.quant.mvp.impl;
 
 import network.quant.api.OverledgerTransaction;
-import network.quant.compoent.OrderPanel;
-import network.quant.compoent.SettingsPanel;
-import network.quant.compoent.WalletComponent;
-import network.quant.compoent.WalletPanel;
+import network.quant.api.OverledgerTransactions;
+import network.quant.compoent.*;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.mvp.presenter.ContentPresenter;
 import network.quant.mvp.view.ContentView;
@@ -12,6 +10,7 @@ import network.quant.mvp.view.View;
 import network.quant.sdk.OverledgerSDKHelper;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.Page;
+import network.quant.util.PageParams;
 
 import javax.swing.*;
 import java.io.File;
@@ -100,10 +99,10 @@ public class ContentPresenterImpl implements ContentPresenter {
     }
 
     @Override
-    public void loadOrders(List<OverledgerTransaction> readTransactions, Page page) {
+    public void loadOrders(OverledgerTransactions overledgerTransactionsResponse, PageParams page) {
         OrderPanel orderPanel = this.contentView.getCurrentViewAsOrderPanel();
         if (null != orderPanel) {
-            orderPanel.loadList(readTransactions, page);
+            orderPanel.loadList(overledgerTransactionsResponse, page);
         }
     }
 
@@ -116,7 +115,7 @@ public class ContentPresenterImpl implements ContentPresenter {
     }
 
     @Override
-    public void onLoadOrders(Page page) {
+    public void onLoadOrders(PageParams page) {
         this.overledgerSDKHelper.loadOrder(page);
     }
 
@@ -142,6 +141,10 @@ public class ContentPresenterImpl implements ContentPresenter {
 
     @Override
     public void purchaseSuccess(OverledgerTransaction transaction) {
+        DetailPanel detailPanel = this.contentView.getCurrentViewAsDetailPanel();
+        if (null != detailPanel) {
+            detailPanel.showTransaction((OverledgerTransactionResponse) transaction);
+        }
         JOptionPane.showMessageDialog(this.contentView.asComponent(), "Transaction accepted: " + transaction.getOverledgerTransactionId());
     }
 

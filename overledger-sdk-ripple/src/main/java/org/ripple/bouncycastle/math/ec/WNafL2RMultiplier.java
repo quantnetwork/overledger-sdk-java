@@ -56,8 +56,6 @@ public class WNafL2RMultiplier extends AbstractECMultiplier
                 R = table[i1 >>> 1].add(table[i2 >>> 1]);
 
                 zeroes -= scale;
-
-//              System.out.println("Optimized: 2^" + scale + " * " + n + " = " + i1 + " + " + i2);
             }
             else
             {

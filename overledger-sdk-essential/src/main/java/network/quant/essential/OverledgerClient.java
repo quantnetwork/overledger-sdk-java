@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
+import network.quant.api.OverledgerTransaction;
+import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
 import network.quant.util.*;
@@ -39,6 +42,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                         HttpHeaders.AUTHORIZATION,
                         String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
                 )
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
@@ -103,7 +107,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public List<S> getTransactions(String mappId, Class<S> responseClass) {
+    public <S extends OverledgerTransactions>  S getTransactions(String mappId, Class<S> responseClass) {
         try {
             return this.webClient
                     .get()
@@ -112,16 +116,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(String.class)
-                    .map(s -> {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        try {
-                            return (List<S>)objectMapper.readValue(s, new TypeReference<List>() {});
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    })
+                    .bodyToMono(responseClass)
                     .block();
         } catch (RedirectException e) {
             return this.webClient
@@ -130,68 +125,52 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(responseClass)
+                    .block();
+        }
+    }
+
+    @Override
+    public <S extends OverledgerTransactions>  S getTransactions(String mappId, PageParams page, Class<S> responseClass) {
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE, mappId, page.getOffset(), page.getLength())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(responseClass)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToMono(String.class)
                     .map(s -> {
+                        List<OverledgerTransactionResponse> responses = null;
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
-                            return (List<S>)objectMapper.readValue(s, new TypeReference<List<S>>() {});
+                            responses = objectMapper.readValue(s, new TypeReference<List<OverledgerTransactionResponse>>() {});
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
-                        return null;
+                        return (S)OverledgerTransactionsResponse.builder()
+                                .transactions(responses)
+                                .totalTransactions(null == responses?0:responses.size())
+                                .build();
                     })
                     .block();
         }
     }
 
     @Override
-    public PagedResult<S> getTransactions(String mappId, Page page, Class<PagedResult<S>> responseClass) {
-        try {
-            return this.webClient
-                    .get()
-                    .uri(OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE, mappId, page.getPageNumber(), page.getPageSize())
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
-                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(responseClass)
-                    .block();
-        } catch (RedirectException e) {
-            return this.webClient
-                    .get()
-                    .uri(e.getUrl())
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
-                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(responseClass)
-                    .block();
-        }
-    }
-
-    @Override
+    @Deprecated
     public S getTransaction(String dlt, String transactionHash, Class<S> responseClass) {
-        try {
-            return this.webClient
-                    .get()
-                    .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH, dlt, transactionHash)
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
-                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(responseClass)
-                    .block();
-        } catch (RedirectException e) {
-            return this.webClient
-                    .get()
-                    .uri(e.getUrl())
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
-                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .bodyToMono(responseClass)
-                    .block();
-        }
+        return null;
     }
 
     @Override
@@ -200,6 +179,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
             return this.webClient
                     .post()
                     .uri(OverledgerContext.BALANCES_CHECK)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(balanceRequests))
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
@@ -220,6 +200,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
             return this.webClient
                     .post()
                     .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(balanceRequests))
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
@@ -234,6 +215,34 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                         }
                         return null;
                     })
+                    .block();
+        }
+    }
+
+    @Override
+    public SequenceResponse postSequence(SequenceRequest sequenceRequest) {
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.SEQUENCE_CHECK)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(sequenceRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(SequenceResponse.class)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(sequenceRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(SequenceResponse.class)
                     .block();
         }
     }

@@ -112,6 +112,8 @@ public class BitcoinFaucetHelper {
                         .block();
             } catch (RedirectException e) {
                 this.redirectPost(bitcoinAccount, e.getUrl());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

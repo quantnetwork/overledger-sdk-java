@@ -1,5 +1,6 @@
 package network.quant.util;
 
+@Deprecated
 public class Page {
 
     private static Page I = null;
