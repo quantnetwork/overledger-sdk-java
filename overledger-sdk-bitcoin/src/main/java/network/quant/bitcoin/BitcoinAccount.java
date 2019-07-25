@@ -115,6 +115,7 @@ public class BitcoinAccount implements Account {
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
         SignedTransaction signedTransaction = new SignedTransaction();
         signedTransaction.setTransactions(Collections.singletonList(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize())));
+        signedTransaction.setSignatures(Collections.singletonList(""));
         dltTransaction.setSignedTransaction(signedTransaction);
     }
 
