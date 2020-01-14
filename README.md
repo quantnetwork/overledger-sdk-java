@@ -100,6 +100,7 @@ public class OverledgerSDKExample {
 
 
 actually working use case:
+```
             File fprop = new File("/Users/marvas/overledger-sdk-java/overledger-sdk-example/context.properties");
             UUID ovlId=null;
             FileInputStream inputStream = new FileInputStream(fprop);
@@ -110,7 +111,7 @@ actually working use case:
 
             var ovTrans = h.readTransactions("network.quant.software");
             int cnt=0;
-
+```
 ### Further information
 
 This SDK acts as library for embedding in an application, and facilitates the execution and access of Quant Network's Overledger.
