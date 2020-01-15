@@ -99,7 +99,7 @@ public class OverledgerSDKExample {
 ```
 
 
-actually working use case:
+actually working use case: note custom java properties only working and it must be laoded before the OverledgersSDK is instantiated.
 ```
             File fprop = new File("/Users/marvas/overledger-sdk-java/overledger-sdk-example/context.properties");
             UUID ovlId=null;
