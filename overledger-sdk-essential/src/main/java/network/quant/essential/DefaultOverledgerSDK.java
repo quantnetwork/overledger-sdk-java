@@ -261,14 +261,14 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     /**
-     * Create a default overledger SDK instance and read the context.properties from the current directory
+     * Create a default config overledger SDK instance and read the context.properties from the current directory
      * @param NETWORK containing overledger transaction request
      * @return DefaultOverledgerSDK response
      * @throws Exception throw if connection between client and manager is broken
      */
     public static DefaultOverledgerSDK newInstance(NETWORK network) {
         try {
-            File fprop = new File("./context.properties");
+            File fprop = new File("./src/main/resources/context.properties"); // use resources directory as other projects
             FileInputStream inputStream = new FileInputStream(fprop);
             Properties properties = new Properties();
             properties.load(inputStream);
@@ -288,7 +288,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     public static DefaultOverledgerSDK newInstance() {
-        return new DefaultOverledgerSDK(NETWORK.TEST);
+        return DefaultOverledgerSDK.newInstance(NETWORK.TEST); // reuse same codeparth for default config
     }
 
     public static DefaultOverledgerSDK newInstance(AccountManager accountManager, Client client) {
