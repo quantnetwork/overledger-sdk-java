@@ -11,11 +11,15 @@ import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -256,7 +260,26 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.writeTransaction(ovlTransaction, CommonUtil.getStream(inputStream));
     }
 
+    /**
+     * Create a default overledger SDK instance and read the context.properties from the current directory
+     * @param NETWORK containing overledger transaction request
+     * @return DefaultOverledgerSDK response
+     * @throws Exception throw if connection between client and manager is broken
+     */
     public static DefaultOverledgerSDK newInstance(NETWORK network) {
+        try {
+            File fprop = new File("./context.properties");
+            FileInputStream inputStream = new FileInputStream(fprop);
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            OverledgerContext.loadContext(properties);
+        }
+        catch (Exception e){
+            System.err.println("Error while trying to read default context.properties file");
+            e.printStackTrace();
+            return null;
+        }
+
         return new DefaultOverledgerSDK(network);
     }
 
