@@ -281,7 +281,6 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     @SneakyThrows
     private static InputStream getDefaultContextConfig() {
-        System.out.println("GetDefault CONFIG ****************");
         File fprop = new File("./src/main/resources/context.properties"); // use resources directory as other projects
         FileInputStream inputStream = new FileInputStream(fprop);
         return inputStream;
