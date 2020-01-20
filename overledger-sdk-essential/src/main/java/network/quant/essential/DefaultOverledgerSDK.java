@@ -1,6 +1,7 @@
 package network.quant.essential;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import network.quant.OverledgerContext;
 import network.quant.api.*;
 import network.quant.api.DltTransactionRequest;
@@ -39,7 +40,9 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     private DefaultOverledgerSDK(NETWORK network, AccountManager accountManager, Client client) {
         try {
-            OverledgerContext.loadContext(network, Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+            InputStream cconf = getDefaultContextConfig();
+            OverledgerContext.loadContext(network, cconf);
+            cconf.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -259,27 +262,40 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, InputStream inputStream) throws Exception {
         return this.writeTransaction(ovlTransaction, CommonUtil.getStream(inputStream));
     }
-
-    /**
-     * Create a default config overledger SDK instance and read the context.properties from the current directory
-     * @param NETWORK containing overledger transaction request
-     * @return DefaultOverledgerSDK response
-     * @throws Exception throw if connection between client and manager is broken
-     */
-    public static DefaultOverledgerSDK newInstance(NETWORK network) {
+    private static  boolean loadContext(){
         try {
-            File fprop = new File("./src/main/resources/context.properties"); // use resources directory as other projects
-            FileInputStream inputStream = new FileInputStream(fprop);
+            InputStream inputStream = getDefaultContextConfig();
+
             Properties properties = new Properties();
             properties.load(inputStream);
+            inputStream.close();
             OverledgerContext.loadContext(properties);
+            return true;
         }
         catch (Exception e){
             System.err.println("Error while trying to read default context.properties file");
             e.printStackTrace();
-            return null;
+            return false;
         }
+    }
 
+    @SneakyThrows
+    private static InputStream getDefaultContextConfig() {
+        System.out.println("GetDefault CONFIG ****************");
+        File fprop = new File("./src/main/resources/context.properties"); // use resources directory as other projects
+        FileInputStream inputStream = new FileInputStream(fprop);
+        return inputStream;
+    }
+
+    /**
+     * Create a default config overledger SDK instance and read the context.properties from the current directory
+     * @enum NETWORK containing overledger transaction request
+     * @return DefaultOverledgerSDK response
+     * @throws Exception throw if connection between client and manager is broken
+     */
+    public static DefaultOverledgerSDK newInstance(NETWORK network) {
+        //if(!loadContext())
+        //    return null;
         return new DefaultOverledgerSDK(network);
     }
 
