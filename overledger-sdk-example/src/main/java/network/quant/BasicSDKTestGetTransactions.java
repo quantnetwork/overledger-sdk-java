@@ -26,7 +26,6 @@ final class BasicSDKTestGetTransactions {
     public static void main(String[] args) {
 
         ApplicationFactory a = (ApplicationFactory)ApplicationFactory.getInstance();
-        OverledgerSDKHelper sdkh = OverledgerSDKHelper.getInstance(a);
         UUID ovlId = null;
 
         try {

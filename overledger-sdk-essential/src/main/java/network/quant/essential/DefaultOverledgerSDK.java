@@ -218,7 +218,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
-    public SequenceResponse searchSequence(SequenceRequest sequenceRequest) {
+    public SequenceResponse getSequence(SequenceRequest sequenceRequest) {
         return this.client.postSequence(sequenceRequest);
     }
 

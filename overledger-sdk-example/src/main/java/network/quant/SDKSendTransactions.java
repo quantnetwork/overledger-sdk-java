@@ -24,7 +24,7 @@ final class SDKSendTransactions {
 //  ---------------------------------------------------------
 //  -------------- BEGIN VARIABLES TO UPDATE ----------------
 //  ---------------------------------------------------------
-static final String mappId = "network.quant.software";// these values can be found in the context.properties file
+static final String mappId = "network.quant.software";// these values should  be set in the context.properties file
 static final String bpiKey = "<ENTER YOUR BPIKEY>";// same as above
 
 // Paste in your ethereum and ripple private keys.
