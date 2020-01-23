@@ -24,12 +24,10 @@ final class BasicSDKTestGetTransactions {
     //static { Factory.I.config(); }
 
     public static void main(String[] args) {
-        Account ac = EthereumAccount.getInstance(NETWORK.ROPSTEN, "D060C6EB8AB92716F343BF52792CCF861FFE767CCF6430FB5FF92AC7B485C44B".getBytes(), BigInteger.ZERO);
-        //D060C6EB8AB92716F343BF52792CCF861FFE767CCF6430FB5FF92AC7B485C44B
-        //snH5G64X8gLApRYu5CDqnCobY4PAA
+
         ApplicationFactory a = (ApplicationFactory)ApplicationFactory.getInstance();
         OverledgerSDKHelper sdkh = OverledgerSDKHelper.getInstance(a);
-        UUID ovlId=null;
+        UUID ovlId = null;
 
         try {
 
