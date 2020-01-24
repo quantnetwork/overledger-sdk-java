@@ -68,6 +68,8 @@ This module contains Ripple implementation of Overledger Account API.
 #### [overledger-sdk-bundle](./overledger-sdk-bundle/README.md)
 
 This module bundles up API, essential, Bitcoin, Ethereum and Ripple modules.
+#### [overledger-sdk-example](./overledger-sdk-example/README.md)
+Includes some examples.
 
 ## Getting started
 
