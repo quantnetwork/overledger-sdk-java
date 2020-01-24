@@ -5,17 +5,13 @@ import network.quant.essential.dto.DltTransactionRequest;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.ethereum.EthereumAccount;
-import network.quant.mvp.impl.ApplicationFactory;
 import network.quant.ripple.RippleAccount;
-import network.quant.sdk.OverledgerSDKHelper;
 import network.quant.util.DltSequenceRequest;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.UUID;
 
 final class SDKSendTransactions {
     private static final String ETHEREUM_RECEIVE_ADDRESS = "0x82e29E5AA37194710fab02D0194f9a45ff3E961C";
@@ -24,8 +20,8 @@ final class SDKSendTransactions {
 //  ---------------------------------------------------------
 //  -------------- BEGIN VARIABLES TO UPDATE ----------------
 //  ---------------------------------------------------------
-static final String mappId = "network.quant.software";// these values should  be set in the context.properties file
-static final String bpiKey = "<ENTER YOUR BPIKEY>";// same as above
+static final String mappId = "<YOUR MAPID>";// these values should  be set in the context.properties file
+static final String bpiKey = "<ENTER YOUR BPIKEY>";// same as above can be reader from OverledgerContext class
 
 // Paste in your ethereum and ripple private keys.
 // For Ethereum you can generate an account using `OverledgerSDK.dlts.ethereum.createAccount` then fund the address at the Ropsten Testnet Faucet.
@@ -81,13 +77,13 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();
-            //you could sign a transaction manually but writeTransaction signs on your behalf
+            //A transaction can be signed manually but writeTransaction signs on your behalf
 
             //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
 
             //ethAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
 
-            OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().mappId(mappId).dltData(Arrays.asList(rippleTransaction)).build();
+            OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(ethTransaction,rippleTransaction)).build();
             OverledgerTransaction response = sdk.writeTransaction(overledgerTransactionRequest);
             System.out.println(response);
         }
