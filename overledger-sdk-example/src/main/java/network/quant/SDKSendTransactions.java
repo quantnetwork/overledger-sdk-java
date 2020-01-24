@@ -14,9 +14,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 final class SDKSendTransactions {
-    private static final String ETHEREUM_RECEIVE_ADDRESS = "0x82e29E5AA37194710fab02D0194f9a45ff3E961C";
-    private static final String RIPPLE_RECEIVE_ADDRESS = "rJG76zwHcYo1zaniE8YNNVE6CAF97a8Ttt";
-
 //  ---------------------------------------------------------
 //  -------------- BEGIN VARIABLES TO UPDATE ----------------
 //  ---------------------------------------------------------
