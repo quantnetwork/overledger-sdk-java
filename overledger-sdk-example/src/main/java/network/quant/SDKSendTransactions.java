@@ -65,22 +65,25 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             BigInteger feePrice = BigInteger.valueOf(10000); // Price for each individual gas unit this transaction will consume
             BigInteger feeLimit = BigInteger.valueOf(80000); // The maximum fee that this transaction will use
             // These values need to be packaged inside a DltTransactionRequest from overledger-sdk-essential
-            BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending nothing
+            BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending min value of Ripple
             BigInteger xrpFeePrice = BigInteger.valueOf(12); // Minimum feePrice on Ripple is 12 drops.
-            BigInteger xrpMaxLedgerVersion =
-                    new BigInteger("4294967295"); // This is set to Integer.Max_VALUE currently in the Java SDK
+            //        BigInteger xrpMaxLedgerVersion =
+            //        new BigInteger("4294967295"); // This cannot be user set in this alpha version
+            //        of the SDK to Integer.Max_VALUE currently in the Java SDK
+
 
             DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(ethAmount).fee(feePrice).feeLimit(feeLimit).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();
-            //A transaction can be signed manually but writeTransaction signs on your behalf
+            // A transaction can be signed manually as below but writeTransaction signs on your behalf
 
             //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
 
             //ethAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
 
-            OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(ethTransaction,rippleTransaction)).build();
+            OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().
+                    mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(ethTransaction,rippleTransaction)).build();
             OverledgerTransaction response = sdk.writeTransaction(overledgerTransactionRequest);
             System.out.println(response);
         }
