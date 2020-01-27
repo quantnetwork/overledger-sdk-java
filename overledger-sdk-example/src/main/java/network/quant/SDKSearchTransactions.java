@@ -1,5 +1,6 @@
-import network.quant.OverledgerContext;
-import network.quant.api.*;
+package network.quant;
+
+import network.quant.api.OverledgerSDK;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.util.Transaction;
 
@@ -23,13 +24,15 @@ private static final  String rippleTransactionHash = "A0A49E56384DDF2846CF5FAE50
             Transaction rippleResponse = sdk.searchTransaction(rippleTransactionHash, Transaction.class);
 
 
-            System.out.println("ethereum transaction searched:"+rippleResponse);
+            System.out.println("ripple transaction searched:"+rippleResponse);
 
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             System.out.println("Some error happened in the demo, make sure you have the config file in the src/main/resources set and the mappId set and the transaction hashes above are valid");
             e.printStackTrace();
-               }
+
+        }
 
 
 
