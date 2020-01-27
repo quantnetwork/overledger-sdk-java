@@ -24,7 +24,7 @@
 
     </appender>
 
-    <logger name="network.quant" level="debug"
+    <logger name="network.quant" level="error"
             additivity="false">
         <appender-ref ref="FILE-AUDIT" />
     </logger>

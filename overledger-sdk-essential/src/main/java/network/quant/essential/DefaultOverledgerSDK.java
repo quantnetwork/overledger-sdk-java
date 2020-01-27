@@ -1,6 +1,7 @@
 package network.quant.essential;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import network.quant.OverledgerContext;
 import network.quant.api.*;
@@ -33,6 +34,8 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private NETWORK network;
     private AccountManager accountManager;
     private Client client;
+
+    private static @Setter String defaultLocation = "./src/main/resources/context.properties";
 
     private DefaultOverledgerSDK(NETWORK network) {
         this(network, AccountManager.newInstance(), null);
@@ -281,8 +284,8 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     @SneakyThrows
     private static InputStream getDefaultContextConfig() {
-        File fprop = new File("./src/main/resources/context.properties"); // use resources directory as other projects
-        FileInputStream inputStream = new FileInputStream(fprop);
+        //File fprop = new File(defaultLocation); // use resources directory as other projects
+        FileInputStream inputStream = new FileInputStream(defaultLocation);
         return inputStream;
     }
 
