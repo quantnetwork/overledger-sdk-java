@@ -213,7 +213,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
-    public List<BalanceResponse> searchBalance(List<BalanceRequest> balanceRequests) {
+    public List<BalanceResponse> getBalance(List<BalanceRequest> balanceRequests) {
         return this.client.postBalances(balanceRequests);
     }
 
