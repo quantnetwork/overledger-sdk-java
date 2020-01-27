@@ -42,6 +42,7 @@ public class DefaultOverledgerSDKTest {
 
     @Before
     public void setup() {
+        DefaultOverledgerSDK.setDefaultLocation("../src/main/resources/context.properties");
         this.overledgerSDK = DefaultOverledgerSDK.newInstance(NETWORK.TEST, this.accountManager, this.client);
         this.overledgerTransactionRequest = new OverledgerTransactionRequest();
         this.overledgerTransactionResponse = new OverledgerTransactionResponse();
