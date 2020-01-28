@@ -149,20 +149,20 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                    .bodyToMono(String.class)
-                    .map(s -> {
-                        List<OverledgerTransactionResponse> responses = null;
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        try {
-                            responses = objectMapper.readValue(s, new TypeReference<List<OverledgerTransactionResponse>>() {});
-                        } catch (IOException ioe) {
-                            ioe.printStackTrace();
-                        }
-                        return (S)OverledgerTransactionsResponse.builder()
-                                .transactions(responses)
-                                .totalTransactions(null == responses?0:responses.size())
-                                .build();
-                    })
+                    .bodyToMono(responseClass)
+//                    .map(s -> {
+//                        List<OverledgerTransactionResponse> responses = null;
+//                        ObjectMapper objectMapper = new ObjectMapper();
+//                        try {
+//                            responses = objectMapper.readValue(s, new TypeReference<List<OverledgerTransactionResponse>>() {});
+//                        } catch (IOException ioe) {
+//                            ioe.printStackTrace();
+//                        }
+//                        return (S)OverledgerTransactionsResponse.builder()
+//                                .transactions(responses)
+//                                .totalTransactions(null == responses?0:responses.size())
+//                                .build();
+//                    })
                     .block();
         }
     }
