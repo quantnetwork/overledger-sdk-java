@@ -14,7 +14,7 @@ final class SDKSearchBlockNo {
 //  ---------------------------------------------------------
 
 private static final  BigDecimal ethereumBlockNo= BigDecimal.valueOf(7189225); // replace with your own data based on which network you are on
-private static final  BigDecimal rippleBlockNo = BigDecimal.valueOf(3577213);;// replace with your own value (aka ledgerVersion in ripple)
+private static final  BigDecimal rippleBlockNo = BigDecimal.valueOf(3577213);// replace with your own value (aka ledgerVersion in ripple)
 // here the hash is actually the ripple transaction id not the transactionhash of the block
 
 
@@ -24,11 +24,12 @@ private static final  BigDecimal rippleBlockNo = BigDecimal.valueOf(3577213);;//
             OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
 
             Block ethResponse = sdk.searchBlock(DLT.ethereum.name(), ethereumBlockNo);
-            System.out.println("ethereum block searched:"+ethResponse.getData());
             Block rippleResponse = sdk.searchBlock(DLT.ripple.name(),rippleBlockNo);
+            System.out.println("ethereum block searched: "+ethResponse.getData());
 
 
-            System.out.println("ripple block searched:"+rippleResponse.getData());
+
+            System.out.println("ripple block searched: "+rippleResponse.getData());
 
         }
         catch (Exception e)
