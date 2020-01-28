@@ -140,7 +140,7 @@ public class EthereumAccount implements Account {
             try {
                 data = CommonUtil.getStream(stream);
             } catch (IOException e) {
-                log.error("Unalbe to read data from given stream", e);
+                log.error("Unable to read data from given stream", e);
                 return;
             }
             String message = DatatypeConverter.printHexBinary(data);

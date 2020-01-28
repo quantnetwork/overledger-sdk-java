@@ -130,13 +130,13 @@ public interface OverledgerSDK {
      * @param balanceRequests List containing list of DLT addresses
      * @return List containing set of DLT balance information
      */
-    List<BalanceResponse> searchBalance(List<BalanceRequest> balanceRequests);
+    List<BalanceResponse> getBalance(List<BalanceRequest> balanceRequests);
 
     /**
-     * Search sequence of given addresses
+     * Get sequence of given addresses
      * @param sequenceRequest SequenceRequest containing sequence request object
      * @return SequenceResponse containing sequence response object
      */
-    SequenceResponse searchSequence(SequenceRequest sequenceRequest);
+    SequenceResponse getSequence(SequenceRequest sequenceRequest);
 
 }
