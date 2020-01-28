@@ -29,6 +29,7 @@ public class OverleddgerSDKTest {
 
     @Before
     public void setup() {
+        DefaultOverledgerSDK.setDefaultLocation("../src/main/resources/context.properties");
         this.bitcoinAccount = BitcoinAccount.getInstance(NETWORK.TEST, DatatypeConverter.parseHexBinary("9d154eb68f5bcec61463885e9f32eeeb8f9dc53cfec87810e0e98529e4acdd27"));
         this.ethereumAccount = EthereumAccount.getInstance(NETWORK.TEST, DatatypeConverter.parseHexBinary("0B2BBC62B5544B7703C207D8C4B3866EF247C0F8FCC4A57E9F29BB08CA373E31"), BigInteger.ZERO);
         this.rippleAccount = RippleAccount.getInstance(NETWORK.TEST, "shJSofDUkKCAwFt6TsK4yfCR4JfA9", BigInteger.ONE);

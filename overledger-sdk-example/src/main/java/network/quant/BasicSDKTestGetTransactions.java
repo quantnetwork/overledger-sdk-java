@@ -6,7 +6,6 @@ import network.quant.api.OverledgerSDK;
 import network.quant.api.OverledgerTransaction;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.ethereum.EthereumAccount;
-import network.quant.mvp.impl.ApplicationFactory;
 import java.util.UUID;
 
 final class BasicSDKTestGetTransactions {
@@ -16,14 +15,13 @@ final class BasicSDKTestGetTransactions {
 
     public static void main(String[] args) {
 
-        ApplicationFactory a = (ApplicationFactory)ApplicationFactory.getInstance();
         UUID ovlId = null;
 
         try {
 
             OverledgerSDK h  = DefaultOverledgerSDK.newInstance();
 
-            var ovTrans = h.readTransactions("network.quant.software");
+            var ovTrans = h.readTransactions(OverledgerContext.MAPP_ID);
             int cnt=0;
             for(OverledgerTransaction t : ovTrans.getTransactions()){
                 ++cnt;
