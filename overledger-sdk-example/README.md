@@ -15,8 +15,8 @@ First make sure to get and set your own MappId and BPIKEY in the context.propert
 </p>
 
 <p> simple task examples can also be found	
-	SDKGetBalance.java	[ch5677] created setDefaultConfig on DefaultOverledgerSDK to allow us…	3 days ago
-	SDKGetSequence.java	[ch5677] GetSequence example java SDK.	3 days ago
-	SDKSearchBlockNo.java	[ch5706] merge conflicts	2 days ago
-	SDKSearchTransactions.java	[ch5677] two new examples	3 days ago
+	<li>SDKGetBalance.java</li>	 setDefaultConfig on DefaultOverledgerSDK to allow us…	
+	<li>SDKGetSequence.java</li>	[ch5677] GetSequence example java SDK.	
+	<li>SDKSearchBlockNo.java</li>	
+	<li>SDKSearchTransactions.java</li>	new examples	
 	</p>
