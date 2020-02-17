@@ -9,7 +9,6 @@ import network.quant.exception.UnknownDataException;
 import lombok.Getter;
 import org.bitcoinj.core.Base58;
 
-import javax.xml.bind.DatatypeConverter;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 

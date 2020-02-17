@@ -1,5 +1,8 @@
 package network.quant.api;
 
+import network.quant.essential.types.associatedEnums.DltNameOptions;
+import network.quant.essential.types.associatedEnums.TransactionTypeOptions;
+
 /**
  * Definition of DLT transaction
  * This is the basic DLT message definition that BPI layer accepts
@@ -7,11 +10,23 @@ package network.quant.api;
 public interface DltTransaction {
 
     /**
-     * Get DLT type, e.g: bitcoin, ethereum, ripple, etc
+     * Get DLT name, e.g: bitcoin, ethereum, ripple, etc
      * It has to be an acceptable string by BPI layer
      * DLT should be in lower case only
-     * @return String containing DLT type
+     * @return DltNameOptions containing DLT type
      */
-    String getDlt();
+    DltNameOptions getDlt();
+
+    /**
+     * Get TransactionType, e.g: utxo or accounts
+     * @return TransactionTypeOptions containing transactionType
+     */
+    TransactionTypeOptions getType();
+
+    /**
+     * Get TransactionSubType, e.g: valueTransfer, smartContractDeploy,...
+     * @return Object containing transactionSubType (DltSpecific)
+     */
+    Object getSubType();
 
 }

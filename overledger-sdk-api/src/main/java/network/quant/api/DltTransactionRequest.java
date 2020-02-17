@@ -60,13 +60,6 @@ public interface DltTransactionRequest extends DltTransaction {
     BigInteger getFeeLimit();
 
     /**
-     * Get callback URL
-     * By supplying the endpoint of callback service, BPI layer is able to callback on this endpoint for transaction feedback
-     * @return String containing callback URL
-     */
-    String getCallbackUrl();
-
-    /**
      * Get pre-siged HEX encoded transaction dump
      * @return String containing signed transaction
      */
