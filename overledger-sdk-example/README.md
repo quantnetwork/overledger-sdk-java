@@ -13,3 +13,10 @@ First make sure to get and set your own MappId and BPIKEY in the context.propert
 <li> We add our private key information to the SDK and sign locally</li>
 <li> We get confirmation and an overledger ID that the transactions were broadcasted</li>
 </p>
+
+<p> simple task examples can also be found	
+	<li>SDKGetBalance.java</li>	 setDefaultConfig on DefaultOverledgerSDK to allow us…	
+	<li>SDKGetSequence.java</li>	[ch5677] GetSequence example java SDK.	
+	<li>SDKSearchBlockNo.java</li>	
+	<li>SDKSearchTransactions.java</li>	new examples	
+	</p>
