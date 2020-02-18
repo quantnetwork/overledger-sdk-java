@@ -35,7 +35,7 @@ static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
             List<BalanceResponse> balanceResponse = sdk.getBalance(Arrays.asList(balanceRequest, balanceRequest2));
 
 
-            for(var x:balanceResponse){
+            for(BalanceResponse x:balanceResponse){
                 System.out.println("The account balance of our " + x.getDlt() + " is: " + x.getValue()+" "+x.getUnit() );
             }
 
