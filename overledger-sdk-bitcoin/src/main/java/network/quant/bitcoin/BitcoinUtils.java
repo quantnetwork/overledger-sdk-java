@@ -1,5 +1,6 @@
 package network.quant.bitcoin;
 
+
 import network.quant.api.NETWORK;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
@@ -98,6 +99,7 @@ public class BitcoinUtils {
         return addrList;
     }
 
+
     /**
      * Decode list of data address to data
      * @param addressList String list containing list of Bitcoin address that contains data
@@ -124,7 +126,7 @@ public class BitcoinUtils {
             ));
             if (null != hash) {
                 calculatedHash.put(hash, 0, BitcoinUtils.CHECKSUM_SIZE);
-                if (Arrays.compare(calculatedHash.array(), checksum.array()) == 0) {
+                if (Arrays.equals(calculatedHash.array(), checksum.array())) {
                     int location = i * BitcoinUtils.PAYLOAD_SIZE;
                     if (location + BitcoinUtils.PAYLOAD_SIZE > length) {
                         byteBuffer.put(data.array(), 0, length - location);

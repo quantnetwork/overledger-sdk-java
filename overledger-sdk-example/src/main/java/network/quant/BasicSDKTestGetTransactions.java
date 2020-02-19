@@ -1,9 +1,6 @@
 package network.quant;
 
-import network.quant.api.Account;
-import network.quant.api.NETWORK;
-import network.quant.api.OverledgerSDK;
-import network.quant.api.OverledgerTransaction;
+import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.ethereum.EthereumAccount;
 import java.util.UUID;
@@ -21,7 +18,7 @@ final class BasicSDKTestGetTransactions {
 
             OverledgerSDK h  = DefaultOverledgerSDK.newInstance();
 
-            var ovTrans = h.readTransactions(OverledgerContext.MAPP_ID);
+            OverledgerTransactions ovTrans = h.readTransactions(OverledgerContext.MAPP_ID);
             int cnt=0;
             for(OverledgerTransaction t : ovTrans.getTransactions()){
                 ++cnt;
@@ -40,7 +37,7 @@ final class BasicSDKTestGetTransactions {
         {
             OverledgerSDK h  = DefaultOverledgerSDK.newInstance(NETWORK.TEST);
             System.out.println("Getting transaction details for "+ ovlId);
-            var xa  = h.readTransaction(ovlId);
+            OverledgerTransaction xa  = h.readTransaction(ovlId);
             System.out.println(xa);
         }
 
