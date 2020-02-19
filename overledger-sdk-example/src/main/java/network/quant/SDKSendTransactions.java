@@ -7,6 +7,7 @@ import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ripple.RippleAccount;
 import network.quant.util.DltSequenceRequest;
+import network.quant.util.DltSequenceResponse;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
 
@@ -51,7 +52,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             Number ethereumSequence = null;
             Number rippleSequence = null;
 
-            for(var x:sequenceResponse.getDltData()){
+            for(DltSequenceResponse x:sequenceResponse.getDltData()){
                 Number numSequence = x.getSequence();
                 System.out.println("The transaction sequence of our " + x.getDlt() + " is: " + numSequence );
                 if(x.getDlt()==DLT.ethereum){
