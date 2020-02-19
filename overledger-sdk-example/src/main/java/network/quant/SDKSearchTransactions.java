@@ -20,11 +20,10 @@ private static final  String rippleTransactionHash = "A0A49E56384DDF2846CF5FAE50
             OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
 
             Transaction ethResponse = sdk.searchTransaction(ethereumTransactionHash, Transaction.class);
-            System.out.println("ethereum transaction searched:"+ethResponse);
             Transaction rippleResponse = sdk.searchTransaction(rippleTransactionHash, Transaction.class);
 
-
-            System.out.println("ripple transaction searched:"+rippleResponse);
+            System.out.println("ethereum transaction searched: "+ethResponse.getData());
+            System.out.println("ripple transaction searched: "+rippleResponse.getData());
 
         }
         catch (Exception e)

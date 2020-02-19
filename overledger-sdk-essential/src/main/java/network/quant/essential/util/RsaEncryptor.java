@@ -1,6 +1,6 @@
 package network.quant.essential.util;
 
-import network.quant.api.ENCRYPT_TYPE;
+import network.quant.essential.types.associatedEnums.ENCRYPT_TYPE;
 import network.quant.api.Encryptor;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -11,7 +11,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.Optional;
 
 /**
  * RSA Encryption implementation of Encryptor

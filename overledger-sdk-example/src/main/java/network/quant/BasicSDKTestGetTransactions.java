@@ -2,13 +2,9 @@ package network.quant;
 
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
-import network.quant.ethereum.EthereumAccount;
 import java.util.UUID;
 
 final class BasicSDKTestGetTransactions {
-
-
-    //static { Factory.I.config(); }
 
     public static void main(String[] args) {
 

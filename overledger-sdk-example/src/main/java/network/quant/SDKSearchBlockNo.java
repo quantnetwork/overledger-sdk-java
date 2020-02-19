@@ -4,7 +4,6 @@ import network.quant.api.DLT;
 import network.quant.api.OverledgerSDK;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.util.Block;
-import network.quant.util.Transaction;
 
 import java.math.BigDecimal;
 
