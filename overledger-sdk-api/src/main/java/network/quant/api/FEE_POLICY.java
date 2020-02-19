@@ -1,4 +1,4 @@
-package network.quant.essential.types.associatedEnums;
+package network.quant.api;
 
 /**
  * Fee policy

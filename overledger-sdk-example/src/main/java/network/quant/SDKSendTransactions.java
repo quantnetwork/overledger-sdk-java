@@ -77,9 +77,10 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();
-
             // A transaction can be signed manually as below but writeTransaction signs on your behalf
+
             //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
+
             //ethAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
 
             OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().

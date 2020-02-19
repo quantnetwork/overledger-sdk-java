@@ -5,6 +5,8 @@ import network.quant.api.OverledgerSDK;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.util.BalanceRequest;
 import network.quant.util.BalanceResponse;
+import network.quant.util.DltSequenceRequest;
+import network.quant.util.SequenceResponse;
 
 import java.util.Arrays;
 import java.util.List;
