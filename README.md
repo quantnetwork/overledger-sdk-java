@@ -126,7 +126,7 @@ Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more 
 | 1.0.0-alpha.1          | 11+                       | 1.0.0-alpha.1             | \*17/12/2018 |
 | 1.0.0-alpha.2          | 11+                       | 1.0.0-alpha.1             | \*26/02/2019 |
 | 1.0.0-alpha.3          | 11+                       | 1.0.0-alpha.2             | \*15/04/2019 |
-| 1.0.0-alpha.4          | 11+                       | 1.0.0-alpha.3             | \*15/04/2019 |
+| 1.0.0-alpha.4          | 8+                         | 1.0.0-alpha.3             | \*15/04/2019 |
 
 ## Release notes
 
@@ -136,4 +136,4 @@ Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more 
 | 1.0.0-alpha.1   | [v1.0.0-alpha.1 release notes](docs/release_v1.0.0-alpha.1_notes.md) |
 | 1.0.0-alpha.2   | [v1.0.0-alpha.2 release notes](docs/release_v1.0.0-alpha.2_notes.md) |
 | 1.0.0-alpha.3   | [v1.0.0-alpha.3 release notes](docs/release_v1.0.0-alpha.3_notes.md) |
-| 1.0.0-alpha.4   | Created simple working examples based on the JavaScript examples |
+| 1.0.0-alpha.4   | Created simple working examples based on the JavaScript examples, Made it compatible with Java 8, to build against later JDKS just change java version in pom.xml |
