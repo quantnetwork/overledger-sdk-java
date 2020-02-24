@@ -4,10 +4,10 @@ import network.quant.essential.types.associatedEnums.DltNameOptions;
 import network.quant.essential.types.associatedEnums.TransactionTypeOptions;
 
 /**
- * Definition of DLT transaction
- * This is the basic DLT message definition that BPI layer accepts
+ * Definition of DLT transaction request
+ * This is the basic DLT transaction request definition
  */
-public interface DltTransaction {
+public interface DltTransactionRequestNew {
 
     /**
      * Get DLT name, e.g: bitcoin, ethereum, ripple, etc
@@ -36,9 +36,9 @@ public interface DltTransaction {
     String getMessage();
 
     /**
-     * Get any additional DLT specific fields,
+     * Get any additional DLT specific transaction fields,
      * @return Object describing the additionalFields
      */
-    String getExtraFields();
+    Object getExtraFields();
 
 }
