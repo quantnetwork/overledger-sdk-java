@@ -8,6 +8,10 @@ import network.quant.api.SmartContract;
  */
 public interface SmartContractEthereum extends SmartContract {
 
-
+    /**
+     * Get any additional DLT specific smart contract fields,
+     * @return Object describing the additionalFields
+     */
+    EthereumSmartContractExtraFields getExtraFields();
 
 }

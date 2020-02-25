@@ -17,7 +17,7 @@ public interface TransactionEthereumRequest extends DltTransactionAccountsReques
 
     /**
      * Get any additional DLT specific transaction fields,
-     * @return Object describing the additionalFields
+     * @return EthereumTransactionExtraFields describing the additionalFields
      */
     EthereumTransactionExtraFields getExtraFields();
 

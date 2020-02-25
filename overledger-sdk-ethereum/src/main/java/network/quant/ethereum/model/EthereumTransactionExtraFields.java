@@ -7,14 +7,14 @@ public interface EthereumTransactionExtraFields {
 
     /**
      * the price to pay per gas unit (in wei)
-     * @return String containing computationalUnitPrice
+     * @return Integer containing computationalUnitPrice
      */
     String getCompUnitPrice();
 
     /**
      * the maximum amount of gas units that this transaction can use,
      * so maximum transaction price is: (compUnitPrice*compLimit)
-     * @return String containing computationalLimit
+     * @return Integer containing computationalLimit
      */
     String getCompLimit();
 
