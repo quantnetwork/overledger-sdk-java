@@ -13,8 +13,8 @@ public enum STATUS {
 
     confirmed,
 
-    error,
+    invalid,
 
-    rejected
+    error
 
 }

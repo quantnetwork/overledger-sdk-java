@@ -2,10 +2,7 @@ package network.quant;
 
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
-import network.quant.util.DltSequenceRequest;
-import network.quant.util.DltSequenceResponse;
-import network.quant.util.SequenceRequest;
-import network.quant.util.SequenceResponse;
+import network.quant.util.*;
 
 import java.util.Arrays;
 
@@ -29,8 +26,8 @@ static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
         try {
             OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
             SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
-                    new DltSequenceRequest(DLT.ethereum, partyAEthereumAddress),
-                    new DltSequenceRequest(DLT.ripple, partyARippleAddress)
+                    new DLTAndAddress(DLT.ethereum, partyAEthereumAddress),
+                    new DLTAndAddress(DLT.ripple, partyARippleAddress)
             ));
             SequenceResponse sequenceResponse = sdk.getSequence(sequenceRequest);
             Number ethereumSequence = null;

@@ -90,7 +90,7 @@ public interface Client<T, S> {
      * @param balanceRequests List containing dlt address list
      * @return List of balances
      */
-    List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests);
+    List<BalanceResponse> postBalances(List<DLTAndAddress> balanceRequests);
 
     /**
      * Get sequence of given addresses

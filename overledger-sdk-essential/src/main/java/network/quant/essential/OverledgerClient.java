@@ -174,7 +174,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests) {
+    public List<BalanceResponse> postBalances(List<DLTAndAddress> balanceRequests) {
         try {
             return this.webClient
                     .post()

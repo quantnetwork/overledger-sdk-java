@@ -1,14 +1,17 @@
 package network.quant.util;
 
-public class BalanceRequest {
+/**
+ * DLT and Address pair.
+ */
+public class DLTAndAddress {
 
-    String dlt;
-    String address;
+    String dlt; // - The distributed ledger technology.
+    String address; // - The address on the respective dlt network.
 
-    public BalanceRequest() {
+    public DLTAndAddress() {
     }
 
-    public BalanceRequest(String dlt, String address) {
+    public DLTAndAddress(String dlt, String address) {
         this.dlt = dlt;
         this.address = address;
     }

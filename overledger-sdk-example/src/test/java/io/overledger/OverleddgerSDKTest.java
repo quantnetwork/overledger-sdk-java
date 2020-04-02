@@ -9,11 +9,10 @@ import network.quant.bitcoin.BitcoinAccount;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ripple.RippleAccount;
-import network.quant.util.DltSequenceRequest;
+import network.quant.util.DLTAndAddress;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.xml.bind.DatatypeConverter;
@@ -45,8 +44,8 @@ public class OverleddgerSDKTest {
     @Test
     public void testSequence() throws JsonProcessingException {
         SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
-                new DltSequenceRequest(DLT.ethereum, "0x69dc2e7bb274f4eac434f7730ac6425af5b63ffe"),
-                new DltSequenceRequest(DLT.ripple, "rcehwoJiasZgVmAGHeprbbQQ3FADtuEBS")
+                new DLTAndAddress(DLT.ethereum, "0x69dc2e7bb274f4eac434f7730ac6425af5b63ffe"),
+                new DLTAndAddress(DLT.ripple, "rcehwoJiasZgVmAGHeprbbQQ3FADtuEBS")
         ));
         SequenceResponse sequenceResponse = this.overledgerSDK.getSequence(sequenceRequest);
 

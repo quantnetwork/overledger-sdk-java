@@ -3,7 +3,7 @@ package network.quant;
 import network.quant.api.DLT;
 import network.quant.api.OverledgerSDK;
 import network.quant.essential.DefaultOverledgerSDK;
-import network.quant.util.BalanceRequest;
+import network.quant.util.DLTAndAddress;
 import network.quant.util.BalanceResponse;
 
 import java.util.Arrays;
@@ -28,8 +28,8 @@ static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
             DefaultOverledgerSDK.setDefaultLocation("./src/main/resources/context.properties");
             // examples how you could set the location of the config before creating new SDK
             OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
-            BalanceRequest balanceRequest = new BalanceRequest(DLT.ethereum.name(), partyAEthereumAddress);
-            BalanceRequest balanceRequest2 = new BalanceRequest(DLT.ripple.name(), partyARippleAddress);
+            DLTAndAddress balanceRequest = new DLTAndAddress(DLT.ethereum.name(), partyAEthereumAddress);
+            DLTAndAddress balanceRequest2 = new DLTAndAddress(DLT.ripple.name(), partyARippleAddress);
             List<BalanceResponse> balanceResponse = sdk.getBalance(Arrays.asList(balanceRequest, balanceRequest2));
 
 
