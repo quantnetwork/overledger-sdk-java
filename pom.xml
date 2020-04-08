@@ -254,6 +254,7 @@
                 <artifactId>overledger-sdk-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
