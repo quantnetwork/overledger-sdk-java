@@ -125,6 +125,9 @@ public class K256KeyPair implements IKeyPair {
     @Override
     public byte[] signMessage(byte[] message) {
         byte[] hash = HashUtils.halfSha512(message);
+        if (this.hsmSigner!=null){
+            return hsmSigner.s
+        }
         return signHash(hash); // TODO replace this
     }
 

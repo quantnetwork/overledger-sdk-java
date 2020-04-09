@@ -12,12 +12,12 @@ public class OlHSMSigner {
 
     String CMK_ARK;
 
-    OlHSMSigner(String CMK){
+    public OlHSMSigner(String CMK){
         CMK_ARK = CMK;
 
     }
 
-    byte [] sign(byte[] hash ){
+    public byte [] sign(byte[] hash ){
         AWSKMS kmsClient = AWSKMSClientBuilder.standard().withRegion("eu-west-2").build();
 
         ByteBuffer plaintext = ByteBuffer.wrap(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0});
@@ -26,7 +26,7 @@ public class OlHSMSigner {
         //GetPublicKeyRequest reqPubKey = new GetPublicKeyRequest().withKeyId(keyId);
         //GetPublicKeyResult pubKeyRes = kmsClient.getPublicKey(reqPubKey);
         ByteBuffer ciphertext = kmsClient.sign(req).getSignature();
-        return new byte[2];
+        return ciphertext.array();
 
     }
 }
