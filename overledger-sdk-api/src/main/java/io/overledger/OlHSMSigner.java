@@ -12,6 +12,10 @@ public class OlHSMSigner {
 
     String CMK_ARK;
 
+    public OlHSMSigner(){
+        CMK_ARK = "arn:aws:kms:eu-west-2:344507690543:key/83ba87ff-054e-44ff-af73-37434d76fe4c"; // example from our infrastructure.
+    }
+
     public OlHSMSigner(String CMK){
         CMK_ARK = CMK;
 
