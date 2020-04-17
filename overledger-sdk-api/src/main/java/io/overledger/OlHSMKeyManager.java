@@ -1,4 +1,5 @@
 package io.overledger;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class OlHSMKeyManager {
      * </ol>
      */
 
-    static void testCode(String keyArn, String data){
+    static boolean testCode(String keyArn, byte[] data){
 
 
 
@@ -41,11 +42,10 @@ public class OlHSMKeyManager {
                 // blogs.aws.amazon.com/security/post/Tx2LZ6WBJJANTNW/How-to-Protect-the-Integrity-of-Your-Encrypted-Data-by-Using-AWS-Key-Management
                 final Map<String, String> context = Collections.singletonMap("Example", "String");
 
-                final String ciphertext = crypto.encryptString(prov, data, context).getResult();
-                System.out.println("Ciphertext: " + ciphertext);
+                final byte[] ciphertext = crypto.encryptData(prov, data, context).getResult();
 
                 // Decrypt the data
-                final CryptoResult<String, KmsMasterKey> decryptResult = crypto.decryptString(prov, ciphertext);
+                final CryptoResult<byte[], KmsMasterKey> decryptResult = crypto.decryptData(prov, ciphertext);
 
                 // Before returning the plaintext, verify that the customer master key that
                 // was used in the encryption operation was the one supplied to the master key provider.
@@ -62,15 +62,30 @@ public class OlHSMKeyManager {
                         throw new IllegalStateException("Wrong Encryption Context!");
                     }
                 }
+                byte[] res = decryptResult.getResult();
+        try {
+            String plaintxt  = new String(res,"UTF-8" );
+            System.out.println("Decrypted: " + plaintxt);
+            if (plaintxt.equals(new String(data, "UTF-8"))){
+                System.out.println("ALl OK");
+                return true;
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-                // Now we can return the plaintext data
-                System.out.println("Decrypted: " + decryptResult.getResult());
+        // Now we can return the plaintext data
+        return false;
     }
 
     public static void main(String[] args) {
         String keyId = "arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8091";
 
-        testCode(keyId, keyId);
+        try {
+            testCode(keyId, keyId.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
     }
 
