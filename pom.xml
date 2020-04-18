@@ -22,13 +22,7 @@
     <inceptionYear>2018</inceptionYear>
 
     <developers>
-        <developer>
-            <name>Rui Wang</name>
-            <email>rui.wang@quant.network</email>
-            <organization>Quant Network</organization>
-            <organizationUrl>https://quant.network</organizationUrl>
-            <timezone>UTC+00:00</timezone>
-        </developer>
+
     </developers>
 
     <licenses>
@@ -166,11 +160,6 @@
                 <groupId>javax.activation</groupId>
                 <artifactId>activation</artifactId>
                 <version>${jaxb.activation}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.i2p.crypto</groupId>
-                <artifactId>eddsa</artifactId>
-                <version>${eddsa.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.json</groupId>

@@ -44,7 +44,7 @@ public class EthereumAccount implements Account {
     }
 
     private EthereumAccount(NETWORK network, byte[] privateKey, BigInteger nonce) {
-        this(network, ECKeyPair.create(privateKey), nonce);
+        this(network, new BigInteger(privateKey), nonce);
     }
 
     private EthereumAccount(NETWORK network, ECKeyPair privateKey, BigInteger nonce) {

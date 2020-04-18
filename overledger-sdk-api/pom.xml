@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-encryption-sdk-java</artifactId>
-            <version>1.6.1</version>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -54,6 +54,13 @@
     <inceptionYear>2018</inceptionYear>
 
     <developers>
+        <developer>
+            <name>Salman Marvasti</name>
+            <email>salman.marvasti@quant.network</email>
+            <organization>Quant Network</organization>
+            <organizationUrl>https://quant.network</organizationUrl>
+            <timezone>UTC+00:00</timezone>
+        </developer>
         <developer>
             <name>Rui Wang</name>
             <email>rui.wang@quant.network</email>

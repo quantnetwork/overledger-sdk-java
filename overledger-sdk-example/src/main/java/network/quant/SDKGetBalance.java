@@ -27,7 +27,7 @@ static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
     public static void main(String[] args) {
 
         try {
-            DefaultOverledgerSDK.setDefaultLocation("./src/main/resources/context.properties.");
+            DefaultOverledgerSDK.setDefaultLocation("./src/main/resources/context.properties");
             // examples how you could set the location of the config before creating new SDK
             OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
             BalanceRequest balanceRequest = new BalanceRequest(DLT.ethereum.name(), partyAEthereumAddress);
