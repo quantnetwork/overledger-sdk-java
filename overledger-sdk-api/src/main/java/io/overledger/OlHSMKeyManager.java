@@ -1,10 +1,11 @@
 package io.overledger;
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import com.amazonaws.encryptionsdk.*;
 //import com.amazonaws.encryptionsdk.keyrings.;
+import com.amazonaws.encryptionsdk.kms.AwsKmsCmkId;
 import com.amazonaws.encryptionsdk.kms.KmsMasterKey;
 import com.amazonaws.encryptionsdk.kms.KmsMasterKeyProvider;
 
@@ -18,8 +19,6 @@ import com.amazonaws.encryptionsdk.keyrings.StandardKeyrings;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,95 +29,131 @@ import java.util.Map;
  * In this example, we use the one-step encrypt and decrypt APIs.
  */
 
-class HSMDecrypt {
-    static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
-
-    static Keyring simulateSingleKeyRing(){
-        // The private key for decrypting should be be obtained from HSM
-        // An example implementation is provided based on AWS KMS / Cloud HSM
-        SecureRandom rnd = new SecureRandom();
-        byte[] rawKey = new byte[32]; // 256 bits
-        rnd.nextBytes(rawKey);
-        SecretKey key = new SecretKeySpec(rawKey, "AES");
-
-        // Create the keyring that determines how your data keys are protected.
-        final Keyring keyring = StandardKeyrings.rawAesBuilder()
-                // The key namespace and key name are defined by you
-                // and are used by the raw AES keyring
-                // to determine whether it should attempt to decrypt
-                // an encrypted data key.
-                //
-                // https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/choose-keyring.html#use-raw-aes-keyring
-                .keyNamespace("some managed raw keys")
-                .keyName("my AES wrapping key")
-                .wrappingKey(key)
-                .build();
-        return keyring;
-    }
-
-    public static byte[] encrypt(final byte[] sourcePlaintext, Keyring keyring){
-        // Encrypt your plaintext data.
-        final Map<String, String> encryptionContext = new HashMap<>();
-        encryptionContext.put("overledger", "javaSDK");
-        encryptionContext.put("version", "alpha4"); // todo get version from library
-//        encryptionContext.put("but adds", "useful metadata");
-//        encryptionContext.put("that can help you", "be confident that");
-//        encryptionContext.put("the data you are handling", "is what you think it is");
-
-        final AwsCryptoResult<byte[]> encryptResult = awsEncryptionSdk.encrypt(
-                EncryptRequest.builder()
-                        .keyring(keyring)
-                        .encryptionContext(encryptionContext)
-                        .plaintext(sourcePlaintext).build());
-        final byte[] ciphertext = encryptResult.getResult();
-
-        // Demonstrate that the ciphertext and plaintext are different.
-        assert !Arrays.equals(ciphertext, sourcePlaintext);
-        return ciphertext;
-    }
-
-    public static void decrypt(final byte[] encryptedKeyString, Keyring keyring) {
-        // Instantiate the AWS Encryption SDK.
-
-
-        // Prepare your encryption context.
-        // https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/concepts.html#encryption-context
-
-        // Generate an AES key to use with your keyring.
-        //
-        // In practice, you should get this key from a secure key management system
-
-
-
-        // Decrypt your encrypted data using the same keyring you used on encrypt.
-        //
-        // You do not need to specify the encryption context on decrypt because
-        // the header of the encrypted message includes the encryption context.
-        final AwsCryptoResult<byte[]> decryptResult = awsEncryptionSdk.decrypt(
-                DecryptRequest.builder()
-                        .keyring(keyring)
-                        .ciphertext(encryptedKeyString).build());
-        final byte[] decrypted = decryptResult.getResult();
-
-        // Demonstrate that the decrypted plaintext is identical to the original plaintext.
-        System.out.println(decrypted);
-
-        // Verify that the encryption context used in the decrypt operation includes
-        // the encryption context that you specified when encrypting.
-        // The AWS Encryption SDK can add pairs, so don't require an exact match.
-        //
-        // In production, always use a meaningful encryption context.
-
-        if(decryptResult.getEncryptionContext().containsKey("overledger")){
-            System.out.println("private key was encrypted with overledger SDK");
-        }
-       }
-}
-
 
 
 public class OlHSMKeyManager {
 
+    public static class HSMCrypto {
+        static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
+
+        public static Keyring simulateSingleKeyRing(){
+            // The private key for decrypting should be be obtained from HSM
+            // An example implementation is provided based on AWS KMS / Cloud HSM
+            SecureRandom rnd = new SecureRandom();
+            byte[] rawKey = new byte[32]; // 256 bits
+            rnd.nextBytes(rawKey);
+            SecretKey key = new SecretKeySpec(rawKey, "AES");
+
+            // Create the keyring that determines how your data keys are protected.
+            final Keyring keyring = StandardKeyrings.rawAesBuilder()
+                    // The key namespace and key name are defined by you
+                    // and are used by the raw AES keyring
+                    // to determine whether it should attempt to decrypt
+                    // an encrypted data key.
+                    //
+                    // https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/choose-keyring.html#use-raw-aes-keyring
+                    .keyNamespace("some managed raw keys")
+                    .keyName("my AES wrapping key")
+                    .wrappingKey(key)
+                    .build();
+            return keyring;
+        }
+
+        public static Keyring getKeyRingFromCMK(String awsCMK){
+            // The private key for decrypting should be be obtained from HSM
+            // An example implementation is provided based on AWS KMS / Cloud HSM
+            final Keyring keyring = StandardKeyrings.awsKms(AwsKmsCmkId.fromString(awsCMK));
+
+            return keyring;
+        }
+
+        public static byte[] encrypt(final byte[] sourcePlaintext, Keyring keyring){
+            // Encrypt your plaintext data.
+            final Map<String, String> encryptionContext = new HashMap<>();
+            encryptionContext.put("overledger", "javaSDK");
+            encryptionContext.put("version", "alpha4"); // todo get version from library
+//        encryptionContext.put("but adds", "useful metadata");
+//        encryptionContext.put("that can help you", "be confident that");
+//        encryptionContext.put("the data you are handling", "is what you think it is");
+
+            final AwsCryptoResult<byte[]> encryptResult = awsEncryptionSdk.encrypt(
+                    EncryptRequest.builder()
+                            .keyring(keyring)
+                            .encryptionContext(encryptionContext)
+                            .plaintext(sourcePlaintext).build());
+            final byte[] ciphertext = encryptResult.getResult();
+
+            // Demonstrate that the ciphertext and plaintext are different.
+            assert !Arrays.equals(ciphertext, sourcePlaintext);
+            return ciphertext;
+        }
+
+        public static byte[] decrypt(final byte[] encryptedKeyString, Keyring keyring) {
+            // Instantiate the AWS Encryption SDK.
+
+
+            // Prepare your encryption context.
+            // https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/concepts.html#encryption-context
+
+            // Generate an AES key to use with your keyring.
+            //
+            // In practice, you should get this key from a secure key management system
+
+
+
+            // Decrypt your encrypted data using the same keyring you used on encrypt.
+            //
+            // You do not need to specify the encryption context on decrypt because
+            // the header of the encrypted message includes the encryption context.
+            final AwsCryptoResult<byte[]> decryptResult = awsEncryptionSdk.decrypt(
+                    DecryptRequest.builder()
+                            .keyring(keyring)
+                            .ciphertext(encryptedKeyString).build());
+            final byte[] decrypted = decryptResult.getResult();
+
+            // Demonstrate that the decrypted plaintext is identical to the original plaintext.
+            System.out.println(decrypted);
+
+            // Verify that the encryption context used in the decrypt operation includes
+            // the encryption context that you specified when encrypting.
+            // The AWS Encryption SDK can add pairs, so don't require an exact match.
+            //
+            // In production, always use a meaningful encryption context.
+
+            if(decryptResult.getEncryptionContext().containsKey("overledger")){
+                System.out.println("private key was encrypted with overledger SDK");
+            }
+            return decrypted;
+        }
+    }
+
+    private final Keyring keyring;
+
+    public OlHSMKeyManager(Keyring ke){
+        keyring = ke;
+    }
+
+
+    public String decryptPrivateKeyHexString(String encKeyStr) throws UnsupportedEncodingException {
+
+        byte [] byts =  Base64.getDecoder().decode(encKeyStr);
+
+        byte [] decrypted = HSMCrypto.decrypt(byts, keyring);
+        return new String(decrypted,"UTF-8");
+    }
+    public String encryptPrivateKeyHexString(String decKeyStr) throws UnsupportedEncodingException {
+        // encode with padding
+//        String encoded = Base64.getEncoder().encodeToString(someByteArray);
+
+// encode without padding
+         byte [] byts = decKeyStr.getBytes(StandardCharsets.UTF_8);
+
+
+        byte [] encrypted = HSMCrypto.encrypt(byts, keyring);
+        String encoded = Base64.getEncoder().withoutPadding().encodeToString(encrypted);
+        return encoded;
+
+    }
 
     /**
      * <p>
