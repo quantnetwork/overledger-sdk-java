@@ -3,7 +3,8 @@
 
 # Overledger Java SDK
 
-Developer's guide to use the Overledger SDK written in Java by Quant Network.
+Developer's guide to use the Overledger SDK from Java by Quant Network.
+
 
 ## Introduction to the Overledger SDK
 
