@@ -36,12 +36,28 @@ public class OlHSMKeyManager {
     public static class HSMCrypto {
         static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
 
-        public static Keyring simulateSingleKeyRing(){
-            // The private key for decrypting should be be obtained from HSM
-            // An example implementation is provided based on AWS KMS / Cloud HSM
+        public static byte[] generateRandomKey(){
             SecureRandom rnd = new SecureRandom();
             byte[] rawKey = new byte[32]; // 256 bits
             rnd.nextBytes(rawKey);
+            return rawKey;
+        }
+
+        public static String getStringFromBytes(byte [] key){
+            return Base64.getEncoder().withoutPadding().encodeToString(key);
+        }
+        public static byte[] getBytesFromString(String keyStr){
+            return Base64.getDecoder().decode(keyStr);
+
+        }
+        public static Keyring simulateSingleKeyRing(String strKey) {
+            return simulateSingleKeyRing(getBytesFromString(strKey));
+        }
+
+        public static Keyring simulateSingleKeyRing(byte[] rawKey){
+            // The private key for decrypting should be be obtained from HSM
+            // An example implementation is provided based on AWS KMS / Cloud HSM
+
             SecretKey key = new SecretKeySpec(rawKey, "AES");
 
             // Create the keyring that determines how your data keys are protected.
@@ -52,7 +68,7 @@ public class OlHSMKeyManager {
                     // an encrypted data key.
                     //
                     // https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/choose-keyring.html#use-raw-aes-keyring
-                    .keyNamespace("some managed raw keys")
+                    .keyNamespace("Overledger")
                     .keyName("my AES wrapping key")
                     .wrappingKey(key)
                     .build();
@@ -72,9 +88,7 @@ public class OlHSMKeyManager {
             final Map<String, String> encryptionContext = new HashMap<>();
             encryptionContext.put("overledger", "javaSDK");
             encryptionContext.put("version", "alpha4"); // todo get version from library
-//        encryptionContext.put("but adds", "useful metadata");
-//        encryptionContext.put("that can help you", "be confident that");
-//        encryptionContext.put("the data you are handling", "is what you think it is");
+
 
             final AwsCryptoResult<byte[]> encryptResult = awsEncryptionSdk.encrypt(
                     EncryptRequest.builder()
@@ -139,13 +153,12 @@ public class OlHSMKeyManager {
         byte [] byts =  Base64.getDecoder().decode(encKeyStr);
 
         byte [] decrypted = HSMCrypto.decrypt(byts, keyring);
-        return new String(decrypted,"UTF-8");
+        return new String(decrypted,StandardCharsets.UTF_8);
     }
     public String encryptPrivateKeyHexString(String decKeyStr) throws UnsupportedEncodingException {
-        // encode with padding
-//        String encoded = Base64.getEncoder().encodeToString(someByteArray);
+     //     encode with padding
+     //     String encoded = Base64.getEncoder().encodeToString(someByteArray);
 
-// encode without padding
          byte [] byts = decKeyStr.getBytes(StandardCharsets.UTF_8);
 
 
@@ -168,7 +181,7 @@ public class OlHSMKeyManager {
      * </ol>
      */
 
-    static boolean testCode(String keyArn, byte[] data){
+/*    static boolean testCode(String keyArn, byte[] data){
 
 
 
@@ -221,7 +234,7 @@ public class OlHSMKeyManager {
 
         // Now we can return the plaintext data
         return false;
-    }
+    }*/
 
 
     public static void main(String[] args) {

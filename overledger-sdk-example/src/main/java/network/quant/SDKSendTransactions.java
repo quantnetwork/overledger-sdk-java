@@ -30,8 +30,6 @@ static final String partyAEthereumAddress = "0x650A87cfB9165C9F4Ccc7B971D971f50f
 static final String partyARipplePrivateKey = "sswERuW1KWEwMXF6VFpRY72PxfC9b";
 static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
 
-OlHSMKeyManager km;
-
 static final String partyBEthereumAddress = "0x1a90dbb13861a29bFC2e464549D28bE44846Dbe4";
 // Keep in mind that for Ripple, the minimum transfer amount is 20XRP (20,000,000 drops), if the address is not yet funded.
 static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";

@@ -1,5 +1,6 @@
 package network.quant;
 
+import com.amazonaws.encryptionsdk.keyrings.Keyring;
 import io.overledger.OlHSMKeyManager;
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
@@ -11,13 +12,12 @@ import network.quant.util.DltSequenceRequest;
 import network.quant.util.DltSequenceResponse;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
-import com.amazonaws.encryptionsdk.keyrings.Keyring;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-final class SDKSendTransactionsHSM {
+final class SDKSendTransactionsRawOrOtherHSM {
 //  ---------------------------------------------------------
 //  -------------- BEGIN VARIABLES TO UPDATE ----------------
 //  ---------------------------------------------------------
@@ -42,6 +42,8 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
         String partyAEthereumPrivateKey="", partyARipplePrivateKey=""; // you need access to the correct CMK to decrypt
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
         try {
+            String encryptedPartyARipplePrivateKey = hsmKeyManager.encryptPrivateKeyHexString("sswERuW1KWEwMXF6VFpRY72PxfC9b");
+            System.out.println(encryptedPartyARipplePrivateKey);
             partyARipplePrivateKey =  hsmKeyManager.decryptPrivateKeyHexString(encryptedPartyARipplePrivateKey);
             partyAEthereumPrivateKey = hsmKeyManager.decryptPrivateKeyHexString(encryptedPartyAEthereumPrivateKey);
             System.out.println("Encrypted Key *********************************************");
