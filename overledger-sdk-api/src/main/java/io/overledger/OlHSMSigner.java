@@ -9,6 +9,7 @@ import com.amazonaws.services.kms.model.SigningAlgorithmSpec;
 import java.nio.ByteBuffer;
 
 public class OlHSMSigner {
+    // Currently unused and unsupported for general HSM
 
     String CMK_ARK;
 
