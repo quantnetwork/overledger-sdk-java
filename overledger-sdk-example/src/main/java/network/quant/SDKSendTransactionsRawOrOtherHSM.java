@@ -24,12 +24,12 @@ final class SDKSendTransactionsRawOrOtherHSM {
 // "<YOUR MAPID>";// these values should  be set in the context.properties file
 // "<ENTER YOUR BPIKEY>";// same as above can be reader from OverledgerContext class
 
-// Paste in your ethereum and ripple private keys.
+// Paste in your encyrpted ethereum and ripple private keys Base64 .
 // For Ethereum you can generate an account using `OverledgerSDK.dlts.ethereum.createAccount` then fund the address at the Ropsten Testnet Faucet.
-static final String encryptedPartyAEthereumPrivateKey = "AYADeN5rn9LmN06omjg9Q4d7tI4AhQADABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFocnR5OXlPT3R4ZHlzalcrMy9qQmd4ak0rYUJnZDZnajNqVVVyRWdoWGlMTUxRWE1SWUpHNC9UaVplR3ZadmN4Zz09AApvdmVybGVkZ2VyAAdqYXZhU0RLAAd2ZXJzaW9uAAZhbHBoYTQAAQAHYXdzLWttcwBLYXJuOmF3czprbXM6ZXUtd2VzdC0yOjM0NDUwNzY5MDU0MzprZXkvYmFjZGM5MzAtOGViNC00ZTM3LWJhMWQtZDUxNjU5NmE4MDkxALgBAgEAeDqFb2CIvt2Jn53pyNe3GvlDD1gbPTTNStRlkmAL0cnOAYx/R14YmYkyBmBwR7om95oAAAB+MHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAytJNY2UHV017DjD0QCARCAO/p+mfTG4/KRCjYduh5YdNMSE2Dlhwu2hPRxYB0/YvGkludmcZR3Gnto7Gd/aplypWL/byny7dme4EgNAgAAAAAMAAAQAAAAAAAAAAAAAAAAAL+ab8CozHa+fzWqt6ChjxL/////AAAAAQAAAAAAAAAAAAAAAQAAAEDCQ0MS8bRPTEjHLVsGOfRFqCI50JERUBa+AzwWig7kDs0ux2HY8xOmmhEYI3PRU4bFDI/FFqPZUzmaLNTilVOjWpxqNKig7e8DOwmIxyzNAQBnMGUCMQDRii+8zg/fEhbF7PVsxBBor61aY/0CRa/KRDuiBKIPPbnMLKzrI5rbpRxSG439L7ECMFmfTyAvxeUrhktNCs0pq+tSPTypPulbCiKByO6Zco+lz7Mc4vbFZNCCIvMYuilfgw";
+static final String encryptedPartyAEthereumPrivateKey = "AYADeITsNL7Mz2SychslwwELRaUAhQADABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFnZEtkbGFDMG0xVjdtdnczR00xSWpicGFPWHNGUkt6U2ZDSGVRRWJuVFNhNmNna25tSUhUaUZEdVU4Z1NtdXJyQT09AApvdmVybGVkZ2VyAAdqYXZhU0RLAAd2ZXJzaW9uAAZhbHBoYTQAAQAKT3ZlcmxlZGdlcgAnbXkgQUVTIHdyYXBwaW5nIGtleQAAAIAAAAAMMnrx6+doYnBHq/c/ADDv5Oi4+sEzkheA8XMkVoYlQS/VXXhIfS2uX2WV2osTzbX+KX0qjg79l36acP0dfF0CAAAAAAwAABAAAAAAAAAAAAAAAAAA40tt5SdDrHw1GxBORNnWhf////8AAAABAAAAAAAAAAAAAAABAAAAQL8lWoSA3fafgYIrGFTEn8+WMSffRgvvD2VnGC3XfLEctg379XRx3xR6ctE5Uuu4y2uIGXWkBJUQv9Y9D0keRGp2OoFOST7t7mCDyTAqioDxAGcwZQIwdFjidy/5Kos8NX98TBoHLj71aCvSniqDRkEfhZP8Dd2vxRmL1GGQjaHR5fGAWwAuAjEAnuAzjleo1l5BCgtgtuFfhWZX3em1TUSOTh7Op+rrrzQF4yfXUsbFr4K7zCR0V1Bj";
 static final String partyAEthereumAddress = "0x650A87cfB9165C9F4Ccc7B971D971f50f753e761";
 // For Ripple, you can go to the official Ripple Testnet Faucet to get an account already funded.
-static final String encryptedPartyARipplePrivateKey = "AYADeJaxasxnS4RdDWa/a9mdAe8AhQADABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREF6eno1anVTR1N4eWllNVFaVnVteERvZGU4aXlhRE5lZkFIWFVuOGFnRCsvVVI0T1B4Y29KaExudVVKd3VKSkp6UT09AApvdmVybGVkZ2VyAAdqYXZhU0RLAAd2ZXJzaW9uAAZhbHBoYTQAAQAHYXdzLWttcwBLYXJuOmF3czprbXM6ZXUtd2VzdC0yOjM0NDUwNzY5MDU0MzprZXkvYmFjZGM5MzAtOGViNC00ZTM3LWJhMWQtZDUxNjU5NmE4MDkxALgBAgEAeDqFb2CIvt2Jn53pyNe3GvlDD1gbPTTNStRlkmAL0cnOAYOd96T8ZCiiji6CBbDsXWkAAAB+MHwGCSqGSIb3DQEHBqBvMG0CAQAwaAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAy3+XRwRTQ6cGQkcZwCARCAO3Bx9er+bejil5rcKaSzK4cSJ77ZINjCrf4kX9smT0gcC97pv5kJjr4/fbK92rxcO2uNsvhm8GQSsYF3AgAAAAAMAAAQAAAAAAAAAAAAAAAAAAJT7/TdxGn9g+mz7J+x1P3/////AAAAAQAAAAAAAAAAAAAAAQAAAB1ZaMUJla3o5PTFV3XrCs83tSDU24gZvVlO2YFc7mf6Nn0BLk+Kq+Kzp98x0gkAZzBlAjEApLUrM7+BRgqP/KVLOx8nlRa4+UdO+3FZRE7DVhj/EmsXCfWue63j7qb+oMgmXnSNAjAqg7p9CeqqmDGEMbI0FDA2tjwulMx97CRHVhTjI4tNnIsTJY7QI7SPBFxzh9CRjV8";
+static final String encryptedPartyARipplePrivateKey = "AYADeP9pFF7RrtV/UCrb41Gl9fkAhQADABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFsR043ZDJ5bTJjQ1l3dzRvV1VCbXN2MHlVOWhzRXRUcDJlMjJqUFpkTkpEZlNuVmNHRVZjVUIzaGZ0ZE5ubE5tUT09AApvdmVybGVkZ2VyAAdqYXZhU0RLAAd2ZXJzaW9uAAZhbHBoYTQAAQAKT3ZlcmxlZGdlcgAnbXkgQUVTIHdyYXBwaW5nIGtleQAAAIAAAAAMFOc8SbpsdQpk9R52ADC9I6sMuPH23mWkechPSIqnOh/OAqKf2D/PFpeIJU/VqQ7Qm9AhxdZnhQ762B6Xvc0CAAAAAAwAABAAAAAAAAAAAAAAAAAA3skVOOhEBdloTK2VHLzpaP////8AAAABAAAAAAAAAAAAAAABAAAAHfhr2eTy/XHgfGMrAdwts2OpcpDT0x8XMg5weDpT4NEsI3KyBrjTOQPXIxWj3QBnMGUCMFEhnmK2sZwFG7QXm9TWNaxjfy47/z2sgTx7QTzWiaAGpKhf4Pi01ZK3Gfi7OSlWvgIxAM+8957MlqR/B/FraE1AF/SR5OTg3wN0oDF6q+Q7Y0zlMCPjxHQWm+qYK03YHwtpMA";
 static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
 static final String partyBEthereumAddress = "0x1a90dbb13861a29bFC2e464549D28bE44846Dbe4";
 // Keep in mind that for Ripple, the minimum transfer amount is 20XRP (20,000,000 drops), if the address is not yet funded.
@@ -38,12 +38,17 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
     public static void main(String[] args) {
         String transactionMessage = "Hello World!";
-        Keyring kr = OlHSMKeyManager.HSMCrypto.getKeyRingFromCMK("arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8091");
+        byte [] keyBytes=null;
+        OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
+        String ovlSecret = OverledgerContext.config.getProperty("overledger.secret","");
+        if (!ovlSecret.equals("")) {
+            keyBytes = OlHSMKeyManager.HSMCrypto.getBytesFromString(ovlSecret);
+        }
+
+        Keyring kr = OlHSMKeyManager.HSMCrypto.simulateSingleKeyRing(keyBytes);
         String partyAEthereumPrivateKey="", partyARipplePrivateKey=""; // you need access to the correct CMK to decrypt
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
         try {
-            String encryptedPartyARipplePrivateKey = hsmKeyManager.encryptPrivateKeyHexString("sswERuW1KWEwMXF6VFpRY72PxfC9b");
-            System.out.println(encryptedPartyARipplePrivateKey);
             partyARipplePrivateKey =  hsmKeyManager.decryptPrivateKeyHexString(encryptedPartyARipplePrivateKey);
             partyAEthereumPrivateKey = hsmKeyManager.decryptPrivateKeyHexString(encryptedPartyAEthereumPrivateKey);
             System.out.println("Encrypted Key *********************************************");
@@ -61,7 +66,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
         Account rplAcnt = RippleAccount.getInstance(NETWORK.TEST, partyARipplePrivateKey,  BigInteger.ONE);
 
         try {
-            OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
+
             sdk.addAccount("ethereum", ethAcnt);
             sdk.addAccount("ripple", rplAcnt);
             SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(

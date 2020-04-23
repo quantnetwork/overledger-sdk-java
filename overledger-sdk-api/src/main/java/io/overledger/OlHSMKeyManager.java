@@ -1,6 +1,10 @@
 package io.overledger;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.security.*;
+
+import java.security.spec.ECPoint;
+import java.security.spec.ECPublicKeySpec;
 import java.util.*;
 
 import com.amazonaws.encryptionsdk.*;
@@ -15,14 +19,16 @@ import com.amazonaws.encryptionsdk.kms.KmsMasterKeyProvider;
 //import com.amazonaws.encryptionsdk.;
 import com.amazonaws.encryptionsdk.keyrings.Keyring;
 import com.amazonaws.encryptionsdk.keyrings.StandardKeyrings;
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.spec.ECParameterSpec;
+
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.SecureRandom;
 import java.util.Map;
 
 /**
- * This examples shows how to configure and use a raw AES keyring.
+ * This implementation gets inspiration from raw AES keyring.
  * <p>
  * https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/choose-keyring.html#use-raw-aes-keyring
  * <p>
@@ -34,6 +40,7 @@ import java.util.Map;
 public class OlHSMKeyManager {
 
     public static class HSMCrypto {
+        // supports ECDSA crypto from main blockchains
         static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
 
         public static byte[] generateRandomKey(){
@@ -125,8 +132,6 @@ public class OlHSMKeyManager {
                             .ciphertext(encryptedKeyString).build());
             final byte[] decrypted = decryptResult.getResult();
 
-            // Demonstrate that the decrypted plaintext is identical to the original plaintext.
-            System.out.println(decrypted);
 
             // Verify that the encryption context used in the decrypt operation includes
             // the encryption context that you specified when encrypting.
@@ -239,12 +244,12 @@ public class OlHSMKeyManager {
 
     public static void main(String[] args) {
         String keyId = "arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8091";
-
-        try {
-            testCode(keyId, keyId.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//
+//        try {
+//            testCode(keyId, keyId.getBytes("UTF-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
