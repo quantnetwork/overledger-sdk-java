@@ -39,9 +39,7 @@ import java.util.Map;
 
 public class OlHSMKeyManager {
 
-    public static class HSMCrypto {
-        // supports ECDSA crypto from main blockchains
-        static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
+    public static class Crypto{
 
         public static byte[] generateRandomKey(){
             SecureRandom rnd = new SecureRandom();
@@ -81,6 +79,12 @@ public class OlHSMKeyManager {
                     .build();
             return keyring;
         }
+
+    }
+
+    public static class HSMCrypto {
+        // supports ECDSA crypto from main blockchains
+        static final AwsCrypto awsEncryptionSdk = new AwsCrypto();
 
         public static Keyring getKeyRingFromCMK(String awsCMK){
             // The private key for decrypting should be be obtained from HSM

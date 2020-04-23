@@ -42,10 +42,10 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
         OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance();
         String ovlSecret = OverledgerContext.config.getProperty("overledger.secret","");
         if (!ovlSecret.equals("")) {
-            keyBytes = OlHSMKeyManager.HSMCrypto.getBytesFromString(ovlSecret);
+            keyBytes = OlHSMKeyManager.Crypto.getBytesFromString(ovlSecret);
         }
 
-        Keyring kr = OlHSMKeyManager.HSMCrypto.simulateSingleKeyRing(keyBytes);
+        Keyring kr = OlHSMKeyManager.Crypto.simulateSingleKeyRing(keyBytes);
         String partyAEthereumPrivateKey="", partyARipplePrivateKey=""; // you need access to the correct CMK to decrypt
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
         try {

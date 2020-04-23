@@ -45,16 +45,16 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
         }
 //        Account ethAcnt = EthereumAccount.getInstance(NETWORK.ROPSTEN, new BigInteger(partyAEthereumPrivateKey, 16), BigInteger.ZERO);
 //        Account rplAcnt = RippleAccount.getInstance(NETWORK.TEST, partyARipplePrivateKey,  BigInteger.ONE);
-        byte [] keyBytes = OlHSMKeyManager.HSMCrypto.generateRandomKey();
+        byte [] keyBytes = OlHSMKeyManager.Crypto.generateRandomKey();
         OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance(); // initialize overledger context
         String ovlSecret = OverledgerContext.config.getProperty("overledger.secret","");
         if (!ovlSecret.equals("")) {
             System.out.println("using configured secret");
-            keyBytes = OlHSMKeyManager.HSMCrypto.getBytesFromString(ovlSecret);
+            keyBytes = OlHSMKeyManager.Crypto.getBytesFromString(ovlSecret);
         }
-        System.out.println("Using this Secret:"+OlHSMKeyManager.HSMCrypto.getStringFromBytes(keyBytes));
+        System.out.println("Using this Secret:"+OlHSMKeyManager.Crypto.getStringFromBytes(keyBytes));
 
-        Keyring kr = OlHSMKeyManager.HSMCrypto.simulateSingleKeyRing(keyBytes);
+        Keyring kr = OlHSMKeyManager.Crypto.simulateSingleKeyRing(keyBytes);
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
         try {
              String encryptedKey = hsmKeyManager.encryptPrivateKeyHexString(partyAEthereumPrivateKey);
