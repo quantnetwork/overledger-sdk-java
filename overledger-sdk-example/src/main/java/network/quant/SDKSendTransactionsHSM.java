@@ -1,6 +1,6 @@
 package network.quant;
 
-import io.overledger.OlHSMKeyManager;
+import io.crypto.overledger.OlHSMKeyManager;
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.essential.dto.DltTransactionRequest;
@@ -12,9 +12,11 @@ import network.quant.util.DltSequenceResponse;
 import network.quant.util.SequenceRequest;
 import network.quant.util.SequenceResponse;
 import com.amazonaws.encryptionsdk.keyrings.Keyring;
+import org.web3j.utils.Numeric;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 final class SDKSendTransactionsHSM {

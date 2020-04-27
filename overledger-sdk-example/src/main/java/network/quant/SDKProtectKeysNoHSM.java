@@ -1,21 +1,11 @@
 package network.quant;
 
 import com.amazonaws.encryptionsdk.keyrings.Keyring;
-import io.overledger.OlHSMKeyManager;
+import io.crypto.overledger.OlHSMKeyManager;
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
-import network.quant.essential.dto.DltTransactionRequest;
-import network.quant.essential.dto.OverledgerTransactionRequest;
-import network.quant.ethereum.EthereumAccount;
-import network.quant.ripple.RippleAccount;
-import network.quant.util.DltSequenceRequest;
-import network.quant.util.DltSequenceResponse;
-import network.quant.util.SequenceRequest;
-import network.quant.util.SequenceResponse;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.util.Arrays;
 
 final class SDKProtectKeysNoHSM {
 //  ---------------------------------------------------------

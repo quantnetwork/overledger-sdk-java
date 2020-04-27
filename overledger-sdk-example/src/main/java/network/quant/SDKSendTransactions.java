@@ -1,6 +1,5 @@
 package network.quant;
 
-import io.overledger.OlHSMKeyManager;
 import network.quant.api.*;
 import network.quant.essential.dto.DltTransactionRequest;
 import network.quant.essential.DefaultOverledgerSDK;
