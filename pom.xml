@@ -132,11 +132,6 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>${json.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>net.i2p.crypto</groupId>
                 <artifactId>eddsa</artifactId>
                 <version>${crypton.version}</version>

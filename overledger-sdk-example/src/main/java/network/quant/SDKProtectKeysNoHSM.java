@@ -1,7 +1,7 @@
 package network.quant;
 
 import com.amazonaws.encryptionsdk.keyrings.Keyring;
-import io.crypto.overledger.OlHSMKeyManager;
+import network.quant.security.OlHSMKeyManager;
 import network.quant.api.*;
 import network.quant.essential.DefaultOverledgerSDK;
 
@@ -33,8 +33,6 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
         }else{
             partyAEthereumPrivateKey = args[1];
         }
-//        Account ethAcnt = EthereumAccount.getInstance(NETWORK.ROPSTEN, new BigInteger(partyAEthereumPrivateKey, 16), BigInteger.ZERO);
-//        Account rplAcnt = RippleAccount.getInstance(NETWORK.TEST, partyARipplePrivateKey,  BigInteger.ONE);
         byte [] keyBytes = OlHSMKeyManager.Crypto.generateRandomKey();
         OverledgerSDK sdk  = DefaultOverledgerSDK.newInstance(); // initialize overledger context
         String ovlSecret = OverledgerContext.config.getProperty("overledger.secret","");
