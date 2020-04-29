@@ -14,6 +14,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -55,6 +57,9 @@ public class EthereumAccount implements Account {
     }
 
     private void sign(String toAddress, String message, DltTransactionRequest dltTransaction) {
+        if(message!=null && !message.isEmpty()){
+            message = Numeric.toHexStringNoPrefix(message.getBytes(StandardCharsets.UTF_8)); // Required encoding to show correclty on explorers
+        }
         RawTransaction rawTransaction = RawTransaction.createTransaction(
                 this.nonce = null != dltTransaction.getSequence() ? BigInteger.valueOf(dltTransaction.getSequence()) : this.nonce,
                 Optional.ofNullable(dltTransaction.getFee()).orElse(EthGasStation.getInstance().calculate(FEE_POLICY.NORMAL)),
@@ -71,6 +76,9 @@ public class EthereumAccount implements Account {
     }
 
     private void deployContract(String contractBinary, String message, DltTransactionRequest dltTransaction) {
+        if(message!=null && !message.isEmpty()){
+            message = Numeric.toHexStringNoPrefix(message.getBytes(StandardCharsets.UTF_8)); // Required encoding to show correclty on explorers
+        }
         RawTransaction rawTransaction = RawTransaction.createContractTransaction(
                 this.nonce = null != dltTransaction.getSequence() ? BigInteger.valueOf(dltTransaction.getSequence()) : this.nonce,
                 Optional.ofNullable(dltTransaction.getFee()).orElse(EthGasStation.getInstance().calculate(FEE_POLICY.NORMAL)),
@@ -120,7 +128,7 @@ public class EthereumAccount implements Account {
     @Override
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
-            byte data[] = message.getBytes();
+            byte data[] = message.getBytes(StandardCharsets.UTF_8);
             this.sign(data, toAddress, message, dltTransaction);
         }
     }

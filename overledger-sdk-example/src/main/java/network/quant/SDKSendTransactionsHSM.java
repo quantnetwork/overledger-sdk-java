@@ -40,7 +40,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
     public static void main(String[] args) {
         String transactionMessage = "Hello World!";
-        Keyring kr = OlHSMKeyManager.HSMCrypto.getKeyRingFromCMK("arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8091");
+        Keyring kr = OlHSMKeyManager.HSMCrypto.getKeyRingFromCMK("arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8001");
         String partyAEthereumPrivateKey="", partyARipplePrivateKey=""; // you need access to the correct CMK to decrypt
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
         try {

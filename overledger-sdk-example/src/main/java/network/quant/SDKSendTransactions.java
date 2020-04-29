@@ -35,7 +35,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
 
     public static void main(String[] args) {
-        String transactionMessage = "Hello World!";
+        String transactionMessage = "Hello World Testing No Security!";
         Account ethAcnt = EthereumAccount.getInstance(NETWORK.ROPSTEN, new BigInteger(partyAEthereumPrivateKey, 16), BigInteger.ZERO);
         Account rplAcnt = RippleAccount.getInstance(NETWORK.TEST, partyARipplePrivateKey,  BigInteger.ONE);
 
