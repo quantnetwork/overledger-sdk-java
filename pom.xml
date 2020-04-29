@@ -6,7 +6,7 @@
 
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-java</artifactId>
-    <version>1.0.0-alpha.4-SNAPSHOT</version>
+    <version>1.0.0-alpha.5-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -62,6 +62,8 @@
         <module>overledger-sdk-ripple</module>
         <module>overledger-sdk-bundle</module>
         <module>overledger-sdk-example</module>
+        <module>overledger-sdk-security</module>
+
     </modules>
 
     <properties>

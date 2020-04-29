@@ -5,7 +5,7 @@
     <parent>
         <artifactId>overledger-sdk-java</artifactId>
         <groupId>network.quant</groupId>
-        <version>1.0.0-alpha.4-SNAPSHOT</version>
+        <version>1.0.0-alpha.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -37,8 +37,8 @@
     <dependencies>
         <dependency>
             <groupId>network.quant</groupId>
-            <artifactId>overledger-security-hsm</artifactId>
-            <version>1.0.0-alpha.4-SNAPSHOT</version>
+            <artifactId>overledger-sdk-security</artifactId>
+            <version>1.0.0-alpha.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
