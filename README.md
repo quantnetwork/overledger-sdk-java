@@ -12,7 +12,7 @@ In order to build that latest version of SDK locally you need java version 1.8 a
 ```
 git submodule init
 git submodule update
-mvn install 
+mvn clean install -Dmaven.test.skip=true
 cd ..
 mvn install
 ```
