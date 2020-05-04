@@ -5,7 +5,18 @@
 
 Developer's guide to use the Overledger SDK from Java by Quant Network.
 
-
+## Building quick start
+In order to build that latest version of SDK locally you need java version 1.8 and maven.
+* First git clone the project.
+* then goto the aws-encryption-sdk-java folder and type
+```
+git submodule init
+git submodule update
+mvn install 
+cd ..
+mvn install
+```
+first install is under aws folder.
 ## Introduction to the Overledger SDK
 
 Overledger is an operating system that allows distributed apps (MApps) to connect to multiple distributed ledger technologies (DLTs) or blockchains. The Overledger SDK allows developers to create signed transactions & send them simultaneously to all supported DLTs.
