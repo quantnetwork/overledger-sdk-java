@@ -1,5 +1,6 @@
 package network.quant.bitcoin;
 
+import network.quant.OverledgerContext;
 import network.quant.api.*;
 import network.quant.exception.DataOverSizeException;
 import lombok.AccessLevel;
@@ -97,7 +98,7 @@ public class BitcoinAccount implements Account {
         transaction.addOutput(Coin.valueOf(dltTransaction.getAmount().longValue()), Address.fromBase58(this.networkParameters, toAddress));
         totalPayout = totalPayout.add(Coin.valueOf(
                 (null == dltTransaction.getFee()) ?
-                        BitcoinFees.getInstance().calculate(FEE_POLICY.NORMAL, 1, outputNumber).longValue() :
+                        Long.parseLong(OverledgerContext.config.getProperty("xbt.fee", "1000")):
                         dltTransaction.getFee().longValue()
         ));
         final Coin payout = Coin.valueOf(totalPayout.getValue());

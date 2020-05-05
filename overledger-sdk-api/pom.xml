@@ -5,7 +5,7 @@
     <parent>
         <artifactId>overledger-sdk-java</artifactId>
         <groupId>network.quant</groupId>
-        <version>1.0.0-alpha.4-SNAPSHOT</version>
+        <version>1.0.0-alpha.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,9 +20,43 @@
         <name>Quant Network</name>
     </organization>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-bom</artifactId>
+                <version>1.11.757</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-security</artifactId>
+            <version>1.0.0-alpha.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <inceptionYear>2018</inceptionYear>
 
     <developers>
+        <developer>
+            <name>Salman Marvasti</name>
+            <email>salman.marvasti@quant.network</email>
+            <organization>Quant Network</organization>
+            <organizationUrl>https://quant.network</organizationUrl>
+            <timezone>UTC+00:00</timezone>
+        </developer>
         <developer>
             <name>Rui Wang</name>
             <email>rui.wang@quant.network</email>

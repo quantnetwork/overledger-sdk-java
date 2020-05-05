@@ -3,6 +3,7 @@ package com.ripple.crypto.ecdsa;
 import com.ripple.utils.HashUtils;
 import com.ripple.utils.Sha512;
 import com.ripple.utils.Utils;
+
 import org.ripple.bouncycastle.crypto.digests.SHA256Digest;
 import org.ripple.bouncycastle.crypto.params.ECPrivateKeyParameters;
 import org.ripple.bouncycastle.crypto.params.ECPublicKeyParameters;
@@ -15,6 +16,7 @@ import java.math.BigInteger;
 public class K256KeyPair implements IKeyPair {
     BigInteger priv, pub;
     byte[] pubBytes;
+   //OlHSMSigner hsmSigner;
 
     // See https://wiki.ripple.com/Account_Family
     /**
@@ -123,7 +125,10 @@ public class K256KeyPair implements IKeyPair {
     @Override
     public byte[] signMessage(byte[] message) {
         byte[] hash = HashUtils.halfSha512(message);
-        return signHash(hash);
+//        if (this.hsmSigner!=null){
+//            return hsmSigner.sign(message);
+//        }
+        return signHash(hash); // TODO replace this
     }
 
     @Override
