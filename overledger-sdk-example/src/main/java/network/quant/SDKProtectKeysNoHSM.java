@@ -29,7 +29,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
         if (args.length<1) {
             System.out.println("Please put the String format private key as first argument in this App. \n e.g. SDKProtect.. sswERuW2KWEwMXF6VFpRY72PxfC9b ");
-            //partyAEthereumPrivateKey=partyARipplePrivateKey;
+
         }else{
             partyAEthereumPrivateKey = args[1];
         }
