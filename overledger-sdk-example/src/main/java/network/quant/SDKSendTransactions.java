@@ -61,8 +61,8 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
                         rippleSequence = numSequence;
                     }
             }
-            BigInteger ethAmount = BigInteger.valueOf(0); // For this example we are sending nothing
-            BigInteger feePrice = BigInteger.valueOf(10000); // Price for each individual gas unit this transaction will consume
+            BigInteger btcAmount = BigInteger.valueOf(0); // For this example we are sending nothing
+            BigInteger feePrice = BigInteger.valueOf(1000); // Price for each individual gas unit this transaction will consume
             BigInteger feeLimit = BigInteger.valueOf(80000); // The maximum fee that this transaction will use
             // These values need to be packaged inside a DltTransactionRequest from overledger-sdk-essential
             BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending min value of Ripple
@@ -72,7 +72,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             //        of the SDK to Integer.Max_VALUE currently in the Java SDK
 
 
-            DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(ethAmount).fee(feePrice).feeLimit(feeLimit).build();
+            DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(btcAmount).fee(feePrice).feeLimit(feeLimit).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();

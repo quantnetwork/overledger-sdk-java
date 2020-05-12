@@ -156,6 +156,11 @@ public class EthereumAccount implements Account {
         }
     }
 
+    @Override
+    public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * Invoke contract transaction
      * @param contractAddress String containing contract address

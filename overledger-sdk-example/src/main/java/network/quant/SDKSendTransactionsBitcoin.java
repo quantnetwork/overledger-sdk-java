@@ -26,10 +26,10 @@ static final String bpiKey = "<ENTER YOUR BPIKEY>";// same as above can be reade
 // For Ethereum you can generate an account using `OverledgerSDK.dlts.ethereum.createAccount` then fund the address at the Ropsten Testnet Faucet.
 static final String partyABitcoinPrivateKey = "cNPDK4z5wGaaDqVpyMosZGzgh4zYLkZLyYSHW5FT91gmfRWxBM6x";//93LzzpRg87qgivX6HHegkfAdUuHkV3pAoY6DAXySHW6c364WdZ3
 static final String partyABitcoinAddress = "n1STFs8YeRHstchYTTJum7Dq2AfBvwtBSk";
-static String partyATransId ="60cccfb9d9280e71df87368aa1196d64a6a9cb48f3db5e4f86862fb22eeb93c4";
+static String partyATransId ="0ba94c6159688fe82a29542b76fefd44e30a6a3bca78e7f635dcedad7d582e2d";
 static long bitcoinLinkedIndex = 0;
-static long valueBTCInput = 10000;
-static int bHeight = 1729149;
+static long valueBTCInput = 100000;
+static int bHeight = 1741781;
     // For Ripple, you can go to the official Ripple Testnet Faucet to get an account already funded.
 static final String partyARipplePrivateKey = "sswERuW1KWEwMXF6VFpRY72PxfC9b";
 static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";

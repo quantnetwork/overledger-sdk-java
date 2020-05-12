@@ -80,21 +80,21 @@ public class BitcoinAccount implements Account {
         Transaction transaction = new Transaction(this.networkParameters);
         Coin totalPayout = Coin.valueOf(dltTransaction.getAmount().longValue());
         int outputNumber = 2;
-        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
-            BitcoinData bitcoinData;
-            try {
-                bitcoinData = this.createBitcoinData(message, type);
-                for (String address : bitcoinData.getAddressList()) {
-                    transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
-                    totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
-                }
-                outputNumber += bitcoinData.getAddressList().size();
-            } catch (DataOverSizeException e) {
-                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
-            } catch (IOException e) {
-                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
-            }
-        }
+//        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
+//            BitcoinData bitcoinData;
+//            try {
+//                bitcoinData = this.createBitcoinData(message, type);
+//                for (String address : bitcoinData.getAddressList()) {
+//                    transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
+//                    totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
+//                }
+//                outputNumber += bitcoinData.getAddressList().size();
+//            } catch (DataOverSizeException e) {
+//                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
+//            } catch (IOException e) {
+//                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
+//            }
+//        }
         transaction.addOutput(Coin.valueOf(dltTransaction.getAmount().longValue()), Address.fromBase58(this.networkParameters, toAddress));
         totalPayout = totalPayout.add(Coin.valueOf(
                 (null == dltTransaction.getFee()) ?
@@ -248,7 +248,11 @@ public class BitcoinAccount implements Account {
     public static Account getInstance(NETWORK network, BigInteger privateKey) {
         return getInstance(network, privateKey, null, null);
     }
-
+    public static Account getInstance(NETWORK network, String privateKey) {
+        NetworkParameters par = setNetwork(network);
+        ECKey bcKey = DumpedPrivateKey.fromBase58(par, privateKey).getKey();
+        return getInstance(network, bcKey, null, null);
+    }
     /**
      * Get Bitcoin account instance by given secret key array
      * @param network NETWORK containing network param
