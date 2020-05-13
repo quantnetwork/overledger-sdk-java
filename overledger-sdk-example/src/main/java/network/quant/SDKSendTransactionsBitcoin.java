@@ -73,20 +73,12 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             // These values need to be packaged inside a DltTransactionRequest from overledger-sdk-essential
             BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending min value of Ripple
             BigInteger xrpFeePrice = BigInteger.valueOf(12); // Minimum feePrice on Ripple is 12 drops.
-            //        BigInteger xrpMaxLedgerVersion =
-            //        new BigInteger("4294967295"); // This cannot be user set in this alpha version
-            //        of the SDK to Integer.Max_VALUE currently in the Java SDK
-
 
             DltTransactionRequest btcTransaction = DltTransactionRequest.builder().dlt(DLT.bitcoin.name()).sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyABitcoinAddress).toAddress(partyBBitcoinAddress).amount(btcAmount).fee(feePrice).feeLimit(feeLimit).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt(DLT.ripple.name()).sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();
-            // A transaction can be signed manually as below but writeTransaction signs on your behalf
 
-            //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
-
-            //btcAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
 
             OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().
                     mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(btcTransaction,rippleTransaction)).build();
