@@ -70,12 +70,14 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             // These values are in satoshis and so can be big thus SDK assumes they are BigInteger.
             BigInteger btcAmount = BigInteger.valueOf(200); // For this example we are sending nothing
             BigInteger feePrice = BigInteger.valueOf(1000); // Price for each individual gas unit this transaction will consume
-            BigInteger feeLimit = BigInteger.valueOf(8000); // The maximum fee that this transaction will use
             // These values need to be packaged inside a DltTransactionRequest from overledger-sdk-essential
             BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending min value of Ripple
             BigInteger xrpFeePrice = BigInteger.valueOf(12); // Minimum feePrice on Ripple is 12 drops.
 
-            DltTransactionRequest btcTransaction = DltTransactionRequest.builder().dlt(DLT.bitcoin.name()).sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyABitcoinAddress).toAddress(partyBBitcoinAddress).amount(btcAmount).fee(feePrice).feeLimit(feeLimit).build();
+            // For security changeAddress should be different to fromAddress when building the transactionRequest.
+
+            DltTransactionRequest btcTransaction = DltTransactionRequest.builder().dlt(DLT.bitcoin.name()).sequence(ethereumSequence.longValue()).
+                    message(transactionMessage).fromAddress(partyABitcoinAddress).toAddress(partyBBitcoinAddress).changeAddress(partyABitcoinAddress).amount(btcAmount).fee(feePrice).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt(DLT.ripple.name()).sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();
