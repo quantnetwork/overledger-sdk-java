@@ -67,6 +67,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
                         rippleSequence = numSequence;
                     }
             }
+            // These values are in satoshis and so can be big thus SDK assumes they are BigInteger.
             BigInteger btcAmount = BigInteger.valueOf(200); // For this example we are sending nothing
             BigInteger feePrice = BigInteger.valueOf(1000); // Price for each individual gas unit this transaction will consume
             BigInteger feeLimit = BigInteger.valueOf(8000); // The maximum fee that this transaction will use
