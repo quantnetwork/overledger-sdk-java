@@ -80,6 +80,8 @@ public class BitcoinAccount implements Account {
         Transaction transaction = new Transaction(this.networkParameters);
         Coin totalPayout = Coin.valueOf(dltTransaction.getAmount().longValue());
         int outputNumber = 2;
+        // NO transactions should be encoded inside the message.
+        // Currently keeping in case it is needed for old applications which used to encode output transactions inside the message.
 //        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
 //            BitcoinData bitcoinData;
 //            try {
