@@ -40,7 +40,9 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
     public static void main(String[] args) {
         String transactionMessage = "Hello World!";
-        String awsCMK = "arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d516596a8091";
+        String awsCMK = "arn:aws:kms:eu-west-2:344507690543:key/bacdc930-8eb4-4e37-ba1d-d616596a8090";
+        // replace the Customer Master Key and the above encrypted private keys with your versions.
+        // See also SDKProtectKeysNoHSM for how to encrypt DLT keys.
         Keyring kr = OlHSMKeyManager.HSMCrypto.getKeyRingFromCMK(awsCMK);
         String partyAEthereumPrivateKey="", partyARipplePrivateKey=""; // you need access to the correct CMK to decrypt
         OlHSMKeyManager hsmKeyManager = new OlHSMKeyManager(kr);
@@ -93,21 +95,26 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             //        new BigInteger("4294967295"); // This cannot be user set in this alpha version
             //        of the SDK to Integer.Max_VALUE currently in the Java SDK
 
+            if(rippleSequence!=null && ethereumSequence!=null) {
+                DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(ethAmount).fee(feePrice).feeLimit(feeLimit).build();
+                DltTransactionRequest rippleTransaction = DltTransactionRequest.
+                        builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
+                        .amount(xrpAmount).fee(xrpFeePrice).build();
 
-            DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(ethAmount).fee(feePrice).feeLimit(feeLimit).build();
-            DltTransactionRequest rippleTransaction = DltTransactionRequest.
-                    builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
-                    .amount(xrpAmount).fee(xrpFeePrice).build();
-            // A transaction can be signed manually as below but writeTransaction signs on your behalf
+                // A transaction can be signed manually as below but writeTransaction signs on your behalf
 
-            //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
+                //rplAcnt.sign(partyARippleAddress, partyBRippleAddress, "helloworld",rippleTransaction);
 
-            //ethAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
+                //ethAcnt.sign(partyAEthereumAddress, partyBEthereumAddress, transactionMessage, ethTransaction);
 
-            OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().
-                    mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(ethTransaction,rippleTransaction)).build();
-            OverledgerTransaction response = sdk.writeTransaction(overledgerTransactionRequest);
-            System.out.println(response);
+                OverledgerTransactionRequest overledgerTransactionRequest = OverledgerTransactionRequest.builder().
+                        mappId(OverledgerContext.MAPP_ID).dltData(Arrays.asList(ethTransaction, rippleTransaction)).build();
+                OverledgerTransaction response = sdk.writeTransaction(overledgerTransactionRequest);
+                System.out.println(response);
+            }
+            else{
+                System.err.println("Could not get correct sequence value. Check connection to Overledger");
+            }
         }
         catch (Exception e){
             System.out.println("Some error happened in the demo, make sure you have the config file in the src/main/resources set and the mappId set!!");
