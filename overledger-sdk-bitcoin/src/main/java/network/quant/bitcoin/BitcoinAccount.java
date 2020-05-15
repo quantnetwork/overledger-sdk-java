@@ -12,11 +12,15 @@ import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.Script;
+import org.bitcoinj.script.ScriptBuilder;
+import org.bitcoinj.script.ScriptOpCodes;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -108,7 +112,7 @@ public class BitcoinAccount implements Account {
                 .filter(utxo -> utxo.getAddress().equals(fromAddress) && utxo.getValue().isGreaterThan(payout))
                 .findFirst().orElse(null);
         if (null == inputUtxo) {
-            return;
+            throw new ExceptionInInitializerError("A bitcoin account must have unspent inputs");
         }
         transaction.addOutput(inputUtxo.getValue().subtract(totalPayout), Address.fromBase58(this.networkParameters,
                 (null == dltTransaction.getChangeAddress()) ? fromAddress : dltTransaction.getChangeAddress()));
@@ -116,6 +120,13 @@ public class BitcoinAccount implements Account {
         transaction.addSignedInput(transactionOutPoint, inputUtxo.getScript(), this.key, Transaction.SigHash.ALL, true);
         transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
+
+//        byte[] sha256 = message.toString().getBytes(StandardCharsets.UTF_8);
+//        ScriptBuilder sb = new ScriptBuilder();
+//        Script myScript = sb.op(ScriptOpCodes.OP_RETURN).data(sha256).build();
+//        TransactionOutput transactionOutput = transaction.addOutput(
+//                org.bitcoinj.core.Transaction.MIN_NONDUST_OUTPUT, myScript);
+
         SignedTransaction signedTransaction = new SignedTransaction();
         signedTransaction.setTransactions(Collections.singletonList(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize())));
         signedTransaction.setSignatures(Collections.singletonList(""));

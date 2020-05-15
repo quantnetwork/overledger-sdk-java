@@ -26,10 +26,10 @@ static final String bpiKey = "<ENTER YOUR BPIKEY>";// same as above can be reade
 // For Ethereum you can generate an account using `OverledgerSDK.dlts.ethereum.createAccount` then fund the address at the Ropsten Testnet Faucet.
 static final String partyABitcoinPrivateKey = "cNPDK4z5wGaaDqVpyMosZGzgh4zYLkZLyYSHW5FT91gmfRWxBM6x";//93LzzpRg87qgivX6HHegkfAdUuHkV3pAoY6DAXySHW6c364WdZ3
 static final String partyABitcoinAddress = "n1STFs8YeRHstchYTTJum7Dq2AfBvwtBSk";
-static String partyATransId ="0ba94c6159688fe82a29542b76fefd44e30a6a3bca78e7f635dcedad7d582e2d";
-static long bitcoinLinkedIndex = 0;
-static long valueBTCInput = 100000;
-static int bHeight = 1741781;
+static String partyATransId ="fdcfcf2fd4b8d1e78395480fc81ae05e3aef464b7dcef01a18c0f0561eb44f3d";
+static long bitcoinLinkedIndex = 1;
+static long valueBTCInput = 97600;
+static int bHeight = 1744540;
     // For Ripple, you can go to the official Ripple Testnet Faucet to get an account already funded.
 static final String partyARipplePrivateKey = "sswERuW1KWEwMXF6VFpRY72PxfC9b";
 static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
@@ -54,15 +54,12 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
                     new DltSequenceRequest(DLT.ripple, partyARippleAddress)
             ));
             SequenceResponse sequenceResponse = sdk.getSequence(sequenceRequest);
-            Number ethereumSequence = null;
+
             Number rippleSequence = null;
 
             for(DltSequenceResponse x:sequenceResponse.getDltData()){
                 Number numSequence = x.getSequence();
                 System.out.println("The transaction sequence of our " + x.getDlt() + " is: " + numSequence );
-                if(x.getDlt()==DLT.bitcoin){
-                    ethereumSequence = numSequence;
-                }else
                     if(x.getDlt()==DLT.ripple){
                         rippleSequence = numSequence;
                     }
@@ -76,7 +73,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
             // For security changeAddress should be different to fromAddress when building the transactionRequest.
 
-            DltTransactionRequest btcTransaction = DltTransactionRequest.builder().dlt(DLT.bitcoin.name()).sequence(ethereumSequence.longValue()).
+            DltTransactionRequest btcTransaction = DltTransactionRequest.builder().dlt(DLT.bitcoin.name()).
                     message(transactionMessage).fromAddress(partyABitcoinAddress).toAddress(partyBBitcoinAddress).changeAddress(partyABitcoinAddress).amount(btcAmount).fee(feePrice).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt(DLT.ripple.name()).sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
