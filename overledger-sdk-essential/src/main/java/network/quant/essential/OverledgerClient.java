@@ -247,6 +247,32 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
         }
     }
 
+    public Status getTransactionStatus(UUID overledgerTransactionID, Class<StatusResponse> responseClass){
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.STATE_TRANSACTIONS_BY_TRANSACTION_ID, overledgerTransactionID)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(responseClass)
+//                    .timeout(Duration.ofMillis(30))
+                    .map(statusResponse -> statusResponse.getStatus())
+                    .block();
+        }catch (RedirectException e){
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(responseClass)
+                    .map(statusResponse -> statusResponse.getStatus())
+                    .block();
+        }
+    }
+
     @Override
     public Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) {
         try {

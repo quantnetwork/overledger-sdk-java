@@ -8,6 +8,8 @@ import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
+import network.quant.util.Status;
+import network.quant.util.StatusResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -18,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.eq;
@@ -34,6 +37,7 @@ public class DefaultOverledgerSDKTest {
     private OverledgerTransactionRequest overledgerTransactionRequest;
     private OverledgerTransactionResponse overledgerTransactionResponse;
     private OverledgerTransactionsResponse overledgerTransactionsResponse;
+    private StatusResponse statusResponse;
     private Account bitcoinAccount;
     private UUID transactionId;
     private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -46,6 +50,7 @@ public class DefaultOverledgerSDKTest {
         this.overledgerSDK = DefaultOverledgerSDK.newInstance(NETWORK.TEST, this.accountManager, this.client);
         this.overledgerTransactionRequest = new OverledgerTransactionRequest();
         this.overledgerTransactionResponse = new OverledgerTransactionResponse();
+        this.statusResponse = new StatusResponse();
         this.transactionId = UUID.randomUUID();
         this.bitcoinAccount = new Account() {
             @Override
@@ -165,4 +170,23 @@ public class DefaultOverledgerSDKTest {
         Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionsResponse.class));
     }
 
+    @Test
+    public void test007StatusOfTransaction_shouldSuccess() throws Exception {
+        this.statusResponse.setStatus(new Status(STATUS.broadcasted,"1234", "broadCasting...", Instant.now()));
+
+        Mockito.when(this.client.getTransactionStatus(Mockito.any(UUID.class), eq(StatusResponse.class))).thenReturn(this.statusResponse.getStatus());
+        Status status = this.overledgerSDK.getStatusFunction(this.transactionId, StatusResponse.class);
+        Assert.assertNotNull(status);
+        Assert.assertEquals(status , this.statusResponse.getStatus());
+    }
+
+    @Test //in case of transaction ID not found
+    public void test008StatusOfTransaction_shouldReturnNull() throws Exception {
+        this.statusResponse.setStatus(null);
+
+        Mockito.when(this.client.getTransactionStatus(Mockito.any(UUID.class), eq(StatusResponse.class))).thenReturn(this.statusResponse.getStatus());
+        Status status = this.overledgerSDK.getStatusFunction(this.transactionId, StatusResponse.class);
+        Assert.assertNull(status);
+        Assert.assertEquals(status , this.statusResponse.getStatus());
+    }
 }

@@ -99,4 +99,11 @@ public interface Client<T, S> {
      */
     SequenceResponse postSequence(SequenceRequest sequenceRequest);
 
+    /**
+     * Read status of transaction
+     * @param overledgerTransactionID UUID containing Overledger transaction ID
+     * @param responseClass Class containing response body class type
+     */
+    Status getTransactionStatus(UUID overledgerTransactionID, Class<StatusResponse> responseClass);
+
 }

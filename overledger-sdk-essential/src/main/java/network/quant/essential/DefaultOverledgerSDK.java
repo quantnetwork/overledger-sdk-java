@@ -225,6 +225,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postSequence(sequenceRequest);
     }
 
+    @Override
+    public Status getStatusFunction(UUID overledgerTransactionID, Class<StatusResponse> responseClass) {
+        return this.client.getTransactionStatus(overledgerTransactionID, responseClass);
+    }
+
     /**
      * Write transaction to BPI layer from byte array
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request

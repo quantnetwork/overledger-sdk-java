@@ -139,4 +139,12 @@ public interface OverledgerSDK {
      */
     SequenceResponse getSequence(SequenceRequest sequenceRequest);
 
+
+    /**
+     * Get status of given transaction ID
+     * @param overledgerTransactionID containing overledger transaction ID
+     * @return SequenceResponse containing status response object
+     */
+    Status getStatusFunction(UUID overledgerTransactionID, Class<StatusResponse> responseClass);
+
 }
