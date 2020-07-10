@@ -56,7 +56,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
         try {
             return this.webClient
                     .post()
-                    .uri(OverledgerContext.SUBSCRIBE_STATE_TRANSACTIONS_BY_TRANSACTION_ID)
+                    .uri(OverledgerContext.SUBSCRIBE_TRANSACTION_UPDATES)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(statusRequest))
@@ -84,7 +84,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
         try {
             return this.webClient
                     .post()
-                    .uri(OverledgerContext.UNSUBSCRIBE_STATE_TRANSACTIONS_BY_TRANSACTION_ID)
+                    .uri(OverledgerContext.UNSUBSCRIBE_TRANSACTION_UPDATES)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(statusRequest))
