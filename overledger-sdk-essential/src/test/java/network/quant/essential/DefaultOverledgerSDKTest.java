@@ -56,7 +56,7 @@ public class DefaultOverledgerSDKTest {
         this.statusRequest = StatusRequest.builder()
                 .mappId("test1")
                 .overledgerTransactionId(this.transactionId)
-                .callbackUrl("http://WebHookControllerTest.com")
+                .callbackUrl("http://localhost:9090/webhook/dummyDisplay")
                 .timestamp(Instant.now())
                 .build();
         this.bitcoinAccount = new Account() {
