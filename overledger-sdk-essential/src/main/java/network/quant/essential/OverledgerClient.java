@@ -52,9 +52,9 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .map(ClientResponseException::new);
     }
 
-    public Object postSubStatusUpdate(StatusRequest statusRequest){
+    public StatusResponse postSubStatusUpdate(StatusRequest statusRequest) {
         try {
-            return  this.webClient
+            return this.webClient
                     .post()
                     .uri(OverledgerContext.SUBSCRIBE_STATE_TRANSACTIONS_BY_TRANSACTION_ID)
                     .accept(MediaType.APPLICATION_JSON)
@@ -65,9 +65,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
                     .bodyToMono(StatusResponse.class)
-                    .map(response -> response.getPayload())
                     .block();
-        }catch (RedirectException e){
+        } catch (RedirectException e) {
             return this.webClient
                     .post()
                     .uri(e.getUrl())
@@ -81,20 +80,19 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
         }
     }
 
-    public Object postUnsubStatusUpdate(StatusRequest statusRequest){
+    public StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest){
         try {
-             return this.webClient
+            return this.webClient
                     .post()
                     .uri(OverledgerContext.UNSUBSCRIBE_STATE_TRANSACTIONS_BY_TRANSACTION_ID)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(statusRequest))
                     .retrieve()
-                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
-                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                     .bodyToMono(StatusResponse.class)
-                    .map(response -> response.getPayload())
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(StatusResponse.class)
                     .block();
         }catch (RedirectException e){
             return this.webClient

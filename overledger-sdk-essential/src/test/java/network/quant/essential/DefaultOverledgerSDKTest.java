@@ -19,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.messaging.support.GenericMessage;
 
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -180,25 +179,27 @@ public class DefaultOverledgerSDKTest {
 
    @Test
     public void test007subscribeStatusOfTransaction_shouldSuccess() throws Exception {
-        String statusResponse = (String) new GenericMessage("saved application subscription: " + statusRequest.getMappId()
-                                                            + ", " + statusRequest.getOverledgerTransactionId()).getPayload();
+       StatusResponse statusResponse = new StatusResponse("saved application subscription: "
+                                                            + statusRequest.getMappId()
+                                                            + ", " + statusRequest.getOverledgerTransactionId());
        Mockito.when(this.client.postSubStatusUpdate(this.statusRequest)).
                thenReturn(statusResponse);
 
-       String statusSubscribeResult = this.overledgerSDK.subscribeStatusUpdate(statusRequest);
+       StatusResponse statusSubscribeResult = this.overledgerSDK.subscribeStatusUpdate(statusRequest);
         Assert.assertNotNull(statusSubscribeResult);
-        Assert.assertEquals(statusSubscribeResult , statusResponse);
+        Assert.assertEquals(statusSubscribeResult.getPayload() , statusResponse.getPayload());
     }
 
      @Test
     public void test008unSubscribeStatusOfTransaction_shouldSuccess() throws Exception {
-         String statusResponse = (String) new GenericMessage("Unsubscribed application subscription: "
-                                                                    + statusRequest.getMappId() + ", " + this.statusRequest.getOverledgerTransactionId()).getPayload();
+         StatusResponse statusResponse =  new StatusResponse("Unsubscribed application subscription: "
+                                            + statusRequest.getMappId() + ", "
+                                            + this.statusRequest.getOverledgerTransactionId());
          Mockito.when(this.client.postUnsubStatusUpdate(this.statusRequest)).
                  thenReturn(statusResponse);
 
-         String statusUnSubscribeResult = this.overledgerSDK.unsubscribeStatusUpdate(statusRequest);
+         StatusResponse statusUnSubscribeResult = this.overledgerSDK.unsubscribeStatusUpdate(statusRequest);
          Assert.assertNotNull(statusUnSubscribeResult);
-         Assert.assertEquals(statusUnSubscribeResult , statusResponse);
+         Assert.assertEquals(statusUnSubscribeResult.getPayload() , statusResponse.getPayload());
     }
 }

@@ -145,13 +145,13 @@ public interface OverledgerSDK {
      * @param statusRequest containing overledger transaction request
      * @return subscribe status response
      */
-    String subscribeStatusUpdate(StatusRequest statusRequest);
+    StatusResponse subscribeStatusUpdate(StatusRequest statusRequest);
 
     /**
      * Get status of given statusRequest
      * @param statusRequest containing overledger transaction request
      * @return unsubscribe status response
      */
-    String unsubscribeStatusUpdate(StatusRequest statusRequest);
+    StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest);
 
 }

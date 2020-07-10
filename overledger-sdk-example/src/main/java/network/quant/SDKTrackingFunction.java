@@ -2,7 +2,6 @@ package network.quant;
 
 import lombok.extern.slf4j.Slf4j;
 import network.quant.api.OverledgerSDK;
-import network.quant.api.OverledgerTransaction;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.util.StatusRequest;
 import network.quant.util.StatusResponse;
@@ -27,15 +26,10 @@ public class SDKTrackingFunction {
                 .callbackUrl(OverledgerContext.CALLBACK_URL)
                 .timestamp(Instant.now())
                 .build();
-        try {
-            OverledgerTransaction result = sdk.readTransaction(statusRequest.getOverledgerTransactionId());
-            System.out.printf("");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String sub_status = sdk.subscribeStatusUpdate(statusRequest);
-        String unSub_status = sdk.unsubscribeStatusUpdate(statusRequest);
-        log.info("sub_status: " + sub_status);
+
+        StatusResponse sub_status = sdk.subscribeStatusUpdate(statusRequest);
+        StatusResponse unSub_status = sdk.unsubscribeStatusUpdate(statusRequest);
+        log.info("sub_status: " + sub_status.getPayload());
         log.info("unSub_status: " + unSub_status);
 
     }

@@ -225,13 +225,13 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
-    public String subscribeStatusUpdate(StatusRequest statusRequest){
-        return (String) this.client.postSubStatusUpdate(statusRequest);
+    public StatusResponse subscribeStatusUpdate(StatusRequest statusRequest){
+        return this.client.postSubStatusUpdate(statusRequest);
     }
 
     @Override
-    public String unsubscribeStatusUpdate(StatusRequest statusRequest){
-        return (String) this.client.postUnsubStatusUpdate(statusRequest);
+    public StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest){
+        return this.client.postUnsubStatusUpdate(statusRequest);
     }
 
 

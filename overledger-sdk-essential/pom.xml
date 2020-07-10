@@ -78,12 +78,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
-        <!--for webHook response GenericMessage in DefaultOverledgerSDKTest-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-messaging</artifactId>
-            <version>5.2.4.RELEASE</version>
-        </dependency>
 
     </dependencies>
 </project>
