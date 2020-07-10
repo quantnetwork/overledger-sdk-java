@@ -9,6 +9,7 @@ import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
 import network.quant.util.Status;
+import network.quant.util.StatusRequest;
 import network.quant.util.StatusResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.*;
@@ -18,6 +19,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.messaging.support.GenericMessage;
+
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.time.Instant;
@@ -37,7 +40,7 @@ public class DefaultOverledgerSDKTest {
     private OverledgerTransactionRequest overledgerTransactionRequest;
     private OverledgerTransactionResponse overledgerTransactionResponse;
     private OverledgerTransactionsResponse overledgerTransactionsResponse;
-    private StatusResponse statusResponse;
+    private StatusRequest statusRequest;
     private Account bitcoinAccount;
     private UUID transactionId;
     private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -50,8 +53,13 @@ public class DefaultOverledgerSDKTest {
         this.overledgerSDK = DefaultOverledgerSDK.newInstance(NETWORK.TEST, this.accountManager, this.client);
         this.overledgerTransactionRequest = new OverledgerTransactionRequest();
         this.overledgerTransactionResponse = new OverledgerTransactionResponse();
-        this.statusResponse = new StatusResponse();
         this.transactionId = UUID.randomUUID();
+        this.statusRequest = StatusRequest.builder()
+                .mappId("test1")
+                .overledgerTransactionId(this.transactionId)
+                .callbackUrl("http://WebHookControllerTest.com")
+                .timestamp(Instant.now())
+                .build();
         this.bitcoinAccount = new Account() {
             @Override
             public Account withNetwork(NETWORK network) {
@@ -170,23 +178,27 @@ public class DefaultOverledgerSDKTest {
         Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionsResponse.class));
     }
 
-    @Test
-    public void test007StatusOfTransaction_shouldSuccess() throws Exception {
-        this.statusResponse.setStatus(new Status(STATUS.broadcasted,"1234", "broadCasting...", Instant.now()));
+   @Test
+    public void test007subscribeStatusOfTransaction_shouldSuccess() throws Exception {
+        String statusResponse = (String) new GenericMessage("saved application subscription: " + statusRequest.getMappId()
+                                                            + ", " + statusRequest.getOverledgerTransactionId()).getPayload();
+       Mockito.when(this.client.postSubStatusUpdate(this.statusRequest)).
+               thenReturn(statusResponse);
 
-        Mockito.when(this.client.getTransactionStatus(Mockito.any(UUID.class), eq(StatusResponse.class))).thenReturn(this.statusResponse.getStatus());
-        Status status = this.overledgerSDK.getStatusFunction(this.transactionId, StatusResponse.class);
-        Assert.assertNotNull(status);
-        Assert.assertEquals(status , this.statusResponse.getStatus());
+       String statusSubscribeResult = this.overledgerSDK.subscribeStatusUpdate(statusRequest);
+        Assert.assertNotNull(statusSubscribeResult);
+        Assert.assertEquals(statusSubscribeResult , statusResponse);
     }
 
-    @Test //in case of transaction ID not found
-    public void test008StatusOfTransaction_shouldReturnNull() throws Exception {
-        this.statusResponse.setStatus(null);
+     @Test
+    public void test008unSubscribeStatusOfTransaction_shouldSuccess() throws Exception {
+         String statusResponse = (String) new GenericMessage("Unsubscribed application subscription: "
+                                                                    + statusRequest.getMappId() + ", " + this.statusRequest.getOverledgerTransactionId()).getPayload();
+         Mockito.when(this.client.postUnsubStatusUpdate(this.statusRequest)).
+                 thenReturn(statusResponse);
 
-        Mockito.when(this.client.getTransactionStatus(Mockito.any(UUID.class), eq(StatusResponse.class))).thenReturn(this.statusResponse.getStatus());
-        Status status = this.overledgerSDK.getStatusFunction(this.transactionId, StatusResponse.class);
-        Assert.assertNull(status);
-        Assert.assertEquals(status , this.statusResponse.getStatus());
+         String statusUnSubscribeResult = this.overledgerSDK.unsubscribeStatusUpdate(statusRequest);
+         Assert.assertNotNull(statusUnSubscribeResult);
+         Assert.assertEquals(statusUnSubscribeResult , statusResponse);
     }
 }

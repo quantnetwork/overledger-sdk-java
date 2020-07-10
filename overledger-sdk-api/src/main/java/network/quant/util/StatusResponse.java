@@ -1,94 +1,71 @@
 package network.quant.util;
 
+import java.io.Serializable;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
+public class StatusResponse<T> implements Serializable {
 
-public class StatusResponse {
+    private T payload;
+    //private MessageHeaders headers;
 
-    private UUID overledgerTransactionId;
-    private String mappId;
-    private Instant timestamp;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private Status status;
-    private List<Status> statusHistory;
-    private List<String> dltList;
-
-    public StatusResponse(){}
-    public StatusResponse(UUID overledgerTransactionId, String mappId, Instant timestamp, Instant createdAt, Instant updatedAt, Status status, List<Status> statusHistory, List<String> dltList) {
-        this.overledgerTransactionId = overledgerTransactionId;
-        this.mappId = mappId;
-        this.timestamp = timestamp;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.status = status;
-        this.statusHistory = statusHistory;
-        this.dltList = dltList;
+    public StatusResponse() {
     }
 
-    public UUID getOverledgerTransactionId() {
-        return overledgerTransactionId;
+    public StatusResponse(T payload) {
+        this.payload = payload;
+    }
+    /*    public StatusResponse(T payload) {
+        this(payload, new MessageHeaders(null));
+    }
+    public StatusResponse(T payload, Map<String, Object> headers) {
+        this(payload, new MessageHeaders(headers));
     }
 
-    public void setOverledgerTransactionId(UUID overledgerTransactionId) {
-        this.overledgerTransactionId = overledgerTransactionId;
+    public StatusResponse(T payload, MessageHeaders headers) {
+        Assert.notNull(payload, "Payload must not be null");
+        Assert.notNull(headers, "MessageHeaders must not be null");
+        this.payload = payload;
+        //this.headers = headers;
+    }*/
+
+
+    public T getPayload() {
+        return payload;
     }
 
-    public String getMappId() {
-        return mappId;
+    public void setPayload(T payload) {
+        this.payload = payload;
     }
 
-    public void setMappId(String mappId) {
-        this.mappId = mappId;
-    }
+/*    @Override
+    public int hashCode() {
+        // Using nullSafeHashCode for proper array hashCode handling
+        return (ObjectUtils.nullSafeHashCode(this.payload) * 23  *//*this.headers.hashCode()*//*);
+    }*/
 
-    public Instant getTimestamp() {
-        return timestamp;
-    }
+/*    @Override
+    public boolean equals( Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof StatusResponse)) {
+            return false;
+        }
+        StatusResponse<?> otherMsg = (StatusResponse<?>) other;
+        // Using nullSafeEquals for proper array equals comparisons
+        return (ObjectUtils.nullSafeEquals(this.payload, otherMsg.payload));
+    }*/
 
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public List<Status> getStatusHistory() {
-        return statusHistory;
-    }
-
-    public void setStatusHistory(List<Status> statusHistory) {
-        this.statusHistory = statusHistory;
-    }
-
-    public List<String> getDltList() {
-        return dltList;
-    }
-
-    public void setDltList(List<String> dltList) {
-        this.dltList = dltList;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(getClass().getSimpleName());
+        sb.append(" [payload=");
+        if (this.payload instanceof byte[]) {
+            sb.append("byte[").append(((byte[]) this.payload).length).append("]");
+        }
+        else {
+            sb.append(this.payload);
+        }
+        //sb.append(", headers=").append(this.headers).append("]");
+        return sb.toString();
     }
 }

@@ -141,10 +141,17 @@ public interface OverledgerSDK {
 
 
     /**
-     * Get status of given transaction ID
-     * @param overledgerTransactionID containing overledger transaction ID
-     * @return SequenceResponse containing status response object
+     * Get status of given statusRequest
+     * @param statusRequest containing overledger transaction request
+     * @return subscribe status response
      */
-    Status getStatusFunction(UUID overledgerTransactionID, Class<StatusResponse> responseClass);
+    String subscribeStatusUpdate(StatusRequest statusRequest);
+
+    /**
+     * Get status of given statusRequest
+     * @param statusRequest containing overledger transaction request
+     * @return unsubscribe status response
+     */
+    String unsubscribeStatusUpdate(StatusRequest statusRequest);
 
 }
