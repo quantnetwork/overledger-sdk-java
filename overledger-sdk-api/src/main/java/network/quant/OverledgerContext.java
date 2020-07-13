@@ -30,7 +30,7 @@ public class OverledgerContext {
     private static final String FAUCET_XBT_KEY                              = "bitcoin.faucet.url";
     private static final String FAUCET_ETH_KEY                              = "ethereum.faucet.url";
     private static final String FAUCET_XRP_KEY                              = "ripple.faucet.url";
-
+    public static Properties config = null;
     public static String WRITE_TRANSACTIONS;
     public static String READ_TRANSACTIONS_BY_TRANSACTION_ID;
     public static String READ_TRANSACTIONS_BY_MAPP_ID;
@@ -58,6 +58,7 @@ public class OverledgerContext {
      * @param properties Properties containing properties
      */
     public static void loadContext(Properties properties) {
+        config = properties;
         TEST_URL = properties.getProperty(TEST_URL_KEY);
         MAIN_URL = properties.getProperty(MAIN_URL_KEY);
         String baseUrl = NETWORK.MAIN.equals(CURRENT_NETWORK)?MAIN_URL:TEST_URL;

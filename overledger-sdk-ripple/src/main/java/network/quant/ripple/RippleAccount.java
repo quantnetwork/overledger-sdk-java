@@ -154,6 +154,11 @@ public class RippleAccount implements Account {
         }
     }
 
+    @Override
+    public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
+        throw new UnsupportedOperationException();
+    }
+
     public static Account getInstance(NETWORK network, String secretKey, BigInteger nonce, Encryptor encryptor, Compressor compressor) {
         I = new RippleAccount(network, secretKey, nonce);
         I.encryptor = encryptor;

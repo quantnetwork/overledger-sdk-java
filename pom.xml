@@ -6,7 +6,7 @@
 
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-java</artifactId>
-    <version>1.0.0-alpha.4-SNAPSHOT</version>
+    <version>1.0.0-alpha.5-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -22,13 +22,7 @@
     <inceptionYear>2018</inceptionYear>
 
     <developers>
-        <developer>
-            <name>Rui Wang</name>
-            <email>rui.wang@quant.network</email>
-            <organization>Quant Network</organization>
-            <organizationUrl>https://quant.network</organizationUrl>
-            <timezone>UTC+00:00</timezone>
-        </developer>
+
     </developers>
 
     <licenses>
@@ -68,6 +62,8 @@
         <module>overledger-sdk-ripple</module>
         <module>overledger-sdk-bundle</module>
         <module>overledger-sdk-example</module>
+        <module>overledger-sdk-security</module>
+
     </modules>
 
     <properties>
@@ -76,7 +72,7 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <java.version>8</java.version>
         <spring.boot.version>2.0.6.RELEASE</spring.boot.version>
-        <jackson.version>2.9.10.1</jackson.version>
+        <jackson.version>2.9.10.4</jackson.version>
         <lombok.version>1.18.2</lombok.version>
         <bitcoinj.version>0.14.7</bitcoinj.version>
         <web3j.version>3.5.0</web3j.version>
@@ -138,11 +134,6 @@
                 <optional>true</optional>
             </dependency>
             <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>${json.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>net.i2p.crypto</groupId>
                 <artifactId>eddsa</artifactId>
                 <version>${crypton.version}</version>
@@ -168,11 +159,6 @@
                 <version>${jaxb.activation}</version>
             </dependency>
             <dependency>
-                <groupId>net.i2p.crypto</groupId>
-                <artifactId>eddsa</artifactId>
-                <version>${eddsa.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.json</groupId>
                 <artifactId>json</artifactId>
                 <version>${json.version}</version>
@@ -182,6 +168,12 @@
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.jupiter.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven.gpg.plugin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -254,6 +246,7 @@
                 <artifactId>overledger-sdk-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
