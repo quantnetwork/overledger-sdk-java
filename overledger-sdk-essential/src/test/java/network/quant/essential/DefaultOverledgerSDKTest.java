@@ -8,7 +8,6 @@ import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
-import network.quant.util.Status;
 import network.quant.util.StatusRequest;
 import network.quant.util.StatusResponse;
 import org.assertj.core.api.Assertions;
