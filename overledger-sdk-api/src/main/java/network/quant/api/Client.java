@@ -99,4 +99,6 @@ public interface Client<T, S> {
      */
     SequenceResponse postSequence(SequenceRequest sequenceRequest);
 
+    StatusResponse postSubStatusUpdate(StatusRequest statusRequest);
+    StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest);
 }

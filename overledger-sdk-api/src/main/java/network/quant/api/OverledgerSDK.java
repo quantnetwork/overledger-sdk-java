@@ -139,4 +139,19 @@ public interface OverledgerSDK {
      */
     SequenceResponse getSequence(SequenceRequest sequenceRequest);
 
+
+    /**
+     * Get status of given statusRequest
+     * @param statusRequest containing overledger transaction request
+     * @return subscribe status response
+     */
+    StatusResponse subscribeStatusUpdate(StatusRequest statusRequest);
+
+    /**
+     * Get status of given statusRequest
+     * @param statusRequest containing overledger transaction request
+     * @return unsubscribe status response
+     */
+    StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest);
+
 }

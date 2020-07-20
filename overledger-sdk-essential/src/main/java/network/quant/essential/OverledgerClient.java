@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
-import network.quant.api.OverledgerTransaction;
 import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
-import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
 import network.quant.util.*;
@@ -52,6 +50,62 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .map(ByteArrayResource::getByteArray)
                 .map(String::new)
                 .map(ClientResponseException::new);
+    }
+
+    public StatusResponse postSubStatusUpdate(StatusRequest statusRequest) {
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.SUBSCRIBE_TRANSACTION_UPDATES)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(statusRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(StatusResponse.class)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(statusRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(StatusResponse.class)
+                    .block();
+        }
+    }
+
+    public StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest){
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.UNSUBSCRIBE_TRANSACTION_UPDATES)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(statusRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(StatusResponse.class)
+                    .block();
+        }catch (RedirectException e){
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(statusRequest))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(StatusResponse.class)
+                    .block();
+        }
     }
 
     @Override

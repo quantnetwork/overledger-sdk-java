@@ -19,6 +19,12 @@
         <url>https://quant.network</url>
         <name>Quant Network</name>
     </organization>
+    <dependencies>
+       <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
