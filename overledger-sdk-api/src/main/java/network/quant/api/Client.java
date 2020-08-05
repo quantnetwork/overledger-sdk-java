@@ -14,9 +14,10 @@ public interface Client<T, S> {
     /**
      * Write transaction to Overledger BPI layer
      * HTTP POST method to BPI layer
+     *
      * @param ovlTransaction T containing the actual request body
-     * @param requestClass Class containing request body class type
-     * @param responseClass Class containing response body class type
+     * @param requestClass   Class containing request body class type
+     * @param responseClass  Class containing response body class type
      * @return S containing actual response body
      */
     S postTransaction(T ovlTransaction, Class<T> requestClass, Class<S> responseClass);
@@ -24,8 +25,9 @@ public interface Client<T, S> {
     /**
      * Read transaction from BPI layer
      * HTTP GET method to BPI layer
+     *
      * @param overledgerTransactionID UUID containing Overledger transaction ID
-     * @param responseClass Class containing response body class type
+     * @param responseClass           Class containing response body class type
      * @return S containing actual response body
      */
     S getTransaction(UUID overledgerTransactionID, Class<S> responseClass);
@@ -33,7 +35,8 @@ public interface Client<T, S> {
     /**
      * Read transactions from BPI layer
      * HTTP GET method to BPI layer
-     * @param mappId String containing Overledger Mapp ID
+     *
+     * @param mappId        String containing Overledger Mapp ID
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
@@ -42,8 +45,9 @@ public interface Client<T, S> {
     /**
      * Read transactions from BPI layer
      * HTTP GET method to BPI layer
-     * @param mappId String containing Overledger Mapp ID
-     * @param  page PageParams containing paging information
+     *
+     * @param mappId        String containing Overledger Mapp ID
+     * @param page          PageParams containing paging information
      * @param responseClass Class containing response body class type
      * @return S containing actual response body
      */
@@ -52,9 +56,10 @@ public interface Client<T, S> {
     /**
      * Read transaction from BPI layer
      * HTTP GET method to BPI layer
-     * @param dlt String containing DLT type. e.g: bitcoin, ethereum, ripple. Make sure the DLT type is accepted by BPI
+     *
+     * @param dlt             String containing DLT type. e.g: bitcoin, ethereum, ripple. Make sure the DLT type is accepted by BPI
      * @param transactionHash String containing DLT transaction hash value
-     * @param responseClass Class containing response body class type
+     * @param responseClass   Class containing response body class type
      * @return S containing actual response body
      */
     @Deprecated
@@ -62,15 +67,17 @@ public interface Client<T, S> {
 
     /**
      * Search transaction base on transaction hash
+     *
      * @param transactionHash String containing transaction hash
-     * @param responseClass Class containing response class
+     * @param responseClass   Class containing response class
      * @return Transaction containing the transaction
      */
     Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass);
 
     /**
      * Search address base on address string
-     * @param address String containing address
+     *
+     * @param address       String containing address
      * @param responseClass Class containing response class
      * @return Address containing the address
      */
@@ -78,8 +85,9 @@ public interface Client<T, S> {
 
     /**
      * Search address base on address string
-     * @param dlt String containing DLT type
-     * @param blockhash String containing block hash
+     *
+     * @param dlt           String containing DLT type
+     * @param blockhash     String containing block hash
      * @param responseClass Class containing response class
      * @return Block containing the block implementation
      */
@@ -87,6 +95,7 @@ public interface Client<T, S> {
 
     /**
      * Get balances of given DLTs
+     *
      * @param balanceRequests List containing dlt address list
      * @return List of balances
      */
@@ -94,9 +103,19 @@ public interface Client<T, S> {
 
     /**
      * Get sequence of given addresses
+     *
      * @param sequenceRequest SequenceRequest containing sequence request object
      * @return SequenceResponse containing sequence response object
      */
     SequenceResponse postSequence(SequenceRequest sequenceRequest);
+
+
+    /**
+     * Gets fee estimation for a given dlt, optional blockNumber param for certain DLT
+     * @param dltName
+     * @param blockNumber
+     * @return FeeEstimationResponse containing the dlt name and fee
+     */
+    FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber);
 
 }
