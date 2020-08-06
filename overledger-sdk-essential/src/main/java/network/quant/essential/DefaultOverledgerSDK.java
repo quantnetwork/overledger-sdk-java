@@ -14,7 +14,6 @@ import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -230,6 +229,16 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber) {
         return this.client.getFeeEstimation(dltName, blockNumber);
     }
+
+    public StatusResponse subscribeStatusUpdate(StatusRequest statusRequest){
+        return this.client.postSubStatusUpdate(statusRequest);
+    }
+
+    @Override
+    public StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest){
+        return this.client.postUnsubStatusUpdate(statusRequest);
+    }
+
 
     /**
      * Write transaction to BPI layer from byte array

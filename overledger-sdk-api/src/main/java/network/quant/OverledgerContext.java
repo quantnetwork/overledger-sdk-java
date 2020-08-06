@@ -12,23 +12,28 @@ import java.util.Properties;
  */
 public class OverledgerContext {
 
-    private static final String TEST_URL_KEY = "overledger.testurl";
-    private static final String MAIN_URL_KEY = "overledger.mainurl";
-    private static final String WRITE_TRANSACTIONS_KEY = "overledger.write";
-    private static final String READ_TRANSACTIONS_BY_TRANSACTION_ID_KEY = "overledger.read.id";
-    private static final String READ_TRANSACTIONS_BY_MAPP_ID_KEY = "overledger.read.mappid";
-    private static final String READ_TRANSACTIONS_BY_MAPP_BY_PAGE_ID_KEY = "overledger.read.mappid.page";
-    private static final String SEARCH_TRANSACTIONS_KEY = "overledger.search.transactions";
-    private static final String SEARCH_ADDRESSES_KEY = "overledger.search.addresses";
-    private static final String SEARCH_CHAIN_BLOCKS_KEY = "overledger.search.chain.blocks";
-    private static final String BALANCES_CHECK_KEY = "overledger.balances";
-    private static final String SEQUENCE_CHECK_KEY = "overledger.sequence";
-    private static final String BPI_KEY_KEY = "overledger.bpikey";
-    private static final String MAPP_KEY = "overledger.mappid";
-    private static final String FAUCET_XBT_KEY = "bitcoin.faucet.url";
-    private static final String FAUCET_ETH_KEY = "ethereum.faucet.url";
-    private static final String FAUCET_XRP_KEY = "ripple.faucet.url";
+    private static final String TEST_URL_KEY                                = "overledger.testurl";
+    private static final String MAIN_URL_KEY                                = "overledger.mainurl";
+    private static final String WRITE_TRANSACTIONS_KEY                      = "overledger.write";
+    private static final String READ_TRANSACTIONS_BY_TRANSACTION_ID_KEY     = "overledger.read.id";
+    private static final String READ_TRANSACTIONS_BY_MAPP_ID_KEY            = "overledger.read.mappid";
+    private static final String READ_TRANSACTIONS_BY_MAPP_BY_PAGE_ID_KEY    = "overledger.read.mappid.page";
+    private static final String SEARCH_TRANSACTIONS_KEY                     = "overledger.search.transactions";
+    private static final String SEARCH_ADDRESSES_KEY                        = "overledger.search.addresses";
+    private static final String SEARCH_CHAIN_BLOCKS_KEY                     = "overledger.search.chain.blocks";
+    private static final String BALANCES_CHECK_KEY                          = "overledger.balances";
+    private static final String SEQUENCE_CHECK_KEY                          = "overledger.sequence";
+    private static final String SUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.sub.state.id";
+    private static final String UNSUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.unsub.state.id";
+    private static final String CALLBACK_URL_KEY                            = "overledger.callback.url";
+    private static final String BPI_KEY_KEY                                 = "overledger.bpikey";
+    private static final String MAPP_KEY                                    = "overledger.mappid";
+    private static final String FAUCET_XBT_KEY                              = "bitcoin.faucet.url";
+    private static final String FAUCET_ETH_KEY                              = "ethereum.faucet.url";
+    private static final String FAUCET_XRP_KEY                              = "ripple.faucet.url";
     private static final String FEE_ESTIMATION_KEY = "overledger.fee.estimation";
+    
+    public static Properties config = null;
 
     public static String FEE_ESTIMATION;
     public static String WRITE_TRANSACTIONS;
@@ -40,6 +45,9 @@ public class OverledgerContext {
     public static String SEARCH_CHAIN_BLOCKS;
     public static String BALANCES_CHECK;
     public static String SEQUENCE_CHECK;
+    public static String SUBSCRIBE_TRANSACTION_UPDATES;
+    public static String UNSUBSCRIBE_TRANSACTION_UPDATES;
+    public static String CALLBACK_URL;
     public static String FAUCET_XBT;
     public static String FAUCET_ETH;
     public static String FAUCET_XRP;
@@ -56,6 +64,7 @@ public class OverledgerContext {
      * @param properties Properties containing properties
      */
     public static void loadContext(Properties properties) {
+        config = properties;
         TEST_URL = properties.getProperty(TEST_URL_KEY);
         MAIN_URL = properties.getProperty(MAIN_URL_KEY);
         String baseUrl = NETWORK.MAIN.equals(CURRENT_NETWORK) ? MAIN_URL : TEST_URL;
@@ -69,6 +78,9 @@ public class OverledgerContext {
         SEARCH_CHAIN_BLOCKS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_CHAIN_BLOCKS_KEY));
         BALANCES_CHECK = String.format("%s%s", baseUrl, properties.getProperty(BALANCES_CHECK_KEY));
         SEQUENCE_CHECK = String.format("%s%s", baseUrl, properties.getProperty(SEQUENCE_CHECK_KEY));
+        SUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        UNSUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        CALLBACK_URL = String.format("%s%s", baseUrl, properties.getProperty(CALLBACK_URL_KEY));
         FAUCET_XBT = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XBT_KEY));
         FAUCET_ETH = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_ETH_KEY));
         FAUCET_XRP = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XRP_KEY));

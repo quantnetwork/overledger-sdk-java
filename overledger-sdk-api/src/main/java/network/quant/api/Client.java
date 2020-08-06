@@ -110,6 +110,7 @@ public interface Client<T, S> {
     SequenceResponse postSequence(SequenceRequest sequenceRequest);
 
 
+
     /**
      * Gets fee estimation for a given dlt, optional blockNumber param for certain DLT
      * @param dltName
@@ -117,5 +118,9 @@ public interface Client<T, S> {
      * @return FeeEstimationResponse containing the dlt name and fee
      */
     FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber);
+
+
+    StatusResponse postSubStatusUpdate(StatusRequest statusRequest);
+    StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest);
 
 }

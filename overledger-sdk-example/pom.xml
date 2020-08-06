@@ -5,7 +5,7 @@
     <parent>
         <artifactId>overledger-sdk-java</artifactId>
         <groupId>network.quant</groupId>
-        <version>1.0.0-alpha.4-SNAPSHOT</version>
+        <version>1.0.0-alpha.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,15 +22,7 @@
 
     <inceptionYear>2018</inceptionYear>
 
-    <developers>
-        <developer>
-            <name>Rui Wang</name>
-            <email>rui.wang@quant.network</email>
-            <organization>Quant Network</organization>
-            <organizationUrl>https://quant.network</organizationUrl>
-            <timezone>UTC+00:00</timezone>
-        </developer>
-    </developers>
+
 
     <dependencies>
         <dependency>
