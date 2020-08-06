@@ -12,10 +12,9 @@ final class SDKFeeEstimation {
         try {
             OverledgerSDK sdk = DefaultOverledgerSDK.newInstance();
 
-            System.out.println("calling for RIPPLE ---> ");
             FeeEstimationResponse feeEstimationResponse = sdk.getFeeEstimation("bitcoin", "15");
 
-            System.out.println("fee estimation response:" + feeEstimationResponse.getDlt() + ", data = " + feeEstimationResponse.getData());
+            System.out.println("fee estimation response for bitcoin:" + feeEstimationResponse.getDlt() + ", data = " + feeEstimationResponse.getData());
 
             FeeEstimationResponse feeEstimationResponseForRipple = sdk.getFeeEstimation("ripple", null);
             System.out.println("fee estimation response for ripple :" + feeEstimationResponseForRipple.getDlt() + ", data = " + feeEstimationResponseForRipple.getData());
