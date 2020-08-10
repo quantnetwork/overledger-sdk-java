@@ -19,6 +19,8 @@ final class SDKFeeEstimation {
             FeeEstimationResponse feeEstimationResponseForRipple = sdk.getFeeEstimation("ripple", null);
             System.out.println("fee estimation response for ripple :" + feeEstimationResponseForRipple.getDlt() + ", data = " + feeEstimationResponseForRipple.getData());
 
+            FeeEstimationResponse feeEstimationResponseForEthereum = sdk.getFeeEstimation("ethereum", null);
+            System.out.println("fee estimation response for ethereum: " + feeEstimationResponseForEthereum.getDlt() + ", data= " + feeEstimationResponseForEthereum.getData());
         } catch (Exception e) {
             System.out.println("Some error happened in the demo, make sure you have the config file in the src/main/resources set and the mappId set and the transaction hashes above are valid");
             e.printStackTrace();
