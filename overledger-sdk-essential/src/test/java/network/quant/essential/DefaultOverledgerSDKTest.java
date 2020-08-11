@@ -8,6 +8,7 @@ import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
+import network.quant.util.FeeEstimationResponse;
 import network.quant.util.StatusRequest;
 import network.quant.util.StatusResponse;
 import org.assertj.core.api.Assertions;
@@ -205,5 +206,17 @@ public class DefaultOverledgerSDKTest {
          StatusResponse statusUnSubscribeResult = this.overledgerSDK.unsubscribeStatusUpdate(statusRequest);
          Assert.assertNotNull(statusUnSubscribeResult);
          Assert.assertEquals(statusUnSubscribeResult.getPayload() , statusResponse.getPayload());
+    }
+
+    @Test
+    public void test009EthFeeEstimation_shouldSuccess() throws Exception {
+        FeeEstimationResponse feeEstimationResponse = new FeeEstimationResponse("dlt", new BigInteger("1000000"));
+        Mockito.when(this.client.getFeeEstimation("ethereum", null)).
+                thenReturn(feeEstimationResponse);
+
+        FeeEstimationResponse estimationResponse = this.overledgerSDK.getFeeEstimation("ethereum", null);
+        Assert.assertNotNull(estimationResponse);
+        Assert.assertEquals(estimationResponse.getData() , feeEstimationResponse.getData());
+        Assert.assertEquals(estimationResponse.getDlt() , feeEstimationResponse.getDlt());
     }
 }

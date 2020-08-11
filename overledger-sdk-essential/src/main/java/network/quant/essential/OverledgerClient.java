@@ -19,6 +19,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -161,7 +162,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public <S extends OverledgerTransactions>  S getTransactions(String mappId, Class<S> responseClass) {
+    public <S extends OverledgerTransactions> S getTransactions(String mappId, Class<S> responseClass) {
         try {
             return this.webClient
                     .get()
@@ -185,7 +186,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public <S extends OverledgerTransactions>  S getTransactions(String mappId, PageParams page, Class<S> responseClass) {
+    public <S extends OverledgerTransactions> S getTransactions(String mappId, PageParams page, Class<S> responseClass) {
         try {
             return this.webClient
                     .get()
@@ -243,7 +244,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .map(s -> {
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
-                            return (List<BalanceResponse>)objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {});
+                            return (List<BalanceResponse>) objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {
+                            });
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
@@ -263,7 +265,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .map(s -> {
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
-                            return (List<BalanceResponse>)objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {});
+                            return (List<BalanceResponse>) objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {
+                            });
                         } catch (IOException ioe) {
                             ioe.printStackTrace();
                         }
@@ -297,6 +300,34 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToMono(SequenceResponse.class)
+                    .block();
+        }
+    }
+
+    @Override
+    public FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber) {
+
+        System.out.println("getFeeEstimation ---> " + dltName + ", blockNumber = " + blockNumber);
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.FEE_ESTIMATION, dltName, blockNumber)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(FeeEstimationResponse.class)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(FeeEstimationResponse.class)
                     .block();
         }
     }

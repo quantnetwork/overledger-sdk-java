@@ -34,7 +34,8 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private AccountManager accountManager;
     private Client client;
 
-    private static @Setter String defaultLocation = "./src/main/resources/context.properties";
+    private static @Setter
+    String defaultLocation = "./src/main/resources/context.properties";
 
     private DefaultOverledgerSDK(NETWORK network) {
         this(network, AccountManager.newInstance(), null);
@@ -50,7 +51,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         }
         this.initial(network);
         this.accountManager = accountManager;
-        this.client = null == client?OverledgerClient.getInstance():client;
+        this.client = null == client ? OverledgerClient.getInstance() : client;
     }
 
     private void throwCauseException(Exception e) throws Exception {
@@ -102,7 +103,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         OverledgerTransaction overledgerTransaction = null;
         try {
             ovlTransaction.getDltData().stream()
-                    .map(dltTransaction -> (DltTransactionRequest)dltTransaction)
+                    .map(dltTransaction -> (DltTransactionRequest) dltTransaction)
                     .map(dltTransactionRequest -> {
                         if (dltTransactionRequest instanceof DltStreamTransactionRequest) {
                             this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
@@ -128,7 +129,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                         }
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
-            overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
             ObjectMapper objectMapper = new ObjectMapper();
             System.out.println(objectMapper.writeValueAsString(overledgerTransaction));
         } catch (Exception e) {
@@ -141,7 +142,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public OverledgerTransaction readTransaction(UUID overledgerTransactionID) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
-            overledgerTransaction = (OverledgerTransactionResponse)this.client.getTransaction(overledgerTransactionID, OverledgerTransactionResponse.class);
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.getTransaction(overledgerTransactionID, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -176,7 +177,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
-            overledgerTransaction = (OverledgerTransactionResponse)this.client.getTransaction(dlt, transactionHash, OverledgerTransactionResponse.class);
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.getTransaction(dlt, transactionHash, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -225,6 +226,10 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
+    public FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber) {
+        return this.client.getFeeEstimation(dltName, blockNumber);
+    }
+
     public StatusResponse subscribeStatusUpdate(StatusRequest statusRequest){
         return this.client.postSubStatusUpdate(statusRequest);
     }
@@ -237,8 +242,9 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     /**
      * Write transaction to BPI layer from byte array
+     *
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request
-     * @param data byte array containing the data
+     * @param data           byte array containing the data
      * @return Overledger response
      * @throws Exception throw if connection between client and manager is broken
      */
@@ -247,7 +253,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         OverledgerTransaction overledgerTransaction = null;
         try {
             ovlTransaction.getDltData().stream()
-                    .map(dltTransaction -> (DltTransactionRequest)dltTransaction)
+                    .map(dltTransaction -> (DltTransactionRequest) dltTransaction)
                     .map(dltTransactionRequest -> {
                         this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
                                 dltTransactionRequest.getFromAddress(),
@@ -258,7 +264,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
 
-            overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -267,15 +273,17 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     /**
      * Write transaction to BPI layer from input stream
+     *
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request
-     * @param inputStream InputSteam containing data stream
+     * @param inputStream    InputSteam containing data stream
      * @return Overledger response
      * @throws Exception throw if connection between client and manager is broken
      */
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, InputStream inputStream) throws Exception {
         return this.writeTransaction(ovlTransaction, CommonUtil.getStream(inputStream));
     }
-    private static  boolean loadContext(){
+
+    private static boolean loadContext() {
         try {
             InputStream inputStream = getDefaultContextConfig();
 
@@ -284,8 +292,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
             inputStream.close();
             OverledgerContext.loadContext(properties);
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error while trying to read default context.properties file");
             e.printStackTrace();
             return false;
@@ -301,9 +308,10 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     /**
      * Create a default config overledger SDK instance and read the context.properties from the current directory
-     * @enum NETWORK containing overledger transaction request
+     *
      * @return DefaultOverledgerSDK response
      * @throws Exception throw if connection between client and manager is broken
+     * @enum NETWORK containing overledger transaction request
      */
     public static DefaultOverledgerSDK newInstance(NETWORK network) {
         //if(!loadContext())
