@@ -239,6 +239,9 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postUnsubStatusUpdate(statusRequest);
     }
 
+    public DltTransaction buildTransaction(DltTransaction dltTransaction){
+        return this.accountManager.getAccount(dltTransaction.getDlt()).buildTransaction(dltTransaction);
+    }
 
     /**
      * Write transaction to BPI layer from byte array

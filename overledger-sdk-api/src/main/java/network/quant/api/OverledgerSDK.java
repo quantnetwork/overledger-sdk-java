@@ -178,5 +178,11 @@ public interface OverledgerSDK {
      */
     StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest);
 
+    /**
+     * Takes the Overledger definition of a transaction and converts it into a specific transaction (ethereum/ripple/bitcoin) for further processing
+     * @param dltTransaction details on the information to include in this transaction
+     * @return build specific transaction
+     */
+    DltTransaction buildTransaction(DltTransaction dltTransaction);
 
 }

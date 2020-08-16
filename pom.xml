@@ -75,7 +75,7 @@
         <jackson.version>2.9.10.4</jackson.version>
         <lombok.version>1.18.2</lombok.version>
         <bitcoinj.version>0.14.7</bitcoinj.version>
-        <web3j.version>3.5.0</web3j.version>
+        <web3j.version>4.5.4</web3j.version>
         <json.version>20180813</json.version>
         <crypton.version>0.3.0</crypton.version>
         <jaxb.version>2.3.1</jaxb.version>

@@ -1,10 +1,12 @@
 package network.quant.ethereum;
 
-import network.quant.api.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.api.*;
+import network.quant.ethereum.exception.*;
+import network.quant.ethereum.experimental.dto.*;
 import network.quant.util.CommonUtil;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.Function;
@@ -14,9 +16,9 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,8 +29,8 @@ import java.util.Optional;
 @Slf4j
 public class EthereumAccount implements Account {
 
-    private static final BigInteger DEFAULT_MAIN_GAS_LIMIT = new BigInteger("8000000");
-    private static final BigInteger DEFAULT_TEST_GAS_LIMIT = new BigInteger("4712388");
+    private static final BigInteger DEFAULT_MAIN_GAS_LIMIT = BigInteger.valueOf(8000000);
+    private static final BigInteger DEFAULT_TEST_GAS_LIMIT = BigInteger.valueOf(4712388);
     private static EthereumAccount I;
     NETWORK network;
     ECKeyPair ecKeyPair;
@@ -36,6 +38,7 @@ public class EthereumAccount implements Account {
     BigInteger gasLimit;
     Encryptor encryptor;
     Compressor compressor;
+    BigInteger chainId;
 
     private EthereumAccount(NETWORK network) throws Exception {
         this(network, Keys.createEcKeyPair(), BigInteger.ZERO);
@@ -54,6 +57,10 @@ public class EthereumAccount implements Account {
         this.ecKeyPair = privateKey;
         this.nonce = nonce;
         this.gasLimit = NETWORK.MAIN.equals(this.network) ? DEFAULT_MAIN_GAS_LIMIT : DEFAULT_TEST_GAS_LIMIT;
+        if (network.equals(NETWORK.MAIN))
+            chainId = BigInteger.valueOf(1l);
+        else
+            chainId = BigInteger.valueOf(3l);
     }
 
     private void sign(String toAddress, String message, DltTransactionRequest dltTransaction) {
@@ -154,6 +161,54 @@ public class EthereumAccount implements Account {
             String message = DatatypeConverter.printHexBinary(data);
             this.sign(data, toAddress, message, dltTransaction);
         }
+    }
+
+    @Override
+    public DltTransaction buildTransaction(DltTransaction dltTransaction) {
+        String transactionData = null;
+        TransactionEthereumRequest ethereumRequest = (TransactionEthereumRequest) dltTransaction;
+        SCFunctionType invocationType = ethereumRequest.getFunctionType();
+        try {
+            if (ethereumRequest.getToAddress() != null && !ethereumRequest.getToAddress().isEmpty()){
+                if (invocationType.equals(SCFunctionType.FUNCTION_CALL_WITH_PARAMETERS) ||
+                        invocationType.equals(SCFunctionType.FUNCTION_CALL_WITH_NO_PARAMETERS)){
+                    List<ContractArgument> inputParamsList = ethereumRequest.getInputValues();
+                    if (inputParamsList != null && !inputParamsList.isEmpty()){
+                        String functionName = ethereumRequest.getFuncName();
+                        Function function = new Function(functionName,
+                                EthereumUtil.getTypes(ethereumRequest.getInputValues()),
+                                (ethereumRequest.getOutputTypes() == null) ? Collections.emptyList() : EthereumUtil.getTypeReferences(ethereumRequest.getOutputTypes())
+                        );
+                        if (functionName!= null && !functionName.trim().isEmpty()){
+                            transactionData = FunctionEncoder.encode(function);
+                            log.info("transactionData: " + transactionData);
+                        }else {
+                            throw new FunctionNameEmptyException("SmartContract function name must be given.");
+                        }
+                    }else {
+                        throw new SmartContractInputParamsException("input parameters must be defined.");
+                    }
+                }else {
+                    throw new SmartContractFunctionTypeException("Invalid functionType. " +
+                            "must be functionCallWithNoParameters or functionCallWithParameters");
+                }
+            }else {
+                throw new SmartContractAddressException("the toAddress must be set to a non empty string, " +
+                        "equal to the ethereum address of the smart contract");
+            }
+        }catch (Exception e){
+            log.error("exception occurred: " + e.getMessage());
+        }
+        return   EthBuildTransactionResponse.builder()
+                .dlt(ethereumRequest.getDlt())
+                .nonce(ethereumRequest.getSequence())
+                .chainId(this.getChainId())
+                .toAddress(ethereumRequest.getToAddress())
+                .gasLimit(ethereumRequest.getFeeLimit())
+                .gasPrice(ethereumRequest.getFee())
+                .value(ethereumRequest.getAmount())
+                .data(transactionData)
+                .build();
     }
 
     @Override

@@ -154,6 +154,11 @@ public class RippleAccount implements Account {
         }
     }
 
+    // TODO: implement for build trx in ripple
+    @Override
+    public DltTransaction buildTransaction(DltTransaction dltTransaction) {
+        return null;
+    }
     @Override
     public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
         throw new UnsupportedOperationException();

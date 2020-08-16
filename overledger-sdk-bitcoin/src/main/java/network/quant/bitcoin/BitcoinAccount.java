@@ -180,6 +180,10 @@ public class BitcoinAccount implements Account {
         }
     }
 
+    // TODO: implement for build trx in bitcoin
+    public DltTransaction buildTransaction(DltTransaction dltTransaction){
+        return null;
+    }
     /**
      * Add a UTXO to account
      * @param transactionHash String containing txHash of the UTXO
