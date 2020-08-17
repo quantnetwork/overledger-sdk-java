@@ -109,6 +109,9 @@ public class EthereumUtil {
     }
 
     public static String applyArrayLengthToInput(String intUintSolidityInputType, Long selectedArrayLength) {
-        return intUintSolidityInputType.replace(K_ARRAY_LENGTH, selectedArrayLength.toString());
+        if (selectedArrayLength != null)
+            return intUintSolidityInputType.replace(K_ARRAY_LENGTH, selectedArrayLength.toString());
+        else
+            return intUintSolidityInputType.replace(K_ARRAY_LENGTH, "");
     }
 }
