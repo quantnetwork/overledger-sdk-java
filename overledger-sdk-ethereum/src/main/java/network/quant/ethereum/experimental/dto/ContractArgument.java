@@ -12,4 +12,8 @@ public class ContractArgument {
 
     ContractInputTypeOptions type;
     String value;
+    EthereumUintIntOptions selectedIntegerLength;
+    EthereumBytesOptions selectedBytesLength;
+    Long selectedArrayLength;
+
 }

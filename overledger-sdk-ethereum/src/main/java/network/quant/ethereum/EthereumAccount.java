@@ -175,9 +175,15 @@ public class EthereumAccount implements Account {
                     List<ContractArgument> inputParamsList = ethereumRequest.getInputValues();
                     if (inputParamsList != null && !inputParamsList.isEmpty()){
                         String functionName = ethereumRequest.getFuncName();
-                        Function function = new Function(functionName,
-                                EthereumUtil.getTypes(ethereumRequest.getInputValues()),
-                                (ethereumRequest.getOutputTypes() == null) ? Collections.emptyList() : EthereumUtil.getTypeReferences(ethereumRequest.getOutputTypes())
+                        List<String> solidityInputTypes = EthereumUtil.getSolidityInputOutputTypes(inputParamsList);
+                        List<Object> arguments = EthereumUtil.getValues(inputParamsList);
+                        List<String> solidityOutputTypes = (ethereumRequest.getOutputTypes() == null) ? Collections.emptyList() : EthereumUtil.getSolidityInputOutputTypes(ethereumRequest.getOutputTypes());
+
+                        Function function = FunctionEncoder.makeFunction(
+                                functionName,
+                                solidityInputTypes,
+                                arguments,
+                                solidityOutputTypes
                         );
                         if (functionName!= null && !functionName.trim().isEmpty()){
                             transactionData = FunctionEncoder.encode(function);
