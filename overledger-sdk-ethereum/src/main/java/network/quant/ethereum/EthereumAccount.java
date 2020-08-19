@@ -163,8 +163,7 @@ public class EthereumAccount implements Account {
         }
     }
 
-    @Override
-    public DltTransaction buildTransaction(DltTransaction dltTransaction) {
+    public EthRawTransactionResponse buildTransaction(DltTransaction dltTransaction) {
         String transactionData = null;
         TransactionEthereumRequest ethereumRequest = (TransactionEthereumRequest) dltTransaction;
         SCFunctionType invocationType = ethereumRequest.getFunctionType();
@@ -205,16 +204,12 @@ public class EthereumAccount implements Account {
         }catch (Exception e){
             log.error("exception occurred: " + e.getMessage());
         }
-        return   EthBuildTransactionResponse.builder()
-                .dlt(ethereumRequest.getDlt())
-                .nonce(ethereumRequest.getSequence())
-                .chainId(this.getChainId())
-                .toAddress(ethereumRequest.getToAddress())
-                .gasLimit(ethereumRequest.getFeeLimit())
-                .gasPrice(ethereumRequest.getFee())
-                .value(ethereumRequest.getAmount())
-                .data(transactionData)
-                .build();
+        return new EthRawTransactionResponse(BigInteger.valueOf(ethereumRequest.getSequence()),
+                ethereumRequest.getFee(),
+                ethereumRequest.getFeeLimit(),
+                ethereumRequest.getToAddress(),
+                ethereumRequest.getAmount(),
+                transactionData);
     }
 
     @Override
@@ -233,6 +228,25 @@ public class EthereumAccount implements Account {
             String encodedFunction = FunctionEncoder.encode(function);
             this.sign(contractAddress, encodedFunction, (DltTransactionRequest)dltTransaction);
         }
+    }
+
+    @Override
+    public void invokeContract(DltTransaction dltTransaction) {
+        this.sign(dltTransaction);
+    }
+
+    public void sign(DltTransaction dltTransaction){
+        DltTransactionRequest request = (DltTransactionRequest) dltTransaction;
+        EthRawTransactionResponse buildTransactionResponse = this.buildTransaction(dltTransaction);
+
+        byte transactionSignedBytes[] = TransactionEncoder.signMessage(buildTransactionResponse
+                , this.getChainId().longValue()
+                , Credentials.create(this.ecKeyPair)
+        );
+        log.info("transactionSigned: " + Numeric.toHexString(transactionSignedBytes));
+        SignedTransaction signedTransaction = new SignedTransaction();
+        signedTransaction.setTransactions(Collections.singletonList(Numeric.toHexString(transactionSignedBytes)));
+        request.setSignedTransaction(signedTransaction);
     }
 
     /**

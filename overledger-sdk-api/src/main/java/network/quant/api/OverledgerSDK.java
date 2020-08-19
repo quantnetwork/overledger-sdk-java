@@ -179,10 +179,10 @@ public interface OverledgerSDK {
     StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest);
 
     /**
-     * Takes the Overledger definition of a transaction and converts it into a specific transaction (ethereum/ripple/bitcoin) for further processing
-     * @param dltTransaction details on the information to include in this transaction
+     * Invoke smart contract
+     * @param overledgerTransactionRequest containing overledger transaction request for invoke smart contract
      * @return build specific transaction
      */
-    DltTransaction buildTransaction(DltTransaction dltTransaction);
+    OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest)throws Exception;
 
 }

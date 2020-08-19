@@ -180,9 +180,9 @@ public class BitcoinAccount implements Account {
         }
     }
 
-    // TODO: implement for build trx in bitcoin
-    public DltTransaction buildTransaction(DltTransaction dltTransaction){
-        return null;
+    @Override
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in bitcoin sdk.");
     }
     /**
      * Add a UTXO to account

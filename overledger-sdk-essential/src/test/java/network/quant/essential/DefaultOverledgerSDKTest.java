@@ -77,7 +77,7 @@ public class DefaultOverledgerSDKTest {
             @Override
             public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
             @Override
-            public DltTransaction buildTransaction(DltTransaction dltTransaction){return null;}
+            public void invokeContract(DltTransaction dltTransaction){}
             @Override
             public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
 
