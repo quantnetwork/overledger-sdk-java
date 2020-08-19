@@ -29,8 +29,9 @@ public class SDKInvokeSmartContract {
         List<ContractArgument> inputValues = new ArrayList<ContractArgument>(){
             {
                 add(ContractArgument.builder()
-                        .type(ContractInputTypeOptions.BOOL)
-                        .value("false")
+                        .type(ContractInputTypeOptions.BOOLEAN_ARRAY)
+                        .selectedArrayLength(3l)
+                        .value("{true,true,true}")
                         .build());
             }
         };
