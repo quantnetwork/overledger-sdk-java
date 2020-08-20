@@ -25,6 +25,7 @@ public class OverledgerContext {
     private static final String SEQUENCE_CHECK_KEY                          = "overledger.sequence";
     private static final String SUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.sub.state.id";
     private static final String UNSUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.unsub.state.id";
+    private static final String SMART_CONTRACT_QUERY_KEY                    = "overledger.smart.contract.query";
     private static final String CALLBACK_URL_KEY                            = "overledger.callback.url";
     private static final String BPI_KEY_KEY                                 = "overledger.bpikey";
     private static final String MAPP_KEY                                    = "overledger.mappid";
@@ -47,6 +48,7 @@ public class OverledgerContext {
     public static String SEQUENCE_CHECK;
     public static String SUBSCRIBE_TRANSACTION_UPDATES;
     public static String UNSUBSCRIBE_TRANSACTION_UPDATES;
+    public static String SMART_CONTRACT_QUERY;
     public static String CALLBACK_URL;
     public static String FAUCET_XBT;
     public static String FAUCET_ETH;
@@ -80,6 +82,7 @@ public class OverledgerContext {
         SEQUENCE_CHECK = String.format("%s%s", baseUrl, properties.getProperty(SEQUENCE_CHECK_KEY));
         SUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_TRANSACTION_UPDATES_KEY));
         UNSUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        SMART_CONTRACT_QUERY = String.format("%s%s", baseUrl, properties.getProperty(SMART_CONTRACT_QUERY_KEY));
         CALLBACK_URL = String.format("%s%s", baseUrl, properties.getProperty(CALLBACK_URL_KEY));
         FAUCET_XBT = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XBT_KEY));
         FAUCET_ETH = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_ETH_KEY));

@@ -2,6 +2,7 @@ package network.quant.bitcoin;
 
 import network.quant.OverledgerContext;
 import network.quant.api.*;
+import network.quant.bitcoin.exception.UnsupportedSmartContractQueryException;
 import network.quant.exception.DataOverSizeException;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -184,6 +185,12 @@ public class BitcoinAccount implements Account {
     public void invokeContract(DltTransaction dltTransaction){
         throw new UnsupportedOperationException("invoke smart contract isn't valid in bitcoin sdk.");
     }
+
+    @Override
+    public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){
+        throw new UnsupportedSmartContractQueryException("The Bitcoin SDK does not currently support smart contract queries");
+    }
+
     /**
      * Add a UTXO to account
      * @param transactionHash String containing txHash of the UTXO

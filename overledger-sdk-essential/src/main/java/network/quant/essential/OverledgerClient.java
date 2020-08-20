@@ -5,9 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
+import network.quant.api.DltTransaction;
 import network.quant.api.OverledgerTransactions;
+import network.quant.essential.dto.DltTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.ethereum.experimental.dto.ContractQueryRequestDto;
+import network.quant.ethereum.experimental.dto.ContractQueryResponseDto;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
 import network.quant.util.*;
@@ -105,6 +109,35 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToMono(StatusResponse.class)
+                    .block();
+        }
+    }
+
+    @Override
+    public DltTransaction smartContractQuery(DltTransaction dltTransaction){
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.SMART_CONTRACT_QUERY)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(ContractQueryResponseDto.class)
+                    .block();
+        }catch (RedirectException e){
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(ContractQueryResponseDto.class)
                     .block();
         }
     }

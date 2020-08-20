@@ -79,6 +79,8 @@ public class DefaultOverledgerSDKTest {
             @Override
             public void invokeContract(DltTransaction dltTransaction){}
             @Override
+            public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){return null;}
+            @Override
             public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
 
             }

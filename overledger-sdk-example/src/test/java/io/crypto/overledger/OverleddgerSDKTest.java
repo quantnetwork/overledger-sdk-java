@@ -42,8 +42,7 @@ public class OverleddgerSDKTest {
     }
 
 
-    @Ignore
-    @Test
+    @Test @Ignore
     public void testSequence() throws JsonProcessingException {
         SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
                 new DltSequenceRequest(DLT.ethereum, "0x69dc2e7bb274f4eac434f7730ac6425af5b63ffe"),

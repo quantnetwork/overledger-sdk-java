@@ -3,15 +3,15 @@ package network.quant.essential;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
-import network.quant.api.*;
 import network.quant.api.DltTransactionRequest;
+import network.quant.api.*;
 import network.quant.essential.dto.*;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyAccountException;
 import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
-import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
 
 import java.io.FileInputStream;
@@ -260,6 +260,12 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return overledgerTransaction;
     }
 
+    @Override
+    public DltTransaction smartContractQuery(DltTransaction dltTransaction) {
+        DltTransaction BuildSmartContractQuery = this.accountManager.getAccount(dltTransaction.getDlt())
+                .buildSmartContractQuery(dltTransaction);
+        return this.client.smartContractQuery(BuildSmartContractQuery);
+    }
     /**
      * Write transaction to BPI layer from byte array
      *

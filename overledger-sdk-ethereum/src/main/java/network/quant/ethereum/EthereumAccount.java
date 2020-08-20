@@ -213,6 +213,21 @@ public class EthereumAccount implements Account {
     }
 
     @Override
+    public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction) {
+        TransactionEthereumRequest request = (TransactionEthereumRequest) dltTransaction;
+        List<PreparedContractArgument> inputs = EthereumUtil.computeSCQueryInputValuesList(request.getInputValues());
+        List<PreparedContractArgument> outputs = EthereumUtil.computeSCQueryOutputTypesList(request.getOutputTypes());
+
+        return ContractQueryRequestDto.builder()
+                .fromAddress(request.getFromAddress())
+                .contractAddress(request.getToAddress())
+                .funcName(request.getFuncName())
+                .inputValues(inputs)
+                .outputTypes(outputs)
+                .build();
+    }
+
+    @Override
     public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
         throw new UnsupportedOperationException();
     }
