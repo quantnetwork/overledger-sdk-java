@@ -10,8 +10,6 @@ import network.quant.api.OverledgerTransactions;
 import network.quant.essential.dto.DltTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
-import network.quant.ethereum.experimental.dto.ContractQueryRequestDto;
-import network.quant.ethereum.experimental.dto.ContractQueryResponseDto;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
 import network.quant.util.*;
@@ -114,7 +112,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public DltTransaction smartContractQuery(DltTransaction dltTransaction){
+    public ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction){
         try {
             return this.webClient
                     .post()
