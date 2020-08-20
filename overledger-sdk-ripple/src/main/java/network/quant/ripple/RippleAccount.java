@@ -155,10 +155,9 @@ public class RippleAccount implements Account {
         }
     }
 
-    // TODO: implement for build trx in ripple
     @Override
-    public DltTransaction buildTransaction(DltTransaction dltTransaction) {
-        return null;
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in ripple sdk.");
     }
 
     @Override

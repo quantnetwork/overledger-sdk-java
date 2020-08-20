@@ -70,6 +70,10 @@
             <artifactId>overledger-sdk-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-essential</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>

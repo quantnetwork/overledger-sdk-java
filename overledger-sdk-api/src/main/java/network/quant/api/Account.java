@@ -60,7 +60,7 @@ public interface Account {
      * @param dltTransaction details on the information to include in this transaction
      * @return build specific transaction
      */
-    DltTransaction buildTransaction(DltTransaction dltTransaction);
+    void invokeContract(DltTransaction dltTransaction);
 
     DltTransaction buildSmartContractQuery(DltTransaction dltTransaction);
     /**
