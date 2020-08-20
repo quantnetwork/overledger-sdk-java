@@ -261,7 +261,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
-    public DltTransaction smartContractQuery(DltTransaction dltTransaction) {
+    public ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction) {
         DltTransaction BuildSmartContractQuery = this.accountManager.getAccount(dltTransaction.getDlt())
                 .buildSmartContractQuery(dltTransaction);
         return this.client.smartContractQuery(BuildSmartContractQuery);

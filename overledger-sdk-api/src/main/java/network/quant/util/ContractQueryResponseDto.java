@@ -1,4 +1,4 @@
-package network.quant.ethereum.experimental.dto;
+package network.quant.util;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
