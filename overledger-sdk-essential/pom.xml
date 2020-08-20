@@ -78,6 +78,9 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-ethereum</artifactId>
+        </dependency>
     </dependencies>
 </project>

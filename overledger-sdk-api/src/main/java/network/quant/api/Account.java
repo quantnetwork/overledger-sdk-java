@@ -61,6 +61,8 @@ public interface Account {
      * @return build specific transaction
      */
     DltTransaction buildTransaction(DltTransaction dltTransaction);
+
+    DltTransaction buildSmartContractQuery(DltTransaction dltTransaction);
     /**
      * Adds transactions unspent belonging to this account
      * @param transactionHash String containing transactionHash

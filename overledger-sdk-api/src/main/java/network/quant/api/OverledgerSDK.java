@@ -185,4 +185,5 @@ public interface OverledgerSDK {
      */
     DltTransaction buildTransaction(DltTransaction dltTransaction);
 
+    DltTransaction smartContractQuery(DltTransaction contractQueryRequestDto);
 }
