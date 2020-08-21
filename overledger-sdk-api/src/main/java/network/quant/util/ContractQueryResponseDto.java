@@ -11,9 +11,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContractQueryResponseDto implements DltTransaction {
-
-    String dlt;
+public class ContractQueryResponseDto{
     @NonNull
     String fromAddress;
     @NonNull
