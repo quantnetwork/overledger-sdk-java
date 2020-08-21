@@ -13,6 +13,7 @@ import network.quant.util.ContractQueryResponseDto;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -32,41 +33,53 @@ public class SDKSmartContractQuery {
             {
                 add(ContractArgument.builder()
                         .type(ContractInputTypeOptions.UINT)
-                        .selectedIntegerLength(EthereumUintIntOptions.B16)
+                        .selectedIntegerLength(EthereumUintIntOptions.B256)
                         .build()
                 );
-                add(ContractArgument.builder()
-                        .type(ContractInputTypeOptions.UINT)
-                        .selectedIntegerLength(EthereumUintIntOptions.B216)
-                        .build());
             }
         };
 
-        List<ContractArgument> inputParams = new ArrayList<ContractArgument>() {
-            {
-                add(ContractArgument.builder()
-                        .type(ContractInputTypeOptions.UINT)
-                        .selectedIntegerLength(EthereumUintIntOptions.B16)
-                        .value("0")
-                        .build()
-                );
-                add(ContractArgument.builder()
-                        .type(ContractInputTypeOptions.UINT)
-                        .selectedIntegerLength(EthereumUintIntOptions.B112)
-                        .value("0")
-                        .build());
-            }
-        };
-
-        TransactionEthereumRequest ethereumRequest = TransactionEthereumRequest.trxEthereumReqBuilder()
+        TransactionEthereumRequest ethereumRequest_1 = TransactionEthereumRequest.trxEthereumReqBuilder()
                 .dlt("ethereum")
                 .toAddress("0x1BA73B0aE8CfB686f2C6Fa21571018Bca48Ec89d")
                 .fromAddress("0x650A87cfB9165C9F4Ccc7B971D971f50f753e761")
                 .funcName("getOVLTestUint")
-                .inputValues(inputParams)
+                .inputValues(Collections.emptyList())
                 .outputTypes(outputParams)
                 .build();
-        ContractQueryResponseDto response = sdk.smartContractQuery(ethereumRequest);
-        log.info("response: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response));
+        ContractQueryResponseDto ethereumSmartContractQueryBuild1 = sdk.smartContractQuery(ethereumRequest_1);
+        log.info("response1: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ethereumSmartContractQueryBuild1));
+
+
+        List<ContractArgument> inputParams_2 = new ArrayList<ContractArgument>() {
+            {
+                add(ContractArgument.builder()
+                        .type(ContractInputTypeOptions.UINT)
+                        .selectedIntegerLength(EthereumUintIntOptions.B256)
+                        .value("0")
+                        .build()
+                );
+            }
+        };
+
+        List<ContractArgument> outputParams_2 = new ArrayList<ContractArgument>() {
+            {
+                add(ContractArgument.builder()
+                        .type(ContractInputTypeOptions.BOOL)
+                        .build()
+                );
+            }
+        };
+
+        TransactionEthereumRequest ethereumRequest_2 = TransactionEthereumRequest.trxEthereumReqBuilder()
+                .dlt("ethereum")
+                .toAddress("0x1BA73B0aE8CfB686f2C6Fa21571018Bca48Ec89d")
+                .fromAddress("0x650A87cfB9165C9F4Ccc7B971D971f50f753e761")
+                .funcName("getTestArray")
+                .inputValues(inputParams_2)
+                .outputTypes(outputParams_2)
+                .build();
+        ContractQueryResponseDto ethereumSmartContractQueryBuild2 = sdk.smartContractQuery(ethereumRequest_2);
+        log.info("response2: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ethereumSmartContractQueryBuild2));
     }
 }
