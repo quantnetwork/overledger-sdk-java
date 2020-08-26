@@ -1,6 +1,5 @@
 package io.overledger;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import network.quant.api.Account;
 import network.quant.api.DLT;
 import network.quant.api.NETWORK;
@@ -9,16 +8,10 @@ import network.quant.bitcoin.BitcoinAccount;
 import network.quant.essential.DefaultOverledgerSDK;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ripple.RippleAccount;
-import network.quant.util.DltSequenceRequest;
-import network.quant.util.SequenceRequest;
-import network.quant.util.SequenceResponse;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import javax.xml.bind.DatatypeConverter;
 import java.math.BigInteger;
-import java.util.Arrays;
 
 public class OverleddgerSDKTest {
 
@@ -40,16 +33,4 @@ public class OverleddgerSDKTest {
         this.overledgerSDK.addAccount(DLT.ethereum.name(), this.ethereumAccount);
         this.overledgerSDK.addAccount(DLT.ripple.name(), this.rippleAccount);
     }
-
-
-    @Test
-    public void testSequence() throws JsonProcessingException {
-        SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
-                new DltSequenceRequest(DLT.ethereum, "0x69dc2e7bb274f4eac434f7730ac6425af5b63ffe"),
-                new DltSequenceRequest(DLT.ripple, "rcehwoJiasZgVmAGHeprbbQQ3FADtuEBS")
-        ));
-        SequenceResponse sequenceResponse = this.overledgerSDK.getSequence(sequenceRequest);
-
-    }
-
 }
