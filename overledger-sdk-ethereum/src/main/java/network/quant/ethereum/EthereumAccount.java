@@ -233,7 +233,7 @@ public class EthereumAccount implements Account {
                         if (functionName!= null && !functionName.trim().isEmpty()){
                             throw new FunctionNameEmptyException("SmartContract function name must be empty.");
                         }
-/*
+
                         List<Bool> boolList = new ArrayList<>();
                         boolList.add(new Bool(true));
                         boolList.add(new Bool(false));
@@ -248,8 +248,8 @@ public class EthereumAccount implements Account {
                                 new Utf8String("Hi_there!"),
                                 boolArray));
 
-                        transactionData = encodedConstructor;*/
-
+                        transactionData = encodedConstructor;
+/*
 
                         Function function = FunctionEncoder.makeFunction(
                                 "", //function name not needed for constructor
@@ -259,7 +259,7 @@ public class EthereumAccount implements Account {
                         );
 
                         transactionData = FunctionEncoder.encode(function);
-
+*/
 
                         log.info("transactionData before appending with code = " + transactionData);
 
