@@ -187,6 +187,11 @@ public class BitcoinAccount implements Account {
     }
 
     @Override
+    public void createSmartContract(DltTransaction dltTransaction) {
+        throw new UnsupportedOperationException("create smart contract isn't valid in bitcoin sdk.");
+    }
+
+    @Override
     public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){
         throw new UnsupportedSmartContractQueryException("The Bitcoin SDK does not currently support smart contract queries");
     }

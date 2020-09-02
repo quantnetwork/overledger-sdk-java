@@ -239,6 +239,30 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postUnsubStatusUpdate(statusRequest);
     }
 
+    public OverledgerTransaction createSmartContract(OverledgerTransaction createSmartContractRequest) throws Exception {
+
+        this.verifyOverledgerTransaction(createSmartContractRequest);
+
+        OverledgerTransaction overledgerTransaction = null;
+        try {
+            createSmartContractRequest.getDltData().stream()
+                    .map(dltTransaction -> {
+                        this.accountManager.getAccount(dltTransaction.getDlt())
+                                            .createSmartContract(dltTransaction);
+
+                        return dltTransaction;
+                    }).collect(Collectors.toList());
+
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.postTransaction(createSmartContractRequest,
+                                                                                                    DltTransaction.class,
+                                                                                                    OverledgerTransactionResponse.class);
+        } catch (Exception e) {
+            log.error("exception: " + e.getMessage());
+            this.throwCauseException(e);
+        }
+        return overledgerTransaction;
+    }
+
     public OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest) throws Exception {
         this.verifyOverledgerTransaction(overledgerTransactionRequest);
         OverledgerTransaction overledgerTransaction = null;

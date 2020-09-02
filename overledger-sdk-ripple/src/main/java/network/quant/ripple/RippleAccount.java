@@ -161,6 +161,11 @@ public class RippleAccount implements Account {
     }
 
     @Override
+    public void createSmartContract(DltTransaction dltTransaction) {
+        throw new UnsupportedOperationException("create smart contract isn't valid in ripple sdk.");
+    }
+
+    @Override
     public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){
         throw new UnsupportedSmartContractQueryException("The XRP SDK does not currently support smart contract queries");
     }

@@ -7,7 +7,19 @@ import java.math.BigInteger;
 
 public class EthRawTransactionResponse extends RawTransaction {
 
+    String code;
+
     public EthRawTransactionResponse(BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to, BigInteger value, String data) {
         super(nonce, gasPrice, gasLimit, to, value, data);
     }
+
+    public EthRawTransactionResponse(BigInteger nonce, BigInteger gasPrice, BigInteger gasLimit, String to, BigInteger value, String data, String code) {
+        super(nonce, gasPrice, gasLimit, to, value, data);
+        this.code = code;
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
 }

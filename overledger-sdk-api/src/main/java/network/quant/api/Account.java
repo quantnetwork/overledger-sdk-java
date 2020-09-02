@@ -64,6 +64,12 @@ public interface Account {
 
     void invokeContract(DltTransaction dltTransaction);
 
+    /**
+     * build a smart contract
+     * @param dltTransaction details on the information to include in this transaction
+     */
+    void createSmartContract(DltTransaction dltTransaction);
+
     DltTransaction buildSmartContractQuery(DltTransaction dltTransaction);
 
     /**
