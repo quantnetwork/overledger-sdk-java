@@ -67,7 +67,7 @@ public class EthereumUtil {
                         return new BigInteger(value);
                     else if (typeAsString.contains(BYTES_TYPE)) {
                         if(value.startsWith("0x")) {
-                            return decodeHexString(value.substring(2));
+                            return parseByte(value, 16);
                         }
                         return new byte[]{Byte.parseByte(value)};
                     }
@@ -80,6 +80,18 @@ public class EthereumUtil {
                 throw new FailToParseFunctionParameterException(e);
             }
         }).collect(Collectors.toUnmodifiableList());
+    }
+
+    public static byte parseByte(String s, int radix) throws NumberFormatException {
+        int i = Integer.parseInt(s, radix);
+        if (i >= -128 && i <= 127) {
+            return (byte)i;
+        } else {
+            throw new NumberFormatException("Value out of range. Value:\"" + s + "\" Radix:" + radix);
+        }
+    }
+    public static byte parseByte(String s) throws NumberFormatException {
+        return parseByte(s, 10);
     }
 
     public static byte[] decodeHexString(String hexString) {
