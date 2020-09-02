@@ -46,6 +46,12 @@ public class AccountManagerTest {
             public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
             @Override
             public void invokeContract(DltTransaction dltTransaction){}
+
+            @Override
+            public void createSmartContract(DltTransaction dltTransaction) {
+
+            }
+
             @Override
             public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){return null;}
             @Override

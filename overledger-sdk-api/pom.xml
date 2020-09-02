@@ -37,19 +37,19 @@
         </dependency>
     </dependencies>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-bom</artifactId>
-                <version>1.11.757</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>com.amazonaws</groupId>-->
+<!--                <artifactId>aws-java-sdk-bom</artifactId>-->
+<!--                <version>1.11.757</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
 
-        </dependencies>
+<!--        </dependencies>-->
 
-    </dependencyManagement>
+<!--    </dependencyManagement>-->
 
     <inceptionYear>2018</inceptionYear>
 
