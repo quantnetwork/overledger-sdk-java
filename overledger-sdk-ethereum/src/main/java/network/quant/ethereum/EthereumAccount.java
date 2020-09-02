@@ -248,8 +248,8 @@ public class EthereumAccount implements Account {
                                 new Utf8String("Hi_there!"),
                                 boolArray));
 
-                        transactionData = encodedConstructor;
-*/
+                        transactionData = encodedConstructor;*/
+
 
                         Function function = FunctionEncoder.makeFunction(
                                 "", //function name not needed for constructor
@@ -260,6 +260,8 @@ public class EthereumAccount implements Account {
 
                         transactionData = FunctionEncoder.encode(function);
 
+
+                        log.info("transactionData before appending with code = " + transactionData);
 
                     }else {
                         throw new SmartContractInputParamsException("Input parameters must be defined.");
@@ -276,9 +278,9 @@ public class EthereumAccount implements Account {
         return new EthRawTransactionResponse(BigInteger.valueOf(ethereumRequest.getSequence()),
                 ethereumRequest.getFee(),
                 ethereumRequest.getFeeLimit(),
-                ethereumRequest.getToAddress(),
+                "",
                 ethereumRequest.getAmount(),
-                transactionData,
+                ethereumRequest.getCode() + transactionData,
                 ethereumRequest.getCode());
     }
 
@@ -343,6 +345,8 @@ public class EthereumAccount implements Account {
     public void signContract(DltTransaction dltTransaction){
         DltTransactionRequest request = (DltTransactionRequest) dltTransaction;
         EthRawTransactionResponse buildTransactionResponse = this.buildContract(dltTransaction);
+
+        log.info("before signing = " + buildTransactionResponse);
 
         byte transactionSignedBytes[] = TransactionEncoder.signMessage(buildTransactionResponse
                 , this.getChainId().longValue()

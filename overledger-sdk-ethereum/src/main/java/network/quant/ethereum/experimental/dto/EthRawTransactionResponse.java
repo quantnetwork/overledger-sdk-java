@@ -22,4 +22,16 @@ public class EthRawTransactionResponse extends RawTransaction {
         return this.code;
     }
 
+    @Override
+    public String toString() {
+        return "EthRawTransactionResponse{" +
+                "code='" + code + '\'' +
+                ", nonce=" + getNonce() +
+                ", gasPrice=" + getGasPrice() +
+                ", gasLimit=" + getGasLimit() +
+                ", to=" + getTo() +
+                ", data=" + getData() +
+                ", value=" + getValue() +
+                '}';
+    }
 }

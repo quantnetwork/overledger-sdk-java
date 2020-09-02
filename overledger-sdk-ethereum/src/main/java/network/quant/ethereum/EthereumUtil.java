@@ -79,6 +79,18 @@ public class EthereumUtil {
         }).collect(Collectors.toUnmodifiableList());
     }
 
+    public static byte parseByte(String s, int radix) throws NumberFormatException {
+        int i = Integer.parseInt(s, radix);
+        if (i >= -128 && i <= 127) {
+            return (byte)i;
+        } else {
+            throw new NumberFormatException("Value out of range. Value:\"" + s + "\" Radix:" + radix);
+        }
+    }
+    public static byte parseByte(String s) throws NumberFormatException {
+        return parseByte(s, 10);
+    }
+
     public static byte[] decodeHexString(String hexString) {
         if (hexString.length() % 2 == 1) {
             throw new IllegalArgumentException(
