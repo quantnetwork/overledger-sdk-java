@@ -6,14 +6,12 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.api.*;
 import network.quant.ethereum.exception.*;
+import network.quant.ethereum.experimental.ContractArgumentToAbiMainFactory;
 import network.quant.ethereum.experimental.dto.*;
 import network.quant.util.CommonUtil;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.*;
-import org.web3j.abi.datatypes.generated.Bytes32;
-import org.web3j.abi.datatypes.generated.Int16;
-import org.web3j.abi.datatypes.generated.Int256;
-import org.web3j.abi.datatypes.generated.StaticArray3;
+import org.web3j.abi.datatypes.generated.*;
 import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 import javax.xml.bind.DatatypeConverter;
@@ -226,42 +224,37 @@ public class EthereumAccount implements Account {
                     List<ContractArgument> inputParamsList = ethereumRequest.getInputValues();
                     if (inputParamsList != null && !inputParamsList.isEmpty()){
                         String functionName = ethereumRequest.getFuncName();
-                        List<String> solidityInputTypes = EthereumUtil.getSolidityInputOutputTypes(inputParamsList);
-                        List<Object> arguments = EthereumUtil.getValues(inputParamsList);
-                        List<String> solidityOutputTypes = (ethereumRequest.getOutputTypes() == null) ? Collections.emptyList() : EthereumUtil.getSolidityInputOutputTypes(ethereumRequest.getOutputTypes());
 
                         if (functionName!= null && !functionName.trim().isEmpty()){
                             throw new FunctionNameEmptyException("SmartContract function name must be empty.");
                         }
 
+/*
                         List<Bool> boolList = new ArrayList<>();
                         boolList.add(new Bool(true));
                         boolList.add(new Bool(false));
                         boolList.add(new Bool(true));
-                        StaticArray3<Bool> boolArray = new StaticArray3(Bool.class, boolList);
+                        DynamicArray<Bool> boolArray = new DynamicArray<>(Bool.class, boolList);
 
-                        String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.asList(new Bool(true),
+
+                        String encodedConstructor1 = FunctionEncoder.encodeConstructor(Arrays.asList(new Bool(true),
                                 new Int256(5),
-                                new Int16(33),
+                                new Uint16(33),
                                 new Utf8String("Hello"),
                                 new Address("0x650A87cfB9165C9F4Ccc7B971D971f50f753e761"),
                                 new Utf8String("Hi_there!"),
                                 boolArray));
-
-                        transactionData = encodedConstructor;
-/*
-
-                        Function function = FunctionEncoder.makeFunction(
-                                "", //function name not needed for constructor
-                                solidityInputTypes,
-                                arguments,
-                                solidityOutputTypes
-                        );
-
-                        transactionData = FunctionEncoder.encode(function);
 */
 
-                        log.info("transactionData before appending with code = " + transactionData);
+                        List<Type> encodeInputList = new ArrayList<>();
+                        for(ContractArgument contractArgument : inputParamsList) {
+                            encodeInputList.add(ContractArgumentToAbiMainFactory.convertContractArgument(contractArgument));
+                        }
+                        String encodedConstructor = FunctionEncoder.encodeConstructor(encodeInputList);
+                        transactionData = encodedConstructor;
+                        log.info("encodedConstructor before appending with code = " + transactionData);
+
+
 
                     }else {
                         throw new SmartContractInputParamsException("Input parameters must be defined.");
@@ -275,13 +268,15 @@ public class EthereumAccount implements Account {
         }catch (Exception e){
             log.error("exception occurred: " + e.getMessage());
         }
+        log.info("code + data = " + ethereumRequest.getCode() + transactionData);
+
+
         return new EthRawTransactionResponse(BigInteger.valueOf(ethereumRequest.getSequence()),
                 ethereumRequest.getFee(),
                 ethereumRequest.getFeeLimit(),
                 "",
                 ethereumRequest.getAmount(),
-                ethereumRequest.getCode() + transactionData,
-                ethereumRequest.getCode());
+                ethereumRequest.getCode() + transactionData);
     }
 
 
