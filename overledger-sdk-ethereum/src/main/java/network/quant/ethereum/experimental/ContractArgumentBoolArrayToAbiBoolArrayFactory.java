@@ -25,7 +25,7 @@ public class ContractArgumentBoolArrayToAbiBoolArrayFactory {
     public static Type convertBoolArray(ContractArgument contractArgument) {
         
         List<Bool> values = produceListForInput(contractArgument, contractArgument.getSelectedIntegerLength());
-        log.info("bool list = " + values);
+
         //now just need to detect the different Array lengths
         return generateArray(contractArgument, values);
 
@@ -37,7 +37,7 @@ public class ContractArgumentBoolArrayToAbiBoolArrayFactory {
         Stream.of(contractArgument.getValue().replace("{","").replace("}","").split(",")).forEach(s -> log.info(s));
         return Stream.of(contractArgument.getValue().replace("{","").replace("}","").split(","))
                         .map(s -> {
-                            log.info("current s = " + s.trim());
+                            log.debug("current s = " + s.trim());
                             return new Bool(Boolean.parseBoolean(s.trim()));})
                         .collect(Collectors.toList());
     }

@@ -10,26 +10,15 @@ import org.web3j.abi.datatypes.Utf8String;
 
 import java.util.Objects;
 
+/**
+ * Main factory class to generate the different Abi types used for the creating of Smart Contract
+ * The encodeConstructor method requires instantiation of those Type objects and when we pass from the SDK level we want to retain the ContractArgument object
+ * and then determine what should be produced afterwards
+ * @author R Bahari
+ */
 @Slf4j
 public class ContractArgumentToAbiMainFactory {
 
-
-    /**
-     List<Bool> boolList = new ArrayList<>();
-     boolList.add(new Bool(true));
-     boolList.add(new Bool(false));
-     boolList.add(new Bool(true));
-     DynamicArray<Bool> boolArray = new DynamicArray<>(Bool.class, boolList);
-
-
-     String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.asList(new Bool(true),
-     new Int256(5),
-     new Uint16(33),
-     new Utf8String("Hello"),
-     new Address("0x650A87cfB9165C9F4Ccc7B971D971f50f753e761"),
-     new Utf8String("Hi_there!"),
-     boolArray));
-     */
 
     public static Type convertContractArgument(ContractArgument contractArgument) {
 
