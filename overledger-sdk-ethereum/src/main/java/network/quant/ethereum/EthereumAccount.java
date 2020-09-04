@@ -229,23 +229,6 @@ public class EthereumAccount implements Account {
                             throw new FunctionNameEmptyException("SmartContract function name must be empty.");
                         }
 
-/*
-                        List<Bool> boolList = new ArrayList<>();
-                        boolList.add(new Bool(true));
-                        boolList.add(new Bool(false));
-                        boolList.add(new Bool(true));
-                        DynamicArray<Bool> boolArray = new DynamicArray<>(Bool.class, boolList);
-
-
-                        String encodedConstructor1 = FunctionEncoder.encodeConstructor(Arrays.asList(new Bool(true),
-                                new Int256(5),
-                                new Uint16(33),
-                                new Utf8String("Hello"),
-                                new Address("0x650A87cfB9165C9F4Ccc7B971D971f50f753e761"),
-                                new Utf8String("Hi_there!"),
-                                boolArray));
-*/
-
                         List<Type> encodeInputList = new ArrayList<>();
                         for(ContractArgument contractArgument : inputParamsList) {
                             encodeInputList.add(ContractArgumentToAbiMainFactory.convertContractArgument(contractArgument));
@@ -253,8 +236,6 @@ public class EthereumAccount implements Account {
                         String encodedConstructor = FunctionEncoder.encodeConstructor(encodeInputList);
                         transactionData = encodedConstructor;
                         log.info("encodedConstructor before appending with code = " + transactionData);
-
-
 
                     }else {
                         throw new SmartContractInputParamsException("Input parameters must be defined.");
@@ -268,7 +249,7 @@ public class EthereumAccount implements Account {
         }catch (Exception e){
             log.error("exception occurred: " + e.getMessage());
         }
-        log.info("code + data = " + ethereumRequest.getCode() + transactionData);
+        log.debug("code + data = " + ethereumRequest.getCode() + transactionData);
 
 
         return new EthRawTransactionResponse(BigInteger.valueOf(ethereumRequest.getSequence()),
