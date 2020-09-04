@@ -10,7 +10,6 @@ import org.web3j.abi.datatypes.DynamicArray;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.*;
 
-import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
