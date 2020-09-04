@@ -5,7 +5,6 @@ import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.EthereumUintIntOptions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.DynamicArray;
 import org.web3j.abi.datatypes.Type;

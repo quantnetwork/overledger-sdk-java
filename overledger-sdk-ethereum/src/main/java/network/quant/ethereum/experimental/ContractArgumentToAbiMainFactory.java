@@ -3,7 +3,9 @@ package network.quant.ethereum.experimental;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.ContractInputTypeOptions;
+import org.jetbrains.annotations.NotNull;
 import org.web3j.abi.datatypes.*;
+import org.web3j.utils.Numeric;
 
 import java.util.Objects;
 
@@ -58,7 +60,6 @@ public class ContractArgumentToAbiMainFactory {
         }
 
         if(contractArgument.getType() == ContractInputTypeOptions.BYTES) {
-
             //create a string with 000000 up to the selected bytes length, so if its 32, then we will have 32 zeros
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < Integer.parseInt(contractArgument.getSelectedBytesLength().label); i++) {
@@ -67,13 +68,15 @@ public class ContractArgumentToAbiMainFactory {
 
             StringBuffer temp;
             if(contractArgument.getValue().contains("0x")) { //moving the 0x to the beginning of the newly created String
-                temp = new StringBuffer((sb.substring(contractArgument.getValue().length()) + contractArgument.getValue()).replace("0x", "00"));
-                temp.replace(0, 2, "0x");
+                temp = padHexString(contractArgument);
+
+                return new CustomBytes(Integer.parseInt(contractArgument.getSelectedBytesLength().label), Numeric.hexStringToByteArray(temp.toString()));
+
             } else {
-                temp = new StringBuffer((sb.substring(contractArgument.getValue().length()) + contractArgument.getValue()));
+                byte[] resultArray = padNonHex(contractArgument);
+
+                return new CustomBytes(Integer.parseInt(contractArgument.getSelectedBytesLength().label), resultArray);
             }
-            return new CustomBytes(10, "68656c6c6f".getBytes());
-            //return new CustomBytes(Integer.parseInt(contractArgument.getSelectedBytesLength().label), temp.toString().getBytes());
         }
 
         if(contractArgument.getType() == ContractInputTypeOptions.BYTES_B_ARRAY) {
@@ -83,6 +86,37 @@ public class ContractArgumentToAbiMainFactory {
 
         log.error("Unsupported contract argument, please check if the type/length is supported!");
         return null;
+    }
+
+    private static byte[] padNonHex(ContractArgument contractArgument) {
+        //for example: "hello".getBytes would give as byte[5], but if we want to pass BYTE32, we would need byte[32] with the first 5 elements being from .getBytes one
+        //we should create a byte array with 32 elements and zeros as values, then put the 5 from above into this array
+        byte[] inputArray = contractArgument.getValue().getBytes();
+        int totalDigitsRequired = Integer.parseInt(contractArgument.getSelectedBytesLength().label); // e.g. if we want BYTE32
+        int howManyMoreDoWeNeed = totalDigitsRequired - inputArray.length;
+
+        byte[] resultArray = new byte[totalDigitsRequired];
+        for(int a = 0; a < howManyMoreDoWeNeed; a++) {
+            resultArray[a] = 0;
+        }
+        for(int a = 0; a < inputArray.length; a++) {
+            resultArray[a] = inputArray[a];
+        }
+        return resultArray;
+    }
+
+    @NotNull
+    private static StringBuffer padHexString(ContractArgument contractArgument) {
+        StringBuffer temp;//if starts with 0x, pad the zeros first to make up the length to be the what the selected length on contract argument
+        int numberOfCharactersInValue = contractArgument.getValue().substring(2).length(); //don't count the 0x
+        int totalDigitsRequired = Integer.parseInt(contractArgument.getSelectedBytesLength().label) * 2; // e.g. if we want BYTE32, we want total digit to be 64
+        int howManyMoreDoWeNeed = totalDigitsRequired - numberOfCharactersInValue;
+        temp = new StringBuffer(totalDigitsRequired);
+        temp.append(contractArgument.getValue());
+        for(int a = 0; a < howManyMoreDoWeNeed; a++) {
+            temp.append("0");
+        }
+        return temp;
     }
 
 }

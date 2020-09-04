@@ -59,9 +59,15 @@ public class SDKCreateSmartContract {
                 add(ContractArgument.builder()
                         .type(ContractInputTypeOptions.BYTES)
                         .selectedBytesLength(EthereumBytesOptions.B32)
-                        .value("0x68656c6c6f") //0x68656c6c6f on java script apparently it represents Hello
+                        .value("0x68656c6c6f") //0x68656c6c6f == hello
                         .build());
-
+/*
+                add(ContractArgument.builder()
+                        .type(ContractInputTypeOptions.BYTES)
+                        .selectedBytesLength(EthereumBytesOptions.B32)
+                        .value("hello") //0x68656c6c6f == hello
+                        .build());
+*/
 
                 add(ContractArgument.builder()
                         .type(ContractInputTypeOptions.ADDRESS)
