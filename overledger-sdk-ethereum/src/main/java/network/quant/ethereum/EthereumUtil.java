@@ -34,8 +34,6 @@ public class EthereumUtil {
                         return new BigInteger(input);
                     }else if (clazz.equals(Bytes.class)){
                         return new byte[]{Byte.parseByte(input)};
-                    } else if (clazz.equals(String.class)){
-                        return new Utf8String(input);
                     }
                     return null;
                 }).collect(Collectors.toUnmodifiableList());
@@ -55,8 +53,6 @@ public class EthereumUtil {
                         return extractValues(contractArgument.getValue(), Int.class);
                     else if (typeAsString.contains(BYTES_TYPE))
                         return extractValues(contractArgument.getValue(), Bytes.class);
-                    else if (typeAsString.contains("string"))
-                        return extractValues(contractArgument.getValue(), Utf8String.class);
                 } else {
                     String value = contractArgument.getValue().replace("{", "").replace("}", "");
                     if (typeAsString.contains(BOOL_TYPE))
@@ -65,14 +61,8 @@ public class EthereumUtil {
                         return new Address(value);
                     else if (typeAsString.contains(INT_TYPE))
                         return new BigInteger(value);
-                    else if (typeAsString.contains(BYTES_TYPE)) {
-                        if(value.startsWith("0x")) {
-                            return parseByte(value, 16);
-                        }
+                    else if (typeAsString.contains(BYTES_TYPE))
                         return new byte[]{Byte.parseByte(value)};
-                    }
-                    else if (typeAsString.contains("string"))
-                        return new Utf8String(value);
                 }
                 return null;
             } catch (Exception e) {
@@ -82,45 +72,6 @@ public class EthereumUtil {
         }).collect(Collectors.toUnmodifiableList());
     }
 
-    public static byte parseByte(String s, int radix) throws NumberFormatException {
-        int i = Integer.parseInt(s, radix);
-        if (i >= -128 && i <= 127) {
-            return (byte)i;
-        } else {
-            throw new NumberFormatException("Value out of range. Value:\"" + s + "\" Radix:" + radix);
-        }
-    }
-    public static byte parseByte(String s) throws NumberFormatException {
-        return parseByte(s, 10);
-    }
-
-    public static byte[] decodeHexString(String hexString) {
-        if (hexString.length() % 2 == 1) {
-            throw new IllegalArgumentException(
-                    "Invalid hexadecimal String supplied.");
-        }
-
-        byte[] bytes = new byte[hexString.length() / 2];
-        for (int i = 0; i < hexString.length(); i += 2) {
-            bytes[i / 2] = hexToByte(hexString.substring(i, i + 2));
-        }
-        return bytes;
-    }
-
-    public static byte hexToByte(String hexString) {
-        int firstDigit = toDigit(hexString.charAt(0));
-        int secondDigit = toDigit(hexString.charAt(1));
-        return (byte) ((firstDigit << 4) + secondDigit);
-    }
-
-    private static int toDigit(char hexChar) {
-        int digit = Character.digit(hexChar, 16);
-        if(digit == -1) {
-            throw new IllegalArgumentException(
-                    "Invalid Hexadecimal Character: "+ hexChar);
-        }
-        return digit;
-    }
 
     public static List<String> getSolidityInputOutputTypes(List<ContractArgument> inputs) {
         return inputs.stream().map(contractArgument -> {
