@@ -22,6 +22,7 @@ public class EthereumUtil {
     public static final String ARRAY_TYPE = "array";
     public static final String BOOL_TYPE = "bool";
     public static final String ADDRESS_TYPE = "address";
+    public static final String STRING_TYPE = "string";
     public static final String K_ARRAY_LENGTH = "k";
 
     public static List<Object> extractValues(String values, Class<? extends Type> clazz) {
@@ -64,7 +65,9 @@ public class EthereumUtil {
                     else if (typeAsString.contains(INT_TYPE))
                         return new BigInteger(value);
                     else if (typeAsString.contains(BYTES_TYPE))
-                        return new byte[]{Byte.parseByte(value)};
+                        return value.getBytes();
+                    else if (typeAsString.contains(STRING_TYPE))
+                        return value;
                 }
                 return null;
             } catch (Exception e) {
