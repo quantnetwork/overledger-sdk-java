@@ -37,7 +37,6 @@ public class SDKInvokeSmartContract {
             {
                 add(ContractArgument.builder()
                         .type(ContractInputTypeOptions.BOOLEAN_ARRAY)
-                        .selectedArrayLength(3l)
                         .value("{true,true,true}")
                         .build());
             }
