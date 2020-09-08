@@ -9,6 +9,9 @@ import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ethereum.experimental.dto.*;
+import network.quant.util.DltSequenceRequest;
+import network.quant.util.SequenceRequest;
+import network.quant.util.SequenceResponse;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -39,9 +42,15 @@ public class SDKInvokeSmartContract {
                         .build());
             }
         };
+
+        SequenceRequest sequenceRequest = new SequenceRequest(Arrays.asList(
+                new DltSequenceRequest(DLT.ethereum, fromAddress)
+        ));
+        SequenceResponse sequenceResponse = sdk.getSequence(sequenceRequest);
+
         TransactionEthereumRequest ethereumRequest = TransactionEthereumRequest.trxEthereumReqBuilder()
                 .dlt(DLT.ethereum.name())
-                .sequence(312l)
+                .sequence(sequenceResponse.getDltData().get(0).getSequence().longValue())
                 .toAddress(smartContractAddress)
                 .fromAddress(fromAddress)
                 .feeLimit(BigInteger.valueOf(4000000l))
