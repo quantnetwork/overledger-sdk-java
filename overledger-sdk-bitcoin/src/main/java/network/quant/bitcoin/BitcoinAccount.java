@@ -180,6 +180,10 @@ public class BitcoinAccount implements Account {
         }
     }
 
+    @Override
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in bitcoin sdk.");
+    }
     /**
      * Add a UTXO to account
      * @param transactionHash String containing txHash of the UTXO
