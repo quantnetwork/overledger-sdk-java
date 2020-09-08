@@ -75,7 +75,7 @@ public class SignedTransaction {
             return;
         }
         try {
-            txn.txnSignature(new Blob(keyPair.signMessage(signingData)));
+            txn.txnSignature(new Blob(keyPair.signMessage(signingData))); // TODO ASK KMS to sign
 
             BytesList blob = new BytesList();
             HalfSha512 id = HalfSha512.prefixed256(HashPrefix.transactionID);

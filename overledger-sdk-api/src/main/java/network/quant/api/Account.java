@@ -55,4 +55,13 @@ public interface Account {
      */
     void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction);
 
+    /**
+     * Adds transactions unspent belonging to this account
+     * @param transactionHash String containing transactionHash
+     * @param outpoint Index of unspent output
+     * @param valueInSatoshi satoshi value
+     * @param address containing the original address
+     */
+
+    void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address);
 }
