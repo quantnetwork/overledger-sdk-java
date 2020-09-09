@@ -19,6 +19,18 @@
         <url>https://quant.network</url>
         <name>Quant Network</name>
     </organization>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <inceptionYear>2018</inceptionYear>
 

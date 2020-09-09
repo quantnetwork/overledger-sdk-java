@@ -55,12 +55,17 @@ public interface Account {
      */
     void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction);
 
-    /**
-     * build specific transaction for further actions
-     * @param dltTransaction details on the information to include in this transaction
-     * @return build specific transaction
-     */
+
     void invokeContract(DltTransaction dltTransaction);
+
+    /**
+     * build a smart contract
+     * @param dltTransaction details on the information to include in this transaction
+     */
+    void createSmartContract(DltTransaction dltTransaction);
+
+    DltTransaction buildSmartContractQuery(DltTransaction dltTransaction);
+
     /**
      * Adds transactions unspent belonging to this account
      * @param transactionHash String containing transactionHash

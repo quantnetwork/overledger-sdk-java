@@ -164,10 +164,10 @@ public class OlHSMKeyManager {
         return new String(decrypted,StandardCharsets.UTF_8);
     }
     public String encryptPrivateKeyHexString(String decKeyStr) throws UnsupportedEncodingException {
-     //     encode with padding
-     //     String encoded = Base64.getEncoder().encodeToString(someByteArray);
+        //     encode with padding
+        //     String encoded = Base64.getEncoder().encodeToString(someByteArray);
 
-         byte [] byts = decKeyStr.getBytes(StandardCharsets.UTF_8);
+        byte [] byts = decKeyStr.getBytes(StandardCharsets.UTF_8);
 
 
         byte [] encrypted = HSMCrypto.encrypt(byts, keyring);

@@ -122,5 +122,6 @@ public interface Client<T, S> {
 
     StatusResponse postSubStatusUpdate(StatusRequest statusRequest);
     StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest);
+    ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction);
 
 }

@@ -32,4 +32,6 @@ public class TransactionEthereumRequest extends DltTransactionRequest {
     List<ContractArgument> inputValues;
     List<ContractArgument> outputTypes;
     SignedTransaction signedTransaction;
+
+    String code;
 }

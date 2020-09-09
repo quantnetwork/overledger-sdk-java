@@ -3,15 +3,15 @@ package network.quant.essential;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
-import network.quant.api.*;
 import network.quant.api.DltTransactionRequest;
+import network.quant.api.*;
 import network.quant.essential.dto.*;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyAccountException;
 import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
-import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
 
 import java.io.FileInputStream;
@@ -239,6 +239,30 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postUnsubStatusUpdate(statusRequest);
     }
 
+    public OverledgerTransaction createSmartContract(OverledgerTransaction createSmartContractRequest) throws Exception {
+
+        this.verifyOverledgerTransaction(createSmartContractRequest);
+
+        OverledgerTransaction overledgerTransaction = null;
+        try {
+            createSmartContractRequest.getDltData().stream()
+                    .map(dltTransaction -> {
+                        this.accountManager.getAccount(dltTransaction.getDlt())
+                                            .createSmartContract(dltTransaction);
+
+                        return dltTransaction;
+                    }).collect(Collectors.toList());
+
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.postTransaction(createSmartContractRequest,
+                                                                                                    DltTransaction.class,
+                                                                                                    OverledgerTransactionResponse.class);
+        } catch (Exception e) {
+            log.error("exception: " + e.getMessage());
+            this.throwCauseException(e);
+        }
+        return overledgerTransaction;
+    }
+
     public OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest) throws Exception {
         this.verifyOverledgerTransaction(overledgerTransactionRequest);
         OverledgerTransaction overledgerTransaction = null;
@@ -260,6 +284,12 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return overledgerTransaction;
     }
 
+    @Override
+    public ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction) {
+        DltTransaction BuildSmartContractQuery = this.accountManager.getAccount(dltTransaction.getDlt())
+                .buildSmartContractQuery(dltTransaction);
+        return this.client.smartContractQuery(BuildSmartContractQuery);
+    }
     /**
      * Write transaction to BPI layer from byte array
      *

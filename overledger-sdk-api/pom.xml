@@ -20,20 +20,6 @@
         <name>Quant Network</name>
     </organization>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-bom</artifactId>
-                <version>1.11.757</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-        </dependencies>
-
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>network.quant</groupId>

@@ -1,11 +1,9 @@
 package network.quant.ethereum;
 
 import lombok.extern.slf4j.Slf4j;
+import network.quant.ethereum.exception.ArrayTypeNotSupportedException;
 import network.quant.ethereum.exception.FailToParseFunctionParameterException;
-import network.quant.ethereum.experimental.dto.ContractArgument;
-import network.quant.ethereum.experimental.dto.ContractInputTypeOptions;
-import network.quant.ethereum.experimental.dto.EthereumBytesOptions;
-import network.quant.ethereum.experimental.dto.EthereumUintIntOptions;
+import network.quant.ethereum.experimental.dto.*;
 import org.web3j.abi.datatypes.*;
 
 import java.math.BigInteger;
@@ -42,7 +40,7 @@ public class EthereumUtil {
                 }).collect(Collectors.toUnmodifiableList());
     }
 
-    public static List<Object> getValues(List<ContractArgument> inputs) {
+        public static List<Object> getValues(List<ContractArgument> inputs) {
         return inputs.stream().map(contractArgument -> {
             ContractInputTypeOptions type = contractArgument.getType();
             String typeAsString = type.label;
@@ -101,6 +99,41 @@ public class EthereumUtil {
                 throw new FailToParseFunctionParameterException(e);
             }
         }).collect(Collectors.toUnmodifiableList());
+    }
+
+    public static String getSolidityInputOutputTypes(ContractArgument input) {
+            String solidityInputType = "";
+            ContractInputTypeOptions type = input.getType();
+            String typeAsString = type.label;
+            try {
+                if (type.label.contains(INT_TYPE) || type.label.contains(UINT_TYPE))
+                    solidityInputType = addIntegerLengthToInput(typeAsString, input.getSelectedIntegerLength());
+                else if (typeAsString.contains(BYTES_TYPE))
+                    solidityInputType = addByteOptionsToInput(typeAsString, input.getSelectedBytesLength());
+                else
+                    solidityInputType = typeAsString;
+
+                if (type.name().toLowerCase().contains(ARRAY_TYPE)) {
+                    throw new ArrayTypeNotSupportedException("array type not supported.");
+                }
+                return solidityInputType;
+            } catch (Exception e) {
+                log.error("exception: " + e);
+                throw new FailToParseFunctionParameterException(e);
+            }
+    }
+
+    public static List<PreparedContractArgument> computeSCQueryInputValuesList(List<ContractArgument> contractArguments){
+        return contractArguments.stream().map( contractArgInput -> PreparedContractArgument.builder()
+                .value(contractArgInput.getValue().replace("{", "").replace("}",""))
+                .type(EthereumUtil.getSolidityInputOutputTypes(contractArgInput))
+                .build()).collect(Collectors.toUnmodifiableList());
+    }
+
+    public static List<PreparedContractArgument> computeSCQueryOutputTypesList(List<ContractArgument> contractArguments){
+        return contractArguments.stream().map( contractArgInput -> PreparedContractArgument.builder()
+                .type(EthereumUtil.getSolidityInputOutputTypes(contractArgInput))
+                .build()).collect(Collectors.toUnmodifiableList());
     }
 
     public static String addIntegerLengthToInput(String intUintSolidityInputType, EthereumUintIntOptions selectedIntegerLength) {

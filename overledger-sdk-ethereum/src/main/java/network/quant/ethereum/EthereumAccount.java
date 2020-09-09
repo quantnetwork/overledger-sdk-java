@@ -6,10 +6,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.api.*;
 import network.quant.ethereum.exception.*;
+import network.quant.ethereum.experimental.ContractArgumentToAbiMainFactory;
 import network.quant.ethereum.experimental.dto.*;
 import network.quant.util.CommonUtil;
 import org.web3j.abi.FunctionEncoder;
-import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.*;
 import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 import javax.xml.bind.DatatypeConverter;
@@ -17,9 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Ethereum implementation of Account
@@ -212,6 +211,70 @@ public class EthereumAccount implements Account {
                 transactionData);
     }
 
+
+    public EthRawTransactionResponse buildContract(DltTransaction dltTransaction) {
+        String transactionData = null;
+        TransactionEthereumRequest ethereumRequest = (TransactionEthereumRequest) dltTransaction;
+        SCFunctionType invocationType = ethereumRequest.getFunctionType();
+        try {
+            if (ethereumRequest.getToAddress() == null || ethereumRequest.getToAddress().isEmpty()){
+                if (invocationType.equals(SCFunctionType.CONSTRUCTOR_WITH_PARAMETERS) ||
+                        invocationType.equals(SCFunctionType.CONSTRUCTOR_WITH_NO_PARAMETERS)){
+                    List<ContractArgument> inputParamsList = ethereumRequest.getInputValues();
+                    if (inputParamsList != null && !inputParamsList.isEmpty()){
+                        String functionName = ethereumRequest.getFuncName();
+
+                        if (functionName!= null && !functionName.trim().isEmpty()){
+                            throw new FunctionNameEmptyException("SmartContract function name must be empty.");
+                        }
+
+                        List<Type> encodeInputList = new ArrayList<>();
+                        for(ContractArgument contractArgument : inputParamsList) {
+                            encodeInputList.add(ContractArgumentToAbiMainFactory.convertContractArgument(contractArgument));
+                        }
+                        String encodedConstructor = FunctionEncoder.encodeConstructor(encodeInputList);
+                        transactionData = encodedConstructor;
+                        log.info("encodedConstructor before appending with code = " + transactionData);
+
+                    }else {
+                        throw new SmartContractInputParamsException("Input parameters must be defined.");
+                    }
+                }else {
+                    throw new SmartContractFunctionTypeException("Invalid functionType, must be CONSTRUCTOR_WITH_PARAMETERS or CONSTRUCTOR_WITH_NO_PARAMETERS");
+                }
+            }else {
+                throw new SmartContractAddressException("The toAddress must be set to an empty string");
+            }
+        }catch (Exception e){
+            log.error("exception occurred: " + e.getMessage());
+        }
+        log.debug("code + data = " + ethereumRequest.getCode() + transactionData);
+
+
+        return new EthRawTransactionResponse(BigInteger.valueOf(ethereumRequest.getSequence()),
+                ethereumRequest.getFee(),
+                ethereumRequest.getFeeLimit(),
+                "",
+                ethereumRequest.getAmount(),
+                ethereumRequest.getCode() + transactionData);
+    }
+
+
+    @Override
+    public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction) {
+        TransactionEthereumRequest request = (TransactionEthereumRequest) dltTransaction;
+        List<PreparedContractArgument> inputs = EthereumUtil.computeSCQueryInputValuesList(request.getInputValues());
+        List<PreparedContractArgument> outputs = EthereumUtil.computeSCQueryOutputTypesList(request.getOutputTypes());
+
+        return ContractQueryRequestDto.builder()
+                .fromAddress(request.getFromAddress())
+                .contractAddress(request.getToAddress())
+                .funcName(request.getFuncName())
+                .inputValues(inputs)
+                .outputTypes(outputs)
+                .build();
+    }
+
     @Override
     public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
         throw new UnsupportedOperationException();
@@ -235,6 +298,11 @@ public class EthereumAccount implements Account {
         this.sign(dltTransaction);
     }
 
+    @Override
+    public void createSmartContract(DltTransaction dltTransaction) {
+        this.signDeployContractTransaction(dltTransaction);
+    }
+
     public void sign(DltTransaction dltTransaction){
         DltTransactionRequest request = (DltTransactionRequest) dltTransaction;
         EthRawTransactionResponse buildTransactionResponse = this.buildTransaction(dltTransaction);
@@ -248,6 +316,23 @@ public class EthereumAccount implements Account {
         signedTransaction.setTransactions(Collections.singletonList(Numeric.toHexString(transactionSignedBytes)));
         request.setSignedTransaction(signedTransaction);
     }
+
+    public void signDeployContractTransaction(DltTransaction dltTransaction){
+        DltTransactionRequest request = (DltTransactionRequest) dltTransaction;
+        EthRawTransactionResponse buildTransactionResponse = this.buildContract(dltTransaction);
+
+        log.info("before signing = " + buildTransactionResponse);
+
+        byte transactionSignedBytes[] = TransactionEncoder.signMessage(buildTransactionResponse
+                , this.getChainId().longValue()
+                , Credentials.create(this.ecKeyPair)
+        );
+        log.info("transactionSigned: " + Numeric.toHexString(transactionSignedBytes));
+        SignedTransaction signedTransaction = new SignedTransaction();
+        signedTransaction.setTransactions(Collections.singletonList(Numeric.toHexString(transactionSignedBytes)));
+        request.setSignedTransaction(signedTransaction);
+    }
+
 
     /**
      * Deploy contract
