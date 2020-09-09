@@ -11,7 +11,6 @@ import network.quant.ethereum.experimental.dto.*;
 import network.quant.util.CommonUtil;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.datatypes.*;
-import org.web3j.abi.datatypes.generated.*;
 import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 import javax.xml.bind.DatatypeConverter;
@@ -301,7 +300,7 @@ public class EthereumAccount implements Account {
 
     @Override
     public void createSmartContract(DltTransaction dltTransaction) {
-        this.signContract(dltTransaction);
+        this.signDeployContractTransaction(dltTransaction);
     }
 
     public void sign(DltTransaction dltTransaction){
@@ -318,7 +317,7 @@ public class EthereumAccount implements Account {
         request.setSignedTransaction(signedTransaction);
     }
 
-    public void signContract(DltTransaction dltTransaction){
+    public void signDeployContractTransaction(DltTransaction dltTransaction){
         DltTransactionRequest request = (DltTransactionRequest) dltTransaction;
         EthRawTransactionResponse buildTransactionResponse = this.buildContract(dltTransaction);
 
