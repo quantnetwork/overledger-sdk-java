@@ -19,7 +19,7 @@
         <url>https://quant.network</url>
         <name>Quant Network</name>
     </organization>
-    
+
     <dependencies>
         <dependency>
             <groupId>network.quant</groupId>
