@@ -178,5 +178,11 @@ public interface OverledgerSDK {
      */
     StatusResponse unsubscribeStatusUpdate(StatusRequest statusRequest);
 
+    /**
+     * Invoke smart contract
+     * @param overledgerTransactionRequest containing overledger transaction request for invoke smart contract
+     * @return build specific transaction
+     */
+    OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest)throws Exception;
 
 }

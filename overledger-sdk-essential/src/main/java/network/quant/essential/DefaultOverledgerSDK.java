@@ -239,6 +239,26 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.postUnsubStatusUpdate(statusRequest);
     }
 
+    public OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest) throws Exception {
+        this.verifyOverledgerTransaction(overledgerTransactionRequest);
+        OverledgerTransaction overledgerTransaction = null;
+        try {
+            overledgerTransactionRequest.getDltData().stream()
+                    .map(dltTransaction -> {
+                        this.accountManager.getAccount(dltTransaction.getDlt())
+                                .invokeContract(dltTransaction);
+                        return dltTransaction;
+                    }).collect(Collectors.toList());
+
+            overledgerTransaction = (OverledgerTransactionResponse) this.client.postTransaction(overledgerTransactionRequest,
+                    DltTransaction.class,
+                    OverledgerTransactionResponse.class);
+        } catch (Exception e) {
+            log.error("exception: " + e.getMessage());
+            this.throwCauseException(e);
+        }
+        return overledgerTransaction;
+    }
 
     /**
      * Write transaction to BPI layer from byte array

@@ -155,6 +155,10 @@ public class RippleAccount implements Account {
     }
 
     @Override
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in ripple sdk.");
+    }
+    @Override
     public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
         throw new UnsupportedOperationException();
     }
