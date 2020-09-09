@@ -103,6 +103,48 @@ public class ContractArgumentAddressArrayToAbiAddressArrayFactory {
         } else if(contractArgument.getSelectedArrayLength() == 18) {
             StaticArray18 <Address> result = new StaticArray18<>( Address.class, values);
             return result;
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            StaticArray19 <Address> result = new StaticArray19<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            StaticArray20 <Address> result = new StaticArray20<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            StaticArray21 <Address> result = new StaticArray21<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            StaticArray22 <Address> result = new StaticArray22<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            StaticArray23 <Address> result = new StaticArray23<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            StaticArray24 <Address> result = new StaticArray24<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            StaticArray25 <Address> result = new StaticArray25<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            StaticArray26 <Address> result = new StaticArray26<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            StaticArray27 <Address> result = new StaticArray27<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            StaticArray28 <Address> result = new StaticArray28<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            StaticArray29 <Address> result = new StaticArray29<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            StaticArray30 <Address> result = new StaticArray30<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            StaticArray31 <Address> result = new StaticArray31<>( Address.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            StaticArray32 <Address> result = new StaticArray32<>( Address.class, values);
+            return result;
         }
 
         else {

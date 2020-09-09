@@ -102,6 +102,48 @@ public class ContractArgumentBytesArrayToAbiBytesArrayFactory {
         } else if(contractArgument.getSelectedArrayLength() == 18) {
             StaticArray18 <CustomBytes> result = new StaticArray18<>( CustomBytes.class, values);
             return result;
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            StaticArray19 <CustomBytes> result = new StaticArray19<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            StaticArray20 <CustomBytes> result = new StaticArray20<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            StaticArray21 <CustomBytes> result = new StaticArray21<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            StaticArray22 <CustomBytes> result = new StaticArray22<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            StaticArray23 <CustomBytes> result = new StaticArray23<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            StaticArray24 <CustomBytes> result = new StaticArray24<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            StaticArray25 <CustomBytes> result = new StaticArray25<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            StaticArray26 <CustomBytes> result = new StaticArray26<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            StaticArray27 <CustomBytes> result = new StaticArray27<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            StaticArray28 <CustomBytes> result = new StaticArray28<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            StaticArray29 <CustomBytes> result = new StaticArray29<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            StaticArray30 <CustomBytes> result = new StaticArray30<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            StaticArray31 <CustomBytes> result = new StaticArray31<>( CustomBytes.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            StaticArray32 <CustomBytes> result = new StaticArray32<>( CustomBytes.class, values);
+            return result;
         }
 
         else {

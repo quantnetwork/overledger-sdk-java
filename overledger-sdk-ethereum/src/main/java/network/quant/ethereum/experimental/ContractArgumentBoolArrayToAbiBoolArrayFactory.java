@@ -106,6 +106,48 @@ public class ContractArgumentBoolArrayToAbiBoolArrayFactory {
         } else if(contractArgument.getSelectedArrayLength() == 18) {
             StaticArray18 <Bool> result = new StaticArray18<>( Bool.class, values);
             return result;
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            StaticArray19 <Bool> result = new StaticArray19<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            StaticArray20 <Bool> result = new StaticArray20<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            StaticArray21 <Bool> result = new StaticArray21<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            StaticArray22 <Bool> result = new StaticArray22<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            StaticArray23 <Bool> result = new StaticArray23<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            StaticArray24 <Bool> result = new StaticArray24<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            StaticArray25 <Bool> result = new StaticArray25<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            StaticArray26 <Bool> result = new StaticArray26<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            StaticArray27 <Bool> result = new StaticArray27<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            StaticArray28 <Bool> result = new StaticArray28<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            StaticArray29 <Bool> result = new StaticArray29<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            StaticArray30 <Bool> result = new StaticArray30<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            StaticArray31 <Bool> result = new StaticArray31<>( Bool.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            StaticArray32 <Bool> result = new StaticArray32<>( Bool.class, values);
+            return result;
         }
 
         else {

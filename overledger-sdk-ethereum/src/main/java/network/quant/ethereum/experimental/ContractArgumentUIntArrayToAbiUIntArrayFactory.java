@@ -104,6 +104,48 @@ public class ContractArgumentUIntArrayToAbiUIntArrayFactory {
         } else if(contractArgument.getSelectedArrayLength() == 18) {
             StaticArray18  <CustomUInt> result = new StaticArray18<>(  CustomUInt.class, values);
             return result;
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            StaticArray19  <CustomUInt> result = new StaticArray19<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            StaticArray20  <CustomUInt> result = new StaticArray20<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            StaticArray21  <CustomUInt> result = new StaticArray21<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            StaticArray22  <CustomUInt> result = new StaticArray22<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            StaticArray23  <CustomUInt> result = new StaticArray23<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            StaticArray24  <CustomUInt> result = new StaticArray24<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            StaticArray25  <CustomUInt> result = new StaticArray25<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            StaticArray26  <CustomUInt> result = new StaticArray26<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            StaticArray27  <CustomUInt> result = new StaticArray27<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            StaticArray28  <CustomUInt> result = new StaticArray28<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            StaticArray29  <CustomUInt> result = new StaticArray29<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            StaticArray30  <CustomUInt> result = new StaticArray30<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            StaticArray31  <CustomUInt> result = new StaticArray31<>(  CustomUInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            StaticArray32  <CustomUInt> result = new StaticArray32<>(  CustomUInt.class, values);
+            return result;
         }
 
         else {

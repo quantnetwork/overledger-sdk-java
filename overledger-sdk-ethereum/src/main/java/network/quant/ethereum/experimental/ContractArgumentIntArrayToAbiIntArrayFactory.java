@@ -105,6 +105,48 @@ public class ContractArgumentIntArrayToAbiIntArrayFactory {
         } else if(contractArgument.getSelectedArrayLength() == 18) {
             StaticArray18 <CustomInt> result = new StaticArray18<>( CustomInt.class, values);
             return result;
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            StaticArray19 <CustomInt> result = new StaticArray19<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            StaticArray20 <CustomInt> result = new StaticArray20<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            StaticArray21 <CustomInt> result = new StaticArray21<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            StaticArray22 <CustomInt> result = new StaticArray22<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            StaticArray23 <CustomInt> result = new StaticArray23<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            StaticArray24 <CustomInt> result = new StaticArray24<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            StaticArray25 <CustomInt> result = new StaticArray25<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            StaticArray26 <CustomInt> result = new StaticArray26<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            StaticArray27 <CustomInt> result = new StaticArray27<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            StaticArray28 <CustomInt> result = new StaticArray28<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            StaticArray29 <CustomInt> result = new StaticArray29<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            StaticArray30 <CustomInt> result = new StaticArray30<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            StaticArray31 <CustomInt> result = new StaticArray31<>( CustomInt.class, values);
+            return result;
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            StaticArray32 <CustomInt> result = new StaticArray32<>( CustomInt.class, values);
+            return result;
         }
 
         else {
