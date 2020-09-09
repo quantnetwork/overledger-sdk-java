@@ -55,12 +55,6 @@ public interface Account {
      */
     void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction);
 
-    /**
-     * build specific transaction for further actions
-     * @param dltTransaction details on the information to include in this transaction
-     * @return build specific transaction
-     */
-    DltTransaction buildTransaction(DltTransaction dltTransaction);
 
     void invokeContract(DltTransaction dltTransaction);
 
