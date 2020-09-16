@@ -7,7 +7,6 @@ import network.quant.OverledgerContext;
 import network.quant.api.Client;
 import network.quant.api.DltTransaction;
 import network.quant.api.OverledgerTransactions;
-import network.quant.essential.dto.DltTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.exception.ClientResponseException;
@@ -23,8 +22,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Basic implementation of client
@@ -136,6 +137,69 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToMono(ContractQueryResponseDto.class)
+                    .block();
+        }
+    }
+
+    public List<EventSubscribeResponse> postSubscribeEvent(DltTransaction dltTransaction) {
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.SUBSCRIBE_EVENT_UPDATES)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    //.onStatus(HttpStatus::is2xxSuccessful, this::successMSG)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToFlux(EventSubscribeResponse.class)
+                    .timeout(Duration.ofMillis(120000))
+                    .collectList()
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToFlux(EventSubscribeResponse.class)
+                    .collect(Collectors.toList())
+                    .block();
+        }
+    }
+
+    public List<EventSubscribeResponse> postUnsubscribeEvent(DltTransaction dltTransaction) {
+        try {
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.UNSUBSCRIBE_EVENT_UPDATES)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToFlux(EventSubscribeResponse.class)
+                    .collect(Collectors.toList())
+                    .timeout(Duration.ofMillis(120000))
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .post()
+                    .uri(e.getUrl())
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .body(BodyInserters.fromObject(dltTransaction))
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToFlux(EventSubscribeResponse.class)
+                    .collect(Collectors.toList())
                     .block();
         }
     }

@@ -5,8 +5,10 @@ import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.EthereumUintIntOptions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.DynamicArray;
+import org.web3j.abi.datatypes.StaticArray;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.*;
 
@@ -28,6 +30,84 @@ public class ContractArgumentAddressArrayToAbiAddressArrayFactory {
         return generateArray(contractArgument, values);
 
     }
+    public static TypeReference makeTypeReferenceFromAddressArray(ContractArgument contractArgument) {
+        return generateTypeReference(contractArgument);
+    }
+
+    @NotNull
+    public static TypeReference generateTypeReference(ContractArgument contractArgument) {
+        if(contractArgument.getSelectedArrayLength() == 1) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(1) {};
+        } else if(contractArgument.getSelectedArrayLength() == 2) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(2) {};
+        } else if(contractArgument.getSelectedArrayLength() == 3) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(3) {};
+        } else if(contractArgument.getSelectedArrayLength() == 4) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(4) {};
+        } else if(contractArgument.getSelectedArrayLength() == 5) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(5) {};
+        } else if(contractArgument.getSelectedArrayLength() == 6) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(6) {};
+        } else if(contractArgument.getSelectedArrayLength() == 7) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(7) {};
+        } else if(contractArgument.getSelectedArrayLength() == 8) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(8) {};
+        } else if(contractArgument.getSelectedArrayLength() == 9) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(9) {};
+        } else if(contractArgument.getSelectedArrayLength() == 10) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(10) {};
+        } else if(contractArgument.getSelectedArrayLength() == 11) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(11) {};
+        } else if(contractArgument.getSelectedArrayLength() == 12) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(12) {};
+        } else if(contractArgument.getSelectedArrayLength() == 13) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(13) {};
+        } else if(contractArgument.getSelectedArrayLength() == 14) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(14) {};
+        } else if(contractArgument.getSelectedArrayLength() == 15) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(15) {};
+        } else if(contractArgument.getSelectedArrayLength() == 16) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(16) {};
+        } else if(contractArgument.getSelectedArrayLength() == 17) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(17) {};
+        } else if(contractArgument.getSelectedArrayLength() == 18) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(18) {};
+        } else if(contractArgument.getSelectedArrayLength() == 19) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(19) {};
+        } else if(contractArgument.getSelectedArrayLength() == 20) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(20) {};
+        } else if(contractArgument.getSelectedArrayLength() == 21) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(21) {};
+        } else if(contractArgument.getSelectedArrayLength() == 22) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(22) {};
+        } else if(contractArgument.getSelectedArrayLength() == 23) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(23) {};
+        } else if(contractArgument.getSelectedArrayLength() == 24) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(24) {};
+        } else if(contractArgument.getSelectedArrayLength() == 25) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(25) {};
+        } else if(contractArgument.getSelectedArrayLength() == 26) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(26) {};
+        } else if(contractArgument.getSelectedArrayLength() == 27) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(27) {};
+        } else if(contractArgument.getSelectedArrayLength() == 28) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(28) {};
+        } else if(contractArgument.getSelectedArrayLength() == 29) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(29) {};
+        } else if(contractArgument.getSelectedArrayLength() == 30) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(30) {};
+        } else if(contractArgument.getSelectedArrayLength() == 31) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(31) {};
+        } else if(contractArgument.getSelectedArrayLength() == 32) {
+            return new TypeReference.StaticArrayTypeReference<StaticArray<Address>>(32) {};
+        }
+
+        else {
+            log.error("Unsupported array length, please check!" + contractArgument.getSelectedArrayLength());
+            return null;
+        }
+    }
+
 
     @NotNull
     public static List<Address> produceListForInput(ContractArgument contractArgument, EthereumUintIntOptions ethereumUintIntOptions) {

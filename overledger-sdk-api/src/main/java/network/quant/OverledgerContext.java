@@ -24,6 +24,8 @@ public class OverledgerContext {
     private static final String BALANCES_CHECK_KEY                          = "overledger.balances";
     private static final String SEQUENCE_CHECK_KEY                          = "overledger.sequence";
     private static final String SUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.sub.state.id";
+    private static final String SUBSCRIBE_EVENT_UPDATES_KEY                 = "overledger.subscribe.event";
+    private static final String UNSUBSCRIBE_EVENT_UPDATES_KEY               = "overledger.unsubscribe.event";
     private static final String UNSUBSCRIBE_TRANSACTION_UPDATES_KEY    = "overledger.unsub.state.id";
     private static final String SMART_CONTRACT_QUERY_KEY                    = "overledger.smart.contract.query";
     private static final String CALLBACK_URL_KEY                            = "overledger.callback.url";
@@ -47,6 +49,8 @@ public class OverledgerContext {
     public static String BALANCES_CHECK;
     public static String SEQUENCE_CHECK;
     public static String SUBSCRIBE_TRANSACTION_UPDATES;
+    public static String SUBSCRIBE_EVENT_UPDATES;
+    public static String UNSUBSCRIBE_EVENT_UPDATES;
     public static String UNSUBSCRIBE_TRANSACTION_UPDATES;
     public static String SMART_CONTRACT_QUERY;
     public static String CALLBACK_URL;
@@ -81,6 +85,8 @@ public class OverledgerContext {
         BALANCES_CHECK = String.format("%s%s", baseUrl, properties.getProperty(BALANCES_CHECK_KEY));
         SEQUENCE_CHECK = String.format("%s%s", baseUrl, properties.getProperty(SEQUENCE_CHECK_KEY));
         SUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        SUBSCRIBE_EVENT_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_EVENT_UPDATES_KEY));
+        UNSUBSCRIBE_EVENT_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_EVENT_UPDATES_KEY));
         UNSUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_TRANSACTION_UPDATES_KEY));
         SMART_CONTRACT_QUERY = String.format("%s%s", baseUrl, properties.getProperty(SMART_CONTRACT_QUERY_KEY));
         CALLBACK_URL = String.format("%s%s", baseUrl, properties.getProperty(CALLBACK_URL_KEY));
