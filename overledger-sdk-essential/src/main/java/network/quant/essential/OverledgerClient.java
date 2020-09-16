@@ -168,6 +168,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToFlux(EventSubscribeResponse.class)
+                    .timeout(Duration.ofMillis(120000))
                     .collect(Collectors.toList())
                     .block();
         }
@@ -200,6 +201,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToFlux(EventSubscribeResponse.class)
                     .collect(Collectors.toList())
+                    .timeout(Duration.ofMillis(120000))
                     .block();
         }
     }
