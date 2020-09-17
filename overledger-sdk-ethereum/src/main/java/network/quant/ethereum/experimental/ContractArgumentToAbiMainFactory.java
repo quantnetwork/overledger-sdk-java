@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.ContractInputTypeOptions;
 import org.jetbrains.annotations.NotNull;
-import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.*;
 import org.web3j.utils.Numeric;
 
@@ -84,32 +83,6 @@ public class ContractArgumentToAbiMainFactory {
             return ContractArgumentBytesArrayToAbiBytesArrayFactory.convertBytesArray(contractArgument);
         }
 
-
-        log.error("Unsupported contract argument, please check if the type/length is supported!");
-        return null;
-    }
-
-    public static TypeReference generateTypeReference(ContractArgument contractArgument){
-
-        if(contractArgument.getType() == ContractInputTypeOptions.ADDRESS_ARRAY) {
-            return ContractArgumentAddressArrayToAbiAddressArrayFactory.makeTypeReferenceFromAddressArray(contractArgument);
-        }
-
-        if(contractArgument.getType() == ContractInputTypeOptions.INT_ARRAY) {
-            return ContractArgumentIntArrayToAbiIntArrayFactory.makeTypeReferenceFromIntArray(contractArgument);
-        }
-
-        if(contractArgument.getType() == ContractInputTypeOptions.UINT_ARRAY) {
-            return ContractArgumentUIntArrayToAbiUIntArrayFactory.makeTypeReferenceFromUintArray(contractArgument);
-        }
-
-        if(contractArgument.getType() == ContractInputTypeOptions.BOOLEAN_ARRAY) {
-            return ContractArgumentBoolArrayToAbiBoolArrayFactory.makeTypeReferenceFromBoolArray(contractArgument);
-        }
-
-        if(contractArgument.getType() == ContractInputTypeOptions.BYTES_B_ARRAY) {
-            return ContractArgumentBytesArrayToAbiBytesArrayFactory.makeTypeReferenceFromByteArray(contractArgument);
-        }
 
         log.error("Unsupported contract argument, please check if the type/length is supported!");
         return null;

@@ -5,10 +5,8 @@ import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.EthereumUintIntOptions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Bool;
 import org.web3j.abi.datatypes.DynamicArray;
-import org.web3j.abi.datatypes.StaticArray;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.*;
 
@@ -30,10 +28,6 @@ public class ContractArgumentBoolArrayToAbiBoolArrayFactory {
         //now just need to detect the different Array lengths
         return generateArray(contractArgument, values);
 
-    }
-
-    public static TypeReference makeTypeReferenceFromBoolArray(ContractArgument contractArgument) {
-        return generateArrayTypeReference(contractArgument);
     }
 
     @NotNull
@@ -159,16 +153,6 @@ public class ContractArgumentBoolArrayToAbiBoolArrayFactory {
         else {
            log.error("Unsupported length of the array, please check! " + contractArgument.getSelectedArrayLength());
            return null;
-        }
-    }
-
-    public static TypeReference generateArrayTypeReference(ContractArgument contractArgument) {
-
-        if (contractArgument.getSelectedArrayLength().compareTo(33l) == -1) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Bool>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else {
-            log.error("Unsupported length of the array, please check! " + contractArgument.getSelectedArrayLength());
-            return null;
         }
     }
 

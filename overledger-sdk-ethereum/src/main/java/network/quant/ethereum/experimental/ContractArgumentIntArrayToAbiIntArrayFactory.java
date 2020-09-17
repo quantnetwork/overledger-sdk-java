@@ -5,10 +5,7 @@ import network.quant.ethereum.experimental.dto.ContractArgument;
 import network.quant.ethereum.experimental.dto.EthereumUintIntOptions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.Address;
 import org.web3j.abi.datatypes.DynamicArray;
-import org.web3j.abi.datatypes.StaticArray;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.abi.datatypes.generated.*;
 
@@ -34,91 +31,12 @@ public class ContractArgumentIntArrayToAbiIntArrayFactory {
 
     }
 
-    public static TypeReference makeTypeReferenceFromIntArray(ContractArgument contractArgument) {
-        return generateArrayTypeReference(contractArgument);
-    }
-
     @NotNull
     public static List<CustomInt> produceListForInput(ContractArgument contractArgument, EthereumUintIntOptions ethereumUintIntOptions) {
 
         return Stream.of(contractArgument.getValue().replace("{","").replace("}","").split(","))
                         .map(s -> new CustomInt(Integer.parseInt(ethereumUintIntOptions.label), new BigInteger(s)))
                         .collect(Collectors.toList());
-    }
-
-    @NotNull
-    public static TypeReference generateArrayTypeReference(ContractArgument contractArgument) {
-
-        if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B8)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int8>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B16)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int16>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B24)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int24>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B32)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int32>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B40)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int40>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B48)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int48>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B56)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int56>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B64)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int64>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B72)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int72>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B80)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int80>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B88)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int88>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B96)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int96>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B104)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int104>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B112)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int112>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B120)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int120>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B128)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int128>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B136)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int136>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B144)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int144>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B152)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int152>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B160)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int160>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B168)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int168>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B176)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int176>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B184)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int184>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B192)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int192>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B200)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int200>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B208)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int208>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B216)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int216>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B224)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int224>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B232)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int232>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B240)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int240>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B248)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int248>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        } else if(contractArgument.getSelectedIntegerLength().equals(EthereumUintIntOptions.B256)) {
-            return new TypeReference.StaticArrayTypeReference<StaticArray<Int256>>(contractArgument.getSelectedArrayLength().intValue()) {};
-        }
-
-        else {
-            log.error("Unsupported array length, please check!" + contractArgument.getSelectedArrayLength());
-            return null;
-        }
     }
 
     @NotNull
