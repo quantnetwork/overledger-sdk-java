@@ -20,6 +20,7 @@ import java.util.List;
 public class SDKSmartContractQuery {
 
     static final ObjectMapper mapper = new ObjectMapper();
+    static final String dlt = "ethereum";
 
     public static void main(String[] args) throws JsonProcessingException {
         DefaultOverledgerSDK.setDefaultLocation("./src/main/resources/context.properties");
@@ -47,7 +48,7 @@ public class SDKSmartContractQuery {
                 .inputValues(Collections.emptyList())
                 .outputTypes(outputParams)
                 .build();
-        ContractQueryResponseDto ethereumSmartContractQueryBuild1 = sdk.smartContractQuery(ethereumRequest_1);
+        ContractQueryResponseDto ethereumSmartContractQueryBuild1 = sdk.smartContractQuery(ethereumRequest_1, dlt);
         log.info("response1: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ethereumSmartContractQueryBuild1));
 
 
@@ -79,7 +80,7 @@ public class SDKSmartContractQuery {
                 .inputValues(inputParams_2)
                 .outputTypes(outputParams_2)
                 .build();
-        ContractQueryResponseDto ethereumSmartContractQueryBuild2 = sdk.smartContractQuery(ethereumRequest_2);
+        ContractQueryResponseDto ethereumSmartContractQueryBuild2 = sdk.smartContractQuery(ethereumRequest_2, dlt);
         log.info("response2: " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ethereumSmartContractQueryBuild2));
     }
 }
