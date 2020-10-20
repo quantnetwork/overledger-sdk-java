@@ -113,11 +113,11 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction){
+    public ContractQueryResponseDto smartContractQuery(DltTransaction dltTransaction, String dlt){
         try {
             return this.webClient
                     .post()
-                    .uri(OverledgerContext.SMART_CONTRACT_QUERY)
+                    .uri(OverledgerContext.SMART_CONTRACT_QUERY, dlt)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .body(BodyInserters.fromObject(dltTransaction))
