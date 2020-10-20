@@ -88,7 +88,7 @@
         <eddsa.version>0.3.0</eddsa.version>
         <json.version>20180813</json.version>
         <junit.jupiter.version>5.1.0</junit.jupiter.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <assertj.version>3.11.1</assertj.version>
         <mockito.version>2.23.0</mockito.version>
         <maven.compiler.version>3.8.0</maven.compiler.version>
