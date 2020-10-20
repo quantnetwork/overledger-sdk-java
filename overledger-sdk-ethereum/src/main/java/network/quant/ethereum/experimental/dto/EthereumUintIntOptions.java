@@ -3,6 +3,7 @@ package network.quant.ethereum.experimental.dto;
 public enum  EthereumUintIntOptions {
     B8("8"),
     B16("16"),
+    B24("24"),
     B32("32"),
     B40("40"),
     B48("48"),

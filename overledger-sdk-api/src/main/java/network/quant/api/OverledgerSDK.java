@@ -185,5 +185,7 @@ public interface OverledgerSDK {
      */
     OverledgerTransaction invokeSmartContract(OverledgerTransaction overledgerTransactionRequest)throws Exception;
 
+    List<EventSubscribeResponse> eventSubscribe(DltTransaction dltTransaction);
+    List<EventSubscribeResponse> eventUnsubscribe(DltTransaction dltTransaction);
     ContractQueryResponseDto smartContractQuery(DltTransaction contractQueryRequestDto, String dlt);
 }

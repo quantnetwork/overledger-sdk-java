@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
+
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ContractArgument {
+public class ContractArgument implements Serializable {
 
     ContractInputTypeOptions type;
     String value;
