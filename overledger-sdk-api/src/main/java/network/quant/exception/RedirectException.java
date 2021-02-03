@@ -1,7 +1,7 @@
 package network.quant.exception;
 
 /**
- *  This exception is thrown when the the redirection failed.
+ *  This exception is thrown when the redirection failed.
  *
  *  @author     Quant network
  *  @see        <a href="http://quant.network">http://quant.network</a>
