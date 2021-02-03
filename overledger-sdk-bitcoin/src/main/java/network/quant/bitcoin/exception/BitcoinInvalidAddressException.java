@@ -1,7 +1,10 @@
 package network.quant.bitcoin.exception;
 
 /**
- * Throw this exception when Bitcoin fee service failed
+ *  This exception is thrown when a Bitcoin address could not be verified.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class BitcoinInvalidAddressException extends Exception {
 

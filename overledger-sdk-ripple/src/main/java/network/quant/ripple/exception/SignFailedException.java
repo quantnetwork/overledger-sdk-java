@@ -1,7 +1,10 @@
 package network.quant.ripple.exception;
 
 /**
- * Throw this exception when Ethereum gas service failed
+ *  This exception is thrown when the Ripple transaction signing failed.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class SignFailedException extends Exception {
 

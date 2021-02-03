@@ -1,7 +1,10 @@
 package network.quant.exception;
 
 /**
- * Throw this exception when transaction does not have Quant data
+ *  This exception is thrown when the the redirection failed.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class RedirectException extends RuntimeException {
 

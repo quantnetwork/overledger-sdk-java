@@ -1,5 +1,11 @@
 package network.quant.ethereum.exception;
 
+/**
+ *  This exception is thrown when the Ethereum smart contract parameters were incorrect.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
+ */
 public class SmartContractInputParamsException extends RuntimeException{
     private String message;
 
