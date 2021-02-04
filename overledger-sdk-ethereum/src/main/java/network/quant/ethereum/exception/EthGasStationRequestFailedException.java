@@ -1,7 +1,10 @@
 package network.quant.ethereum.exception;
 
 /**
- * Throw this exception when Ethereum gas service failed
+ *  This exception is thrown when the Ethereum gas station information could not be retrieved.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class EthGasStationRequestFailedException extends Exception {
 

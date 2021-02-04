@@ -1,7 +1,10 @@
 package network.quant.essential.exception;
 
 /**
- * Throw this exception for DLT not supported
+ *  This exception is thrown when the DLT account is not found.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class EmptyAccountException extends Exception {
 

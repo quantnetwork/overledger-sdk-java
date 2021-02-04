@@ -1,7 +1,10 @@
 package network.quant.bitcoin.exception;
 
 /**
- * Throw this exception when Bitcoin fee service failed
+ *  This exception is thrown when data could not be extracted from a Bitcoin address.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class BitcoinDataNotMatchingLengthException extends Exception {
 
