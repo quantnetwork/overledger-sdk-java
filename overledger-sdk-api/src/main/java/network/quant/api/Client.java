@@ -119,6 +119,7 @@ public interface Client<T, S> {
      */
     FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber);
 
+    Oauth2RefreshResponse refreshAccessToken();
 
     StatusResponse postSubStatusUpdate(StatusRequest statusRequest);
     StatusResponse postUnsubStatusUpdate(StatusRequest statusRequest);

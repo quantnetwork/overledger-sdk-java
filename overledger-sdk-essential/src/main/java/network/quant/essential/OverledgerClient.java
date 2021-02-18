@@ -33,19 +33,37 @@ import java.util.stream.Collectors;
 @Slf4j
 public final class OverledgerClient<T extends OverledgerTransactionRequest, S extends OverledgerTransactionResponse> implements Client<T, S> {
 
-    private static Client I;
+    public static final String REFRESH_TOKEN_STRING = "refresh_token";
+    public static final String GRANT_TYPE_STRING = "grant_type";
+    public static final String CLIENT_ID_STRING = "client_id";
+    private static Client client;
     private static final String BEARER = "Bearer";
     private static final String HEADER_LOCATION = "Location";
     private WebClient webClient;
 
     private OverledgerClient() {
-        this.webClient = WebClient.builder()
-                .defaultHeader(
-                        HttpHeaders.AUTHORIZATION,
-                        String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
-                )
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
+        System.out.println("====> Overledger.BASE_URL: " + OverledgerContext.BASE_URL);
+
+        if(OverledgerContext.BASE_URL.contains("/v1")) {
+            System.out.println("====> V1");
+
+            this.webClient = WebClient.builder()
+                    .defaultHeader(
+                            HttpHeaders.AUTHORIZATION,
+                            String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
+                    )
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build();
+        } else {
+            System.out.println("====> V2");
+            this.webClient = WebClient.builder()
+                    .defaultHeader(
+                            HttpHeaders.AUTHORIZATION,
+                            String.format("%s %s", BEARER, OverledgerContext.OAUTH2_ACCESS_TOKEN)
+                    )
+                    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .build();
+        }
     }
 
     private Mono<ClientResponseException> getClientResponse(ClientResponse clientResponse) {
@@ -430,6 +448,32 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
+    public Oauth2RefreshResponse refreshAccessToken() {
+
+        System.out.println("refresh Access Token, REFRESH URL = " + OverledgerContext.OAUTH2_REFRESH_TOKEN_URL);
+
+        WebClient webClient1 = WebClient.builder().build();
+
+        Oauth2RefreshResponse result = webClient1
+                .post()
+                .uri(OverledgerContext.OAUTH2_REFRESH_TOKEN_URL)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(BodyInserters.fromFormData(GRANT_TYPE_STRING, REFRESH_TOKEN_STRING)
+                        .with(CLIENT_ID_STRING, OverledgerContext.OAUTH2_CLIENT_ID)
+                        .with(REFRESH_TOKEN_STRING, OverledgerContext.OAUTH2_REFRESH_TOKEN))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                .bodyToMono(Oauth2RefreshResponse.class)
+                .block();
+
+        return result;
+
+    }
+
+    @Override
     public Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) {
         try {
             return this.webClient
@@ -502,10 +546,10 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     static Client getInstance() {
-        if (null == I) {
-            I = new OverledgerClient();
+        if (null == client) {
+            client = new OverledgerClient();
         }
-        return I;
+        return client;
     }
 
 }

@@ -163,6 +163,11 @@ public interface OverledgerSDK {
      */
     FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber);
 
+    /**
+     * refreshes the OAuth2 Access Token using the Refresh Token supplied in the properties file
+     * @return OAuth2RefreshResponse containing the new access token
+     */
+    Oauth2RefreshResponse refreshAccessToken();
 
     /**
      * Get status of given statusRequest

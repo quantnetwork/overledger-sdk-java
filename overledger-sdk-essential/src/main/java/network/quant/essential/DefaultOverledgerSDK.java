@@ -230,6 +230,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.getFeeEstimation(dltName, blockNumber);
     }
 
+    @Override
+    public Oauth2RefreshResponse refreshAccessToken() {
+        return this.client.refreshAccessToken();
+    }
+
     public StatusResponse subscribeStatusUpdate(StatusRequest statusRequest){
         return this.client.postSubStatusUpdate(statusRequest);
     }
