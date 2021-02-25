@@ -154,7 +154,6 @@ public interface OverledgerSDK {
      */
     SequenceResponse getSequence(SequenceRequest sequenceRequest);
 
-
     /**
      * Gets fee estimation for a given dlt, optional blockNumber param for certain DLT
      * @param dltName
@@ -162,12 +161,6 @@ public interface OverledgerSDK {
      * @return FeeEstimationResponse containing the dlt name and fee
      */
     FeeEstimationResponse getFeeEstimation(String dltName, String blockNumber);
-
-    /**
-     * refreshes the OAuth2 Access Token using the Refresh Token supplied in the properties file
-     * @return OAuth2RefreshResponse containing the new access token
-     */
-    Oauth2RefreshResponse refreshAccessToken();
 
     /**
      * Get status of given statusRequest
