@@ -35,11 +35,6 @@ public class OverledgerContext {
     private static final String FAUCET_ETH_KEY                              = "ethereum.faucet.url";
     private static final String FAUCET_XRP_KEY                              = "ripple.faucet.url";
     private static final String FEE_ESTIMATION_KEY = "overledger.fee.estimation";
-    private static final String OAUTH2_ACCESS_TOKEN_KEY = "oauth2.access.token";
-    private static final String OAUTH2_REFRESH_TOKEN_KEY = "oauth2.refresh.token";
-    private static final String OAUTH2_ID_TOKEN_KEY = "oauth2.id.token";
-    private static final String OAUTH2_REFRESH_TOKEN_URL_KEY = "oauth2.refresh.token.url";
-    private static final String OAUTH2_CLIENT_ID_KEY ="oauth2.client.id";
 
     public static Properties config = null;
 
@@ -67,14 +62,7 @@ public class OverledgerContext {
 
     public static String TEST_URL;
     public static String MAIN_URL;
-    public static String BASE_URL;
     private static NETWORK CURRENT_NETWORK = NETWORK.TEST;
-
-    public static String OAUTH2_ACCESS_TOKEN;
-    public static String OAUTH2_REFRESH_TOKEN;
-    public static String OAUTH2_ID_TOKEN;
-    public static String OAUTH2_REFRESH_TOKEN_URL;
-    public static String OAUTH2_CLIENT_ID;
 
     /**
      * Load context from properties Object
@@ -85,36 +73,30 @@ public class OverledgerContext {
         config = properties;
         TEST_URL = properties.getProperty(TEST_URL_KEY);
         MAIN_URL = properties.getProperty(MAIN_URL_KEY);
-        BASE_URL = NETWORK.MAIN.equals(CURRENT_NETWORK) ? MAIN_URL : TEST_URL;
+        String baseUrl = NETWORK.MAIN.equals(CURRENT_NETWORK) ? MAIN_URL : TEST_URL;
 
-        WRITE_TRANSACTIONS = String.format("%s%s", BASE_URL, properties.getProperty(WRITE_TRANSACTIONS_KEY));
-        READ_TRANSACTIONS_BY_TRANSACTION_ID = String.format("%s%s", BASE_URL, properties.getProperty(READ_TRANSACTIONS_BY_TRANSACTION_ID_KEY));
-        READ_TRANSACTIONS_BY_MAPP_ID = String.format("%s%s", BASE_URL, properties.getProperty(READ_TRANSACTIONS_BY_MAPP_ID_KEY));
-        READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE = String.format("%s%s", BASE_URL, properties.getProperty(READ_TRANSACTIONS_BY_MAPP_BY_PAGE_ID_KEY));
-        SEARCH_TRANSACTIONS = String.format("%s%s", BASE_URL, properties.getProperty(SEARCH_TRANSACTIONS_KEY));
-        SEARCH_ADDRESSES = String.format("%s%s", BASE_URL, properties.getProperty(SEARCH_ADDRESSES_KEY));
-        SEARCH_CHAIN_BLOCKS = String.format("%s%s", BASE_URL, properties.getProperty(SEARCH_CHAIN_BLOCKS_KEY));
-        BALANCES_CHECK = String.format("%s%s", BASE_URL, properties.getProperty(BALANCES_CHECK_KEY));
-        SEQUENCE_CHECK = String.format("%s%s", BASE_URL, properties.getProperty(SEQUENCE_CHECK_KEY));
-        SUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", BASE_URL, properties.getProperty(SUBSCRIBE_TRANSACTION_UPDATES_KEY));
-        SUBSCRIBE_EVENT_UPDATES = String.format("%s%s", BASE_URL, properties.getProperty(SUBSCRIBE_EVENT_UPDATES_KEY));
-        UNSUBSCRIBE_EVENT_UPDATES = String.format("%s%s", BASE_URL, properties.getProperty(UNSUBSCRIBE_EVENT_UPDATES_KEY));
-        UNSUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", BASE_URL, properties.getProperty(UNSUBSCRIBE_TRANSACTION_UPDATES_KEY));
-        SMART_CONTRACT_QUERY = String.format("%s%s", BASE_URL, properties.getProperty(SMART_CONTRACT_QUERY_KEY));
-        CALLBACK_URL = String.format("%s%s", BASE_URL, properties.getProperty(CALLBACK_URL_KEY));
-        FAUCET_XBT = String.format("%s%s", BASE_URL, properties.getProperty(FAUCET_XBT_KEY));
-        FAUCET_ETH = String.format("%s%s", BASE_URL, properties.getProperty(FAUCET_ETH_KEY));
-        FAUCET_XRP = String.format("%s%s", BASE_URL, properties.getProperty(FAUCET_XRP_KEY));
+        WRITE_TRANSACTIONS = String.format("%s%s", baseUrl, properties.getProperty(WRITE_TRANSACTIONS_KEY));
+        READ_TRANSACTIONS_BY_TRANSACTION_ID = String.format("%s%s", baseUrl, properties.getProperty(READ_TRANSACTIONS_BY_TRANSACTION_ID_KEY));
+        READ_TRANSACTIONS_BY_MAPP_ID = String.format("%s%s", baseUrl, properties.getProperty(READ_TRANSACTIONS_BY_MAPP_ID_KEY));
+        READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE = String.format("%s%s", baseUrl, properties.getProperty(READ_TRANSACTIONS_BY_MAPP_BY_PAGE_ID_KEY));
+        SEARCH_TRANSACTIONS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_TRANSACTIONS_KEY));
+        SEARCH_ADDRESSES = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_ADDRESSES_KEY));
+        SEARCH_CHAIN_BLOCKS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_CHAIN_BLOCKS_KEY));
+        BALANCES_CHECK = String.format("%s%s", baseUrl, properties.getProperty(BALANCES_CHECK_KEY));
+        SEQUENCE_CHECK = String.format("%s%s", baseUrl, properties.getProperty(SEQUENCE_CHECK_KEY));
+        SUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        SUBSCRIBE_EVENT_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(SUBSCRIBE_EVENT_UPDATES_KEY));
+        UNSUBSCRIBE_EVENT_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_EVENT_UPDATES_KEY));
+        UNSUBSCRIBE_TRANSACTION_UPDATES = String.format("%s%s", baseUrl, properties.getProperty(UNSUBSCRIBE_TRANSACTION_UPDATES_KEY));
+        SMART_CONTRACT_QUERY = String.format("%s%s", baseUrl, properties.getProperty(SMART_CONTRACT_QUERY_KEY));
+        CALLBACK_URL = String.format("%s%s", baseUrl, properties.getProperty(CALLBACK_URL_KEY));
+        FAUCET_XBT = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XBT_KEY));
+        FAUCET_ETH = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_ETH_KEY));
+        FAUCET_XRP = String.format("%s%s", baseUrl, properties.getProperty(FAUCET_XRP_KEY));
         BPI_KEY = properties.getProperty(BPI_KEY_KEY);
         MAPP_ID = properties.getProperty(MAPP_KEY);
 
-        FEE_ESTIMATION = String.format("%s%s", BASE_URL, properties.getProperty(FEE_ESTIMATION_KEY));
-
-        OAUTH2_ACCESS_TOKEN = String.format("%s", properties.getProperty(OAUTH2_ACCESS_TOKEN_KEY));
-        OAUTH2_REFRESH_TOKEN = String.format("%s", properties.getProperty(OAUTH2_REFRESH_TOKEN_KEY));
-        OAUTH2_ID_TOKEN = String.format("%s", properties.getProperty(OAUTH2_ID_TOKEN_KEY));
-        OAUTH2_REFRESH_TOKEN_URL = String.format("%s%s", BASE_URL, properties.getProperty(OAUTH2_REFRESH_TOKEN_URL_KEY));
-        OAUTH2_CLIENT_ID = String.format("%s", properties.getProperty(OAUTH2_CLIENT_ID_KEY));
+        FEE_ESTIMATION = String.format("%s%s", baseUrl, properties.getProperty(FEE_ESTIMATION_KEY));
     }
 
     /**
