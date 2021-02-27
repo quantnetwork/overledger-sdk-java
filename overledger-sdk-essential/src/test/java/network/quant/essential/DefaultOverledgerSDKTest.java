@@ -8,6 +8,9 @@ import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.essential.dto.OverledgerTransactionsResponse;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyDltException;
+import network.quant.util.FeeEstimationResponse;
+import network.quant.util.StatusRequest;
+import network.quant.util.StatusResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -16,8 +19,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.UUID;
 import static org.mockito.ArgumentMatchers.eq;
@@ -34,6 +39,7 @@ public class DefaultOverledgerSDKTest {
     private OverledgerTransactionRequest overledgerTransactionRequest;
     private OverledgerTransactionResponse overledgerTransactionResponse;
     private OverledgerTransactionsResponse overledgerTransactionsResponse;
+    private StatusRequest statusRequest;
     private Account bitcoinAccount;
     private UUID transactionId;
     private ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -47,6 +53,12 @@ public class DefaultOverledgerSDKTest {
         this.overledgerTransactionRequest = new OverledgerTransactionRequest();
         this.overledgerTransactionResponse = new OverledgerTransactionResponse();
         this.transactionId = UUID.randomUUID();
+        this.statusRequest = StatusRequest.builder()
+                .mappId("test1")
+                .overledgerTransactionId(this.transactionId)
+                .callbackUrl("http://localhost:9090/webhook/dummyDisplay")
+                .timestamp(Instant.now())
+                .build();
         this.bitcoinAccount = new Account() {
             @Override
             public Account withNetwork(NETWORK network) {
@@ -64,6 +76,20 @@ public class DefaultOverledgerSDKTest {
             public void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction) {}
             @Override
             public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
+            @Override
+            public void invokeContract(DltTransaction dltTransaction){}
+
+            @Override
+            public void createSmartContract(DltTransaction dltTransaction) {
+                
+            }
+
+            @Override
+            public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){return null;}
+            @Override
+            public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
+
+            }
         };
         this.overledgerTransactionsResponse = new OverledgerTransactionsResponse();
         this.overledgerTransactionsResponse.setTransactions(Collections.singletonList(this.overledgerTransactionResponse));
@@ -165,4 +191,41 @@ public class DefaultOverledgerSDKTest {
         Mockito.verify(this.client, Mockito.only()).getTransactions(this.stringArgumentCaptor.capture(), eq(OverledgerTransactionsResponse.class));
     }
 
+   @Test
+    public void test007subscribeStatusOfTransaction_shouldSuccess() throws Exception {
+       StatusResponse statusResponse = new StatusResponse("saved application subscription: "
+                                                            + statusRequest.getMappId()
+                                                            + ", " + statusRequest.getOverledgerTransactionId());
+       Mockito.when(this.client.postSubStatusUpdate(this.statusRequest)).
+               thenReturn(statusResponse);
+
+       StatusResponse statusSubscribeResult = this.overledgerSDK.subscribeStatusUpdate(statusRequest);
+        Assert.assertNotNull(statusSubscribeResult);
+        Assert.assertEquals(statusSubscribeResult.getPayload() , statusResponse.getPayload());
+    }
+
+     @Test
+    public void test008unSubscribeStatusOfTransaction_shouldSuccess() throws Exception {
+         StatusResponse statusResponse =  new StatusResponse("Unsubscribed application subscription: "
+                                            + statusRequest.getMappId() + ", "
+                                            + this.statusRequest.getOverledgerTransactionId());
+         Mockito.when(this.client.postUnsubStatusUpdate(this.statusRequest)).
+                 thenReturn(statusResponse);
+
+         StatusResponse statusUnSubscribeResult = this.overledgerSDK.unsubscribeStatusUpdate(statusRequest);
+         Assert.assertNotNull(statusUnSubscribeResult);
+         Assert.assertEquals(statusUnSubscribeResult.getPayload() , statusResponse.getPayload());
+    }
+
+    @Test
+    public void test009EthFeeEstimation_shouldSuccess() throws Exception {
+        FeeEstimationResponse feeEstimationResponse = new FeeEstimationResponse("dlt", new BigInteger("1000000"));
+        Mockito.when(this.client.getFeeEstimation("ethereum", null)).
+                thenReturn(feeEstimationResponse);
+
+        FeeEstimationResponse estimationResponse = this.overledgerSDK.getFeeEstimation("ethereum", null);
+        Assert.assertNotNull(estimationResponse);
+        Assert.assertEquals(estimationResponse.getData() , feeEstimationResponse.getData());
+        Assert.assertEquals(estimationResponse.getDlt() , feeEstimationResponse.getDlt());
+    }
 }

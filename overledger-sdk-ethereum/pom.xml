@@ -5,7 +5,7 @@
     <parent>
         <artifactId>overledger-sdk-java</artifactId>
         <groupId>network.quant</groupId>
-        <version>1.0.0-alpha.4-SNAPSHOT</version>
+        <version>1.0.0-alpha.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,6 +19,18 @@
         <url>https://quant.network</url>
         <name>Quant Network</name>
     </organization>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <inceptionYear>2018</inceptionYear>
 
@@ -68,6 +80,10 @@
         <dependency>
             <groupId>network.quant</groupId>
             <artifactId>overledger-sdk-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-essential</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

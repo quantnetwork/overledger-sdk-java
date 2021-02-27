@@ -1,7 +1,10 @@
 package network.quant.exception;
 
 /**
- * Throw this exception if transaction data is over the size
+ *  This exception is thrown when the transaction data is over the expected size.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class DataOverSizeException extends Exception {
 

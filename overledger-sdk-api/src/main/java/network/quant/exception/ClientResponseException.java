@@ -1,7 +1,10 @@
 package network.quant.exception;
 
 /**
- * Throw this exception when client returning 4xx or 5xx status
+ *  This exception is thrown when an returning a 4xx or 5xx status.
+ *
+ *  @author     Quant network
+ *  @see        <a href="http://quant.network">http://quant.network</a>
  */
 public class ClientResponseException extends Exception {
 

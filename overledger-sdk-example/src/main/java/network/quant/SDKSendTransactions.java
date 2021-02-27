@@ -29,14 +29,13 @@ static final String partyAEthereumAddress = "0x650A87cfB9165C9F4Ccc7B971D971f50f
 static final String partyARipplePrivateKey = "sswERuW1KWEwMXF6VFpRY72PxfC9b";
 static final String partyARippleAddress = "rhTa8RGotyJQAW8sS2tFVVfvcHYXaps9hC";
 
-
 static final String partyBEthereumAddress = "0x1a90dbb13861a29bFC2e464549D28bE44846Dbe4";
 // Keep in mind that for Ripple, the minimum transfer amount is 20XRP (20,000,000 drops), if the address is not yet funded.
 static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
 
 
     public static void main(String[] args) {
-        String transactionMessage = "Hello World!";
+        String transactionMessage = "Hello World Testing No Security!";
         Account ethAcnt = EthereumAccount.getInstance(NETWORK.ROPSTEN, new BigInteger(partyAEthereumPrivateKey, 16), BigInteger.ZERO);
         Account rplAcnt = RippleAccount.getInstance(NETWORK.TEST, partyARipplePrivateKey,  BigInteger.ONE);
 
@@ -62,8 +61,8 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
                         rippleSequence = numSequence;
                     }
             }
-            BigInteger ethAmount = BigInteger.valueOf(0); // For this example we are sending nothing
-            BigInteger feePrice = BigInteger.valueOf(10000); // Price for each individual gas unit this transaction will consume
+            BigInteger btcAmount = BigInteger.valueOf(0); // For this example we are sending nothing
+            BigInteger feePrice = BigInteger.valueOf(1000); // Price for each individual gas unit this transaction will consume
             BigInteger feeLimit = BigInteger.valueOf(80000); // The maximum fee that this transaction will use
             // These values need to be packaged inside a DltTransactionRequest from overledger-sdk-essential
             BigInteger xrpAmount = BigInteger.valueOf(1); // For this example we are sending min value of Ripple
@@ -73,7 +72,7 @@ static final String partyBRippleAddress = "rHVsZPVPjYJMR3Xa8YH7r7MapS7s5cyqgB";
             //        of the SDK to Integer.Max_VALUE currently in the Java SDK
 
 
-            DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(ethAmount).fee(feePrice).feeLimit(feeLimit).build();
+            DltTransactionRequest ethTransaction = DltTransactionRequest.builder().dlt("ethereum").sequence(ethereumSequence.longValue()).message(transactionMessage).fromAddress(partyAEthereumAddress).toAddress(partyBEthereumAddress).amount(btcAmount).fee(feePrice).feeLimit(feeLimit).build();
             DltTransactionRequest rippleTransaction = DltTransactionRequest.
                     builder().dlt("ripple").sequence(rippleSequence.longValue()).message(transactionMessage).fromAddress(partyARippleAddress).toAddress(partyBRippleAddress)
                     .amount(xrpAmount).fee(xrpFeePrice).build();

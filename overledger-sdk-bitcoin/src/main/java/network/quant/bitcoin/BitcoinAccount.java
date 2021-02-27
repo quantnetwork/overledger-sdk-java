@@ -1,6 +1,8 @@
 package network.quant.bitcoin;
 
+import network.quant.OverledgerContext;
 import network.quant.api.*;
+import network.quant.bitcoin.exception.UnsupportedSmartContractQueryException;
 import network.quant.exception.DataOverSizeException;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -11,11 +13,15 @@ import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.params.TestNet3Params;
 import org.bitcoinj.script.Script;
+import org.bitcoinj.script.ScriptBuilder;
+import org.bitcoinj.script.ScriptOpCodes;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,25 +85,27 @@ public class BitcoinAccount implements Account {
         Transaction transaction = new Transaction(this.networkParameters);
         Coin totalPayout = Coin.valueOf(dltTransaction.getAmount().longValue());
         int outputNumber = 2;
-        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
-            BitcoinData bitcoinData;
-            try {
-                bitcoinData = this.createBitcoinData(message, type);
-                for (String address : bitcoinData.getAddressList()) {
-                    transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
-                    totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
-                }
-                outputNumber += bitcoinData.getAddressList().size();
-            } catch (DataOverSizeException e) {
-                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
-            } catch (IOException e) {
-                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
-            }
-        }
+        // NO transactions should be encoded inside the message.
+        // Currently keeping in case it is needed for old applications which used to encode output transactions inside the message.
+//        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
+//            BitcoinData bitcoinData;
+//            try {
+//                bitcoinData = this.createBitcoinData(message, type);
+//                for (String address : bitcoinData.getAddressList()) {
+//                    transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
+//                    totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
+//                }
+//                outputNumber += bitcoinData.getAddressList().size();
+//            } catch (DataOverSizeException e) {
+//                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
+//            } catch (IOException e) {
+//                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
+//            }
+//        }
         transaction.addOutput(Coin.valueOf(dltTransaction.getAmount().longValue()), Address.fromBase58(this.networkParameters, toAddress));
         totalPayout = totalPayout.add(Coin.valueOf(
                 (null == dltTransaction.getFee()) ?
-                        BitcoinFees.getInstance().calculate(FEE_POLICY.NORMAL, 1, outputNumber).longValue() :
+                        Long.parseLong(OverledgerContext.config.getProperty("xbt.fee", "1000")):
                         dltTransaction.getFee().longValue()
         ));
         final Coin payout = Coin.valueOf(totalPayout.getValue());
@@ -105,7 +113,7 @@ public class BitcoinAccount implements Account {
                 .filter(utxo -> utxo.getAddress().equals(fromAddress) && utxo.getValue().isGreaterThan(payout))
                 .findFirst().orElse(null);
         if (null == inputUtxo) {
-            return;
+            throw new ExceptionInInitializerError("A bitcoin account must have unspent inputs");
         }
         transaction.addOutput(inputUtxo.getValue().subtract(totalPayout), Address.fromBase58(this.networkParameters,
                 (null == dltTransaction.getChangeAddress()) ? fromAddress : dltTransaction.getChangeAddress()));
@@ -113,6 +121,13 @@ public class BitcoinAccount implements Account {
         transaction.addSignedInput(transactionOutPoint, inputUtxo.getScript(), this.key, Transaction.SigHash.ALL, true);
         transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
         transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
+
+//        byte[] sha256 = message.toString().getBytes(StandardCharsets.UTF_8);
+//        ScriptBuilder sb = new ScriptBuilder();
+//        Script myScript = sb.op(ScriptOpCodes.OP_RETURN).data(sha256).build();
+//        TransactionOutput transactionOutput = transaction.addOutput(
+//                org.bitcoinj.core.Transaction.MIN_NONDUST_OUTPUT, myScript);
+
         SignedTransaction signedTransaction = new SignedTransaction();
         signedTransaction.setTransactions(Collections.singletonList(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize())));
         signedTransaction.setSignatures(Collections.singletonList(""));
@@ -164,6 +179,21 @@ public class BitcoinAccount implements Account {
         if (dltTransaction instanceof DltTransactionRequest) {
             this.sign(fromAddress, toAddress, stream, DATA_TYPE.BYTE, (DltTransactionRequest)dltTransaction);
         }
+    }
+
+    @Override
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in bitcoin sdk.");
+    }
+
+    @Override
+    public void createSmartContract(DltTransaction dltTransaction) {
+        throw new UnsupportedOperationException("create smart contract isn't valid in bitcoin sdk.");
+    }
+
+    @Override
+    public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){
+        throw new UnsupportedSmartContractQueryException("The Bitcoin SDK does not currently support smart contract queries");
     }
 
     /**
@@ -247,7 +277,11 @@ public class BitcoinAccount implements Account {
     public static Account getInstance(NETWORK network, BigInteger privateKey) {
         return getInstance(network, privateKey, null, null);
     }
-
+    public static Account getInstance(NETWORK network, String privateKey) {
+        NetworkParameters par = setNetwork(network);
+        ECKey bcKey = DumpedPrivateKey.fromBase58(par, privateKey).getKey();
+        return getInstance(network, bcKey, null, null);
+    }
     /**
      * Get Bitcoin account instance by given secret key array
      * @param network NETWORK containing network param

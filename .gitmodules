@@ -1,0 +1,3 @@
+[submodule "aws-encryption-sdk-java"]
+	path = aws-encryption-sdk-java
+	url = git@github.com:quantnetwork/aws-encryption-sdk-java.git

@@ -5,6 +5,7 @@ import com.ripple.core.coretypes.uint.UInt32;
 import com.ripple.core.types.known.tx.signed.SignedTransaction;
 import com.ripple.crypto.ecdsa.Seed;
 import network.quant.api.*;
+import network.quant.ripple.exception.UnsupportedSmartContractQueryException;
 import network.quant.ripple.model.PaymentWithMemos;
 import network.quant.ripple.model.TransactionMemo;
 import lombok.AccessLevel;
@@ -152,6 +153,26 @@ public class RippleAccount implements Account {
             String message = DatatypeConverter.printHexBinary(data);
             this.sign(data, fromAddress, toAddress, message, dltTransaction);
         }
+    }
+
+    @Override
+    public void invokeContract(DltTransaction dltTransaction){
+        throw new UnsupportedOperationException("invoke smart contract isn't valid in ripple sdk.");
+    }
+
+    @Override
+    public void createSmartContract(DltTransaction dltTransaction) {
+        throw new UnsupportedOperationException("create smart contract isn't valid in ripple sdk.");
+    }
+
+    @Override
+    public DltTransaction buildSmartContractQuery(DltTransaction dltTransaction){
+        throw new UnsupportedSmartContractQueryException("The XRP SDK does not currently support smart contract queries");
+    }
+
+    @Override
+    public void addUtxo(String transactionHash, long outpoint, long valueInSatoshi, int blockHeight, String address) {
+        throw new UnsupportedOperationException();
     }
 
     public static Account getInstance(NETWORK network, String secretKey, BigInteger nonce, Encryptor encryptor, Compressor compressor) {
